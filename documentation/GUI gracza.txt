@@ -1,0 +1,56 @@
+Dowolne, 
+
+-------------------------------------------------------------------------
+
+fajnie jakby korzystalo z ResourceBundle:
+
+przykladowe tworzenie w main:
+-------------
+ResourceBundle msg;
+String msgPath = "data/messages_pl.properties";
+try 
+{
+	msg = new PropertyResourceBundle(new FileInputStream(new File(msgPath)));
+}
+catch(IOException e) 
+{
+	throw new RuntimeException("File not found for path: " + msgPath);
+}
+Okno ok = new Okno(msg.getString("author"),msg);
+--------------
+
+Pobieranie za pomoca
+msg.getString("author);
+pobiera string zdeklarowany w "data/messages_pl.properties"
+
+zeby nie podawac na sztywno stringa do jakis labelek czy informacji :)
+
+-------------------------------------------------------------------------
+
+a i logi byly za pomocą loggera a nie print()
+
+trzeba go najpierw stworzyc w klasie np.
+private final static Logger logger = Logger.getLogger(Okno.class.getName());
+
+i potem uzywanie:
+logger.info("jakis tekst");
+lub
+logger.warning("ostrzezenie");
+
+tylko prawdopodobnie zeby zaczal cos logowac trzeba go najpierw zainicjowac w mainie:
+private static void initLogger() 
+{
+	Logger logger = Logger.getLogger("");
+    FileHandler fh = null;
+    try 
+    {
+        fh=new FileHandler("PlikZLogami.log", false);
+    } 
+    catch (IOException e) 
+    {
+        e.printStackTrace();
+    }
+    fh.setFormatter(new SimpleFormatter());
+    logger.addHandler(fh);
+    logger.setUseParentHandlers(false);
+}

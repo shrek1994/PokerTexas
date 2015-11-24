@@ -1,0 +1,5 @@
+Serwer ma za zadanie prowadzic cala gre, mowic czyj ruch, wysylac karty 
+i zbierac pieniadze od graczy.
+
+Powinien umiec zczytac ustawienia, np. z pliku xml
+

@@ -1,0 +1,9 @@
+Po stronie gracza trzeba zaimplementować:
+- odbior wiadomosci (podsumowanie/update o ruchu, yourAction, 
+- wysylanie wybranej akcji z wyslaniem pieniędzy
+
+gracz przechowuje swoje pieniadze i karty + karty ktore stoja na stole.
+Posiada również informacje na temat pieniedzy w puli 
+i ile kto zalicytowal pieniedzy 
+i jaki ostatnio zostal wykonany ruch.
+
