@@ -1,4 +1,4 @@
-package server;
+package action;
 
 public enum ActionType {
 	Check,

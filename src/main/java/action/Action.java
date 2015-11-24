@@ -1,4 +1,4 @@
-package server;
+package action;
 
 public class Action {
 	private ActionType action;
@@ -9,8 +9,7 @@ public class Action {
 		this.action = action;
 		this.money = money;
 	}
-	
-	
+		
 	public ActionType getAction() {
 		return action;
 	}
