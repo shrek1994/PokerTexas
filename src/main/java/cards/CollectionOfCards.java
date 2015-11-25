@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Created by maciek on 19.10.15.
  */
-public class CollectionOfCards implements ICollectionOfCards {
+public class CollectionOfCards {
     private List<Card> cards;
 
     public CollectionOfCards()
@@ -21,11 +21,11 @@ public class CollectionOfCards implements ICollectionOfCards {
             }
         }
     }
- 
-    public void shuffle(int numberOfChange) 
-    {    	
+
+    public void shuffle(int numberOfChange)
+    {
         Random generator = new Random();
-        for (int i = 0; i < numberOfChange * cards.size(); i++) 
+        for (int i = 0; i < numberOfChange * cards.size(); i++)
         {
             int first = generator.nextInt(cards.size());
             int second = generator.nextInt(cards.size());
@@ -38,7 +38,7 @@ public class CollectionOfCards implements ICollectionOfCards {
 
     public List<Card> getCards(int number)
     {
-    	List<Card> cards = new ArrayList<Card>(); 
+    	List<Card> cards = new ArrayList<Card>();
         for(int i = 0; i < number; i++)
         {
             if(this.cards.size() < 1)

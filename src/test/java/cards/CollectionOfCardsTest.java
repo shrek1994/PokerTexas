@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionOfCardsTest {
-    private ICollectionOfCards sut = new CollectionOfCards();
+    private CollectionOfCards sut = new CollectionOfCards();
 
 	@Test
 	public void shouldReturnEmptyVectorWhenGetZeroCard() {
