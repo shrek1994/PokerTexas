@@ -6,5 +6,5 @@ public enum ActionType {
 	Raise,
 	Call,
 	Fold,
-	AllIn	
+	AllIn
 }
