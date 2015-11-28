@@ -1,10 +1,10 @@
-package action;
+package messages;
 
-public class Action {
+public class ActionMsg {
 	private ActionType action;
 	private double money;
 
-	public Action(ActionType action, double money)
+	public ActionMsg(ActionType action, double money)
 	{
 		this.action = action;
 		this.money = money;

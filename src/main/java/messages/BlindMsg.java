@@ -1,16 +1,16 @@
-package action;
+package messages;
 
 /**
  * Created by maciek on 28.11.15.
  */
-public class Blind {
+public class BlindMsg {
     private int value;
 
     public int getValue() {
         return value;
     }
 
-    public Blind(int value) {
+    public BlindMsg(int value) {
 
         this.value = value;
     }

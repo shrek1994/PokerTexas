@@ -1,4 +1,4 @@
-package action;
+package messages;
 
 public enum ActionType {
 	Check,

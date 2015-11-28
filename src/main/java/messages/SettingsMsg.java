@@ -1,12 +1,12 @@
-package action;
+package messages;
 
-public class Settings {
+public class SettingsMsg {
     private GameType type;
     private int moneyOnStart;
     private int valueOfSmallBlind;
     private int valueOfBigBlind;
 
-    public Settings(GameType type, int moneyOnStart, int valueOfSmallBlind, int valueOfBigBlind) {
+    public SettingsMsg(GameType type, int moneyOnStart, int valueOfSmallBlind, int valueOfBigBlind) {
         this.type = type;
         this.moneyOnStart = moneyOnStart;
         this.valueOfSmallBlind = valueOfSmallBlind;

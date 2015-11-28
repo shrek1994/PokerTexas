@@ -1,4 +1,4 @@
-package action;
+package messages;
 
 import cards.Card;
 
