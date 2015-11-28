@@ -5,12 +5,18 @@ public class SettingsMsg {
     private int moneyOnStart;
     private int valueOfSmallBlind;
     private int valueOfBigBlind;
+    private int playerId;
 
-    public SettingsMsg(GameType type, int moneyOnStart, int valueOfSmallBlind, int valueOfBigBlind) {
+    public SettingsMsg(GameType type, int moneyOnStart, int valueOfSmallBlind, int valueOfBigBlind, int playerId) {
         this.type = type;
         this.moneyOnStart = moneyOnStart;
         this.valueOfSmallBlind = valueOfSmallBlind;
         this.valueOfBigBlind = valueOfBigBlind;
+        this.playerId = playerId;
+    }
+
+    public int getPlayerId() {
+        return playerId;
     }
 
     public GameType getType() {
