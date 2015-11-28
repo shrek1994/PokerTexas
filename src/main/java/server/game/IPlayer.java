@@ -1,10 +1,10 @@
 package server.game;
 
 import cards.Card;
-import action.Action;
+import messages.ActionMsg;
 
 public interface IPlayer {
-	public Action getAction();
+	public ActionMsg getAction();
 	public int getBlind(int value);
 	public void addCard(Card card);
 }
