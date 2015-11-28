@@ -87,6 +87,7 @@ public class TexasHoldTest {
 		verify(secondPlayer).addCard(cardListWithTwoCards.get(1));
 		verify(secondPlayer).getBlind(TexasHold.smallBlind);
 
+		verify(cards).createNewDeckCard();
 		verify(cards).shuffle(TexasHold.numberOfShuffle);
 		verify(cards, times(1)).getCards(3);
 		verify(cards, times(playersList.size())).getCards(2);

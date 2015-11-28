@@ -12,6 +12,10 @@ public class CollectionOfCards {
 
     public CollectionOfCards()
     {
+        createNewDeckCard();
+    }
+
+    public void createNewDeckCard() {
         cards = new ArrayList<Card>();
         for (Color color : Color.values())
         {
@@ -20,7 +24,7 @@ public class CollectionOfCards {
                 cards.add(new Card(figure, color));
             }
         }
-    }
+	}
 
     public void shuffle(int numberOfChange)
     {

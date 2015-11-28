@@ -35,6 +35,7 @@ public class TexasHold {
 		playerShouldPayBigBlind.getBlind(bigBlind);
 
 		//potasowanie kart
+		cards.createNewDeckCard();
 		cards.shuffle(numberOfShuffle);
 
 		//rozdanie kart graczom
