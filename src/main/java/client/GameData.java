@@ -1,5 +1,5 @@
 package client;
-
+import java.util.Observable;
 import messages.ActionMsg;
 
 /**
@@ -9,12 +9,20 @@ import messages.ActionMsg;
  * @author erinu
  *
  */
-public class GameData {
+public class GameData extends Observable{
 
-	int players;
-	int cards[];
+	int numberOfPlayers;
+	int cardsInHand[];
+	int cardsOnTable[];
 
 	ActionMsg actions[];
-
+	
+	void writeValues(int numberOfPlayers, int[] cardsInHand, int[] cardsOnTable){
+		this.numberOfPlayers = numberOfPlayers;
+		this.cardsInHand = cardsInHand;
+		this.cardsOnTable = cardsOnTable;
+		setChanged();
+	    notifyObservers();
+	}
 
 }
