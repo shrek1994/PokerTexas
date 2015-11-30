@@ -8,7 +8,7 @@ package client;
  *
  */
 public class GameClient {
-	private GameData data;
+	private GameData data = new GameData();
 	private ClienttoServerConnection connection;
 	boolean connectionEstablished = false;
 	
@@ -29,8 +29,11 @@ public class GameClient {
 	 * @return bolean true dla udanego polaczenia
 	 */
 	boolean setUpConnection(String address, String port){
-		return false;
+		return true;
 	}
 	
+	GameData getGameData(){
+		return data;
+	}
 
 }

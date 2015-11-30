@@ -14,7 +14,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title="Texas";
-		config.height = 480;
+		config.height = 600;
 		config.width = 800;
 		GUIlibgdx app = new GUIlibgdx();
 		new LwjglApplication(app, config);

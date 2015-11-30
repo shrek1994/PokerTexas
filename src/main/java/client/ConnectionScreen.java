@@ -46,11 +46,11 @@ public class ConnectionScreen implements Screen{
 		cardImage = new Texture(Gdx.files.internal("card.jpg"));
 		backgroundImage = new Texture(Gdx.files.internal("background.jpg"));
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, 800, 600);
 		batch = new SpriteBatch();
 		background  = new Rectangle();
 		background.width = 800;
-		background.height = 480;
+		background.height = 600;
 		btnConnect.addListener(new ClickListener() {
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
@@ -68,6 +68,7 @@ public class ConnectionScreen implements Screen{
 		stage.addActor(txfAddress);
 		font = new BitmapFont();
         font.setColor(Color.BLACK);
+        game = nevada;
 	}
 	
 	@Override
@@ -83,7 +84,7 @@ public class ConnectionScreen implements Screen{
 		boolean connection = client.setUpConnection(txfAddress.getText(), txfPort.getText());
 		if (connection){
 			client.connectionEstablished = true;
-			game.setScreen(new GameScreenWait());
+			game.setScreen(new GameScreenWait(client));
 		}
 		//else
 			//connection failed
