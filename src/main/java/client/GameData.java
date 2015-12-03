@@ -18,8 +18,14 @@ public class GameData extends Observable{
 	private int smallBlind;
 	private int bigBlind;
 	private RankingMsg ranking;
-
+	private int playerNumber = 5;
 	private ActionMsg actions[];
+	private String status;
+	
+	GameData(int players){
+		actions = new ActionMsg[players];
+		this.numberOfPlayers = players;
+	}
 	
 	void setNumberOfPlayers(int n){
 		numberOfPlayers = n;
@@ -77,6 +83,33 @@ public class GameData extends Observable{
 	
 	ActionMsg getActionOfPlayerX(int x){
 		return actions[x];
+	}
+
+	public int getPlayerNumber() {
+		return playerNumber;
+	}
+
+	public void setPlayerNumber(int playerNumber) {
+		this.playerNumber = playerNumber;
+		setChanged();
+	    notifyObservers();
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+		setChanged();
+	    notifyObservers();
+	    System.out.println(status);
+	}
+
+	public void setActionOfPlayerX(int numberOfPlayer, ActionMsg msg) {
+		this.actions[numberOfPlayer] = msg;
+		setChanged();
+	    notifyObservers();
 	}
 
 }

@@ -8,19 +8,17 @@ package client;
  *
  */
 public class GameClient {
-	private GameData data = new GameData();
+	
 	private ClienttoServerConnection connection;
 	boolean connectionEstablished = false;
-	
+	private GameData data;
 	
 
 	public GameClient(){
 		connection = new ClienttoServerConnection();
+		data = new GameData(connection.getNumberOfPlayers());
 	}
 	
-	public void updateGUI(){
-		
-	}
 	
 	/**
 	 * Metoda dla GUI do utworzenia polaczenia z serwerem w aplikacji klienta

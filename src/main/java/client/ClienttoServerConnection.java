@@ -24,5 +24,10 @@ public class ClienttoServerConnection {
 	GameData getData(){
 		return data;
 	}
+
+	public int getNumberOfPlayers() {
+		// TODO
+		return 12;
+	}
 	
 }

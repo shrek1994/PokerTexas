@@ -7,17 +7,21 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class GameScreenWait implements Screen, Observer {
+import messages.ActionMsg;
+import messages.ActionType;
+
+public class GameScreenMove implements Screen, Observer {
 	
 	Stage stage;
 	SpriteBatch batch;
@@ -32,15 +36,45 @@ public class GameScreenWait implements Screen, Observer {
 	GameClient client;
 	private boolean updated;
 	private Game game;
+	private TextField betValue;
+	private TextButton actions[];
 	
-	
-	public GameScreenWait(GameClient c, Game g){
+	public GameScreenMove(GameClient c, Game g){
 		this.client = c;
 		this.game = g;
 		client.getGameData().addObserver(this);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+		betValue = new TextField("",skin);
+		betValue.setPosition(300, 170);
+		stage.addActor(betValue);
+		actions = new TextButton[6];
+		actions[0] = new TextButton("Check", skin);
+		actions[1] = new TextButton("Bet", skin);
+		actions[2] = new TextButton("Raise", skin);
+		actions[3] = new TextButton("Call", skin);
+		actions[4] = new TextButton("Fold", skin);
+		actions[5] = new TextButton("AllIn", skin);
+		betValue.setText("0.0");
+		for (int i=0; i<6; i++){
+			actions[i].setPosition(150+i*80, 230);
+			actions[i].setSize(70, 50);
+			stage.addActor(actions[i]);
+			actions[i].addListener(new ClickListener() {
+				@Override
+				public void touchUp(InputEvent e, float x, float y, int point, int button){
+					//this line
+					try{
+						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[client.getGameData().getPlayerNumber()].getText().toString()),Double.parseDouble(betValue.getText())));
+					}
+					catch(Exception ex){
+						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[client.getGameData().getPlayerNumber()].getText().toString()),0.0));
+					}
+					game.setScreen(new GameScreenWait(client,game));
+				}
+			});
+		}
 		batch = new SpriteBatch();
 		background  = new Rectangle();
 		backgroundImage = new Texture(Gdx.files.internal("background.jpg"));
@@ -48,11 +82,7 @@ public class GameScreenWait implements Screen, Observer {
 		background.height = 600;
 		generateCardsBacks(client.getGameData().getNumberOfPlayer());
 	}
-	
-	@Override
-	public void update(Observable o, Object arg) {
-		this.updated = true;
-	}
+
 	
 	void generateCardsBacks(int n){
 		if (client.getGameData().getRankingMsg() == null){
@@ -87,36 +117,32 @@ public class GameScreenWait implements Screen, Observer {
 		cardBack[client.getGameData().getPlayerNumber()+n].setPosition(999,999);
 	}
 	
+
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.begin();
+		batch.draw(backgroundImage, background.x, background.y);
+		batch.end();
+		stage.act(delta);
+		stage.draw();
+		batchCardBacks(client.getGameData().getNumberOfPlayer());
+	}
+	
 	void batchCardBacks(int n){
 		batch.begin();
 		for (int i=0; i<n*2;i++)
 			batch.draw(cardBackImage, cardBack[i].x, cardBack[i].y);
 		batch.end();
 	}
-	
-	
-	
+
+
 	@Override
-	public void render(float delta) {
-		client.getGameData().setStatus("MOVE");
-		if (updated){
-			if (client.getGameData().getStatus().equals("MOVE")){
-				this.updated = false;
-				System.out.println("zmiana");
-				game.setScreen(new GameScreenMove(client,game));
-			}
-			//game.setScreen(new GameScreenWait(client,game));
-		}
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(backgroundImage, background.x, background.y);
-		batch.end();
-		batchCardBacks(client.getGameData().getNumberOfPlayer());
-		
-
+	public void update(Observable o, Object arg) {
+		this.updated = true;
 	}
-
+	
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
@@ -125,19 +151,19 @@ public class GameScreenWait implements Screen, Observer {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+		// Android only
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
+		// Android only
 
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
+		// Android only
 
 	}
 
@@ -146,11 +172,12 @@ public class GameScreenWait implements Screen, Observer {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
 
 	}
+
 
 }
