@@ -1,9 +1,11 @@
 package messages;
 
+import java.io.Serializable;
+
 /**
  * Created by maciek on 28.11.15.
  */
-public class BlindMsg {
+public class BlindMsg implements Serializable {
     private int value;
 
     public int getValue() {
@@ -13,5 +15,18 @@ public class BlindMsg {
     public BlindMsg(int value) {
 
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        System.out.println("test");
+        // using in tests
+        if ( o instanceof BlindMsg)
+        {
+            BlindMsg msg = (BlindMsg)o;
+            return msg.value == value;
+        }
+        return false;
     }
 }
