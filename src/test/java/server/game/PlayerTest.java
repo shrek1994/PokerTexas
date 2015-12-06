@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -240,6 +241,28 @@ public class PlayerTest {
 
         verify(senderMsg).sendMsg(blindMsg);
         verify(receiverMsg).receiveMsg();
+    }
+
+    /*****************************GET*ID***************************************/
+
+    @Test
+    public void shouldReturnDifferentIdsPlayers()
+    {
+        int maxPlayers = 8;
+        List<Player> playerList = new ArrayList<Player>();
+        for ( int i = 0 ; i < maxPlayers ; i++)
+        {
+            playerList.add(new Player(senderMsg, receiverMsg));
+        }
+
+        assertEquals(maxPlayers, playerList.size());
+
+        int id =  playerList.get(0).getId();
+        for ( int i = 0 ; i < maxPlayers ; i++ )
+        {
+            assertEquals(id, playerList.get(i).getId() );
+            id++;
+        }
     }
 }
 

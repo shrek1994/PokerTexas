@@ -114,7 +114,7 @@ public class Player implements IPlayer, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-
+        //TODO
     }
 
     private class ReceiveAction implements Runnable
@@ -140,7 +140,6 @@ public class Player implements IPlayer, Observer {
     }
 
     private class ReceiveBlind implements Runnable{
-
         @Override
         public void run() {
             try {
