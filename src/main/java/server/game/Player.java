@@ -6,18 +6,22 @@ import cards.Card;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
 
 public class Player implements IPlayer, Observer {
     private final static Logger logger = Logger.getLogger(Player.class.getName());
-    final static long milisecondWaitForActionPlayer = 30 * 1000;
+    final static long millisecondsWaitForActionPlayer = 30 * 1000;
 
     private static int nextId = 0;
     private int Id;
     private SenderMsg senderMsg;
     private ReceiverMsg receiverMsg;
+
+    private List<Card> cardList = new ArrayList<Card>();
 
     //TODO change for something pretty
     private Integer lock = new Integer(123);
@@ -25,14 +29,21 @@ public class Player implements IPlayer, Observer {
 
     private final ActionMsg defaultActionMsg = new ActionMsg(ActionType.Fold, 0);
 
-
-    private Thread receiveAction;
-
     public Player(SenderMsg senderMsg, ReceiverMsg receiverMsg) {
         Id = nextId;
         nextId++;
         this.senderMsg = senderMsg;
         this.receiverMsg = receiverMsg;
+    }
+
+    @Override
+    public List<Card> getCardList() {
+        return cardList;
+    }
+
+    @Override
+    public void clearCards() {
+        cardList.clear();
     }
 
     @Override
@@ -49,10 +60,11 @@ public class Player implements IPlayer, Observer {
             return defaultActionMsg;
         }
 
-        receiveAction = new Thread(new ReceiveAction());
+        // get action from client
+        Thread receiveAction = new Thread(new ReceiveAction());
         receiveAction.start();
         try {
-            receiveAction.join(milisecondWaitForActionPlayer);
+            receiveAction.join(millisecondsWaitForActionPlayer);
         } catch (InterruptedException e) {
             logger.warning(e.getMessage());
         }
@@ -74,7 +86,12 @@ public class Player implements IPlayer, Observer {
 
     @Override
     public void addCard(Card card) {
-        // TODO Auto-generated method stub
+        try {
+            senderMsg.sendMsg(new CardMsg(card));
+            cardList.add(card);
+        } catch (IOException e) {
+            logger.warning("Probably player disconnected, " + e.getMessage());
+        }
     }
 
     @Override

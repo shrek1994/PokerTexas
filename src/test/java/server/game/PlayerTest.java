@@ -1,5 +1,8 @@
 package server.game;
 
+import cards.Card;
+import cards.Color;
+import cards.Figure;
 import messages.*;
 import org.junit.After;
 import org.junit.Before;
@@ -7,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -21,6 +25,28 @@ public class PlayerTest {
     private final ActionMsg correctAction = new ActionMsg(ActionType.Bet, 1234);
     private final ActionMsg defaultActionMsg = new ActionMsg(ActionType.Fold, 0);
     private final NotifyAboutActionMsg notifyAboutActionMsg = new NotifyAboutActionMsg();
+
+    private final Card card = new Card(Figure.Five, Color.Spades);
+    private final Card secondCard = new Card(Figure.Eight, Color.Diamonds);
+    private final CardMsg cardMsg = new CardMsg(card);
+    private final CardMsg secondCardMsg = new CardMsg(secondCard);
+
+    private class NotReceiveMsg extends ReceiverMsg
+    {
+        public NotReceiveMsg() throws IOException {
+            super(null);
+        }
+
+        @Override
+        public Object receiveMsg() throws ClassNotFoundException, IOException {
+            try {
+                Thread.sleep(Player.millisecondsWaitForActionPlayer + 2 * 1000);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+            return null;
+        }
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -37,6 +63,7 @@ public class PlayerTest {
         verifyNoMoreInteractions(receiverMsg);
     }
 
+    /***********************************GET*ACTION*TESTS****************************************************/
 
     @Test
     public void shouldCorrectReturnActionWhenCorrectGetResponse() throws Exception {
@@ -107,20 +134,61 @@ public class PlayerTest {
         verify(senderMsg, times(2)).sendMsg(notifyAboutActionMsg);
     }
 
-    private class NotReceiveMsg extends ReceiverMsg
-    {
-        public NotReceiveMsg() throws IOException {
-            super(null);
-        }
+    /***********************************ADD*CARDS*TESTS************************************************/
 
-        @Override
-        public Object receiveMsg() throws ClassNotFoundException, IOException {
-            try {
-                Thread.sleep(Player.milisecondWaitForActionPlayer + 2 * 1000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-            return null;
-        }
+    @Test
+    public void shouldCorrectAddOneCard() throws Exception {
+        int numberOfAddedCard = 1;
+
+        sut.addCard(card);
+
+        assertEquals(numberOfAddedCard, sut.getCardList().size());
+        assertEquals(card, sut.getCardList().get(0));
+
+        verify(senderMsg).sendMsg(cardMsg);
+    }
+
+    @Test
+    public void shouldCorrectAddTwoCards() throws Exception {
+        int numberOfAddedCard = 2;
+
+        sut.addCard(card);
+        sut.addCard(secondCard);
+
+        assertEquals(numberOfAddedCard, sut.getCardList().size());
+        assertEquals(card, sut.getCardList().get(0));
+        assertEquals(secondCard, sut.getCardList().get(1));
+
+        verify(senderMsg).sendMsg(cardMsg);
+        verify(senderMsg).sendMsg(secondCardMsg);
+    }
+
+    @Test
+    public void shouldDoNothingWhenSendMsgThrowIOException() throws Exception {
+        int sizeOfEmptyList = 0;
+
+        doThrow(new IOException("")).when(senderMsg).sendMsg(cardMsg);
+
+        sut.addCard(card);
+
+        assertEquals(sizeOfEmptyList, sut.getCardList().size());
+
+        verify(senderMsg).sendMsg(cardMsg);
+    }
+
+    @Test
+    public void shouldCorrectAddTwoCardsOneAfterClearCard() throws Exception {
+        int expectedNumberOfCardInPlayer = 1;
+
+        sut.addCard(card);
+        sut.clearCards();
+        sut.addCard(secondCard);
+
+        assertEquals(expectedNumberOfCardInPlayer, sut.getCardList().size());
+        assertEquals(secondCard, sut.getCardList().get(0));
+
+        verify(senderMsg).sendMsg(cardMsg);
+        verify(senderMsg).sendMsg(secondCardMsg);
     }
 }
+q
