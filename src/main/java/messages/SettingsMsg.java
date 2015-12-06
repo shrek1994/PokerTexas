@@ -1,6 +1,8 @@
 package messages;
 
-public class SettingsMsg {
+import java.io.Serializable;
+
+public class SettingsMsg implements Serializable {
     private GameType type;
     private int moneyOnStart;
     private int valueOfSmallBlind;
@@ -33,5 +35,21 @@ public class SettingsMsg {
 
     public int getValueOfBigBlind() {
         return valueOfBigBlind;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        // using in tests
+        if ( o instanceof SettingsMsg)
+        {
+            SettingsMsg msg = (SettingsMsg)o;
+            return msg.type == type &&
+                    msg.moneyOnStart == moneyOnStart &&
+                    msg.valueOfSmallBlind == valueOfSmallBlind &&
+                    msg.valueOfBigBlind == valueOfBigBlind &&
+                    msg.playerId == playerId;
+        }
+        return false;
     }
 }

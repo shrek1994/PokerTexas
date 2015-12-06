@@ -4,6 +4,7 @@ import java.util.*;
 
 import cards.Card;
 import messages.CardMsg;
+import messages.InfoAboutActionMsg;
 
 //TODO
 public class Table extends Observable {
@@ -25,7 +26,7 @@ public class Table extends Observable {
         cards.addAll(cardList);
         for(Card card : cardList)
         {
-            notifyObservers(new CardMsg(card));
+            notifyAllPlayers(new CardMsg(card));
         }
     }
 
@@ -37,6 +38,11 @@ public class Table extends Observable {
     public void addToPrize(IPlayer who, double howMuch)
     {
         moneys.put(who, moneys.get(who) + howMuch);
+    }
+
+    public void notifyAllPlayers(Object message)
+    {
+    	notifyObservers(message);
     }
 
 }
