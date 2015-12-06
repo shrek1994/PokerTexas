@@ -20,7 +20,6 @@ public class BlindMsg implements Serializable {
     @Override
     public boolean equals(Object o)
     {
-        System.out.println("test");
         // using in tests
         if ( o instanceof BlindMsg)
         {
