@@ -26,6 +26,7 @@ public class Player implements IPlayer, Observer {
     //TODO change for something pretty
     private Integer lock = new Integer(123);
     private ActionMsg actionMsg;
+    private BlindMsg blindMsg;
 
     private final ActionMsg defaultActionMsg = new ActionMsg(ActionType.Fold, 0);
 
@@ -80,8 +81,20 @@ public class Player implements IPlayer, Observer {
 
     @Override
     public int getBlind(int value) {
-        // TODO Auto-generated method stub
-        return 0;
+        blindMsg = new BlindMsg(0);
+        try {
+            senderMsg.sendMsg(new BlindMsg(value));
+
+            Thread receiveBlind = new Thread(new ReceiveBlind());
+            receiveBlind.start();
+
+            receiveBlind.join(millisecondsWaitForActionPlayer);
+            //TODO check that isn't interrupt dangerous?
+            receiveBlind.interrupt();
+        } catch (Exception e) {
+            logger.warning("Probably player disconnected, " + e.getMessage());
+        }
+        return blindMsg.getValue();
     }
 
     @Override
@@ -119,6 +132,26 @@ public class Player implements IPlayer, Observer {
                 else
                 {
                     logger.warning("Wrong message received, isn't instance of ActionMsg .");
+                }
+            } catch (Exception e) {
+                logger.warning(e.getMessage());
+            }
+        }
+    }
+
+    private class ReceiveBlind implements Runnable{
+
+        @Override
+        public void run() {
+            try {
+                Object msg = receiverMsg.receiveMsg();
+                if(msg instanceof BlindMsg)
+                {
+                    blindMsg = (BlindMsg) msg;
+                }
+                else
+                {
+                    logger.warning("Wrong message received, isn't instance of BlindMsg .");
                 }
             } catch (Exception e) {
                 logger.warning(e.getMessage());

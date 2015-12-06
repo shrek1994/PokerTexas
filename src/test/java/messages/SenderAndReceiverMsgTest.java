@@ -73,7 +73,6 @@ public class SenderAndReceiverMsgTest {
 
         assertEquals(sentMsg.getAction(), receivedMsg.getAction());
         assertEquals(sentMsg.getMoney(), receivedMsg.getMoney(),0.000001);
-
         assertEquals(sentMsg, receivedMsg);
     }
 
@@ -89,7 +88,6 @@ public class SenderAndReceiverMsgTest {
         BlindMsg receivedMsg = (BlindMsg) o;
 
         assertEquals(sentMsg.getValue(), receivedMsg.getValue());
-
         assertEquals(sentMsg, receivedMsg);
     }
 }

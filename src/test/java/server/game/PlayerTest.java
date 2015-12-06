@@ -31,6 +31,9 @@ public class PlayerTest {
     private final CardMsg cardMsg = new CardMsg(card);
     private final CardMsg secondCardMsg = new CardMsg(secondCard);
 
+    private final int blind = 123;
+    private final BlindMsg blindMsg = new BlindMsg(blind);
+
     private class NotReceiveMsg extends ReceiverMsg
     {
         public NotReceiveMsg() throws IOException {
@@ -190,5 +193,53 @@ public class PlayerTest {
         verify(senderMsg).sendMsg(cardMsg);
         verify(senderMsg).sendMsg(secondCardMsg);
     }
+
+
+    /***********************************GET*BLIND*TESTS************************************************/
+
+    @Test
+    public void shouldCorrectGetBlind() throws Exception {
+        when(receiverMsg.receiveMsg()).thenReturn(blindMsg);
+
+        assertEquals(blind, sut.getBlind(blind));
+
+        verify(senderMsg).sendMsg(blindMsg);
+        verify(receiverMsg).receiveMsg();
+    }
+
+    @Test
+    public void shouldReturnZeroBlindWhenCannotSendMsg() throws Exception {
+        int zeroBlind = 0;
+
+        doThrow(new IOException("")).when(senderMsg).sendMsg(blindMsg);
+
+        assertEquals(zeroBlind, sut.getBlind(blind));
+
+        verify(senderMsg).sendMsg(blindMsg);
+    }
+
+    @Test
+    public void shouldReturnZeroBlindWhenCannotReceiveMsg() throws Exception {
+        int zeroBlind = 0;
+
+        when(receiverMsg.receiveMsg()).thenThrow(new IOException(""));
+
+        assertEquals(zeroBlind, sut.getBlind(blind));
+
+        verify(senderMsg).sendMsg(blindMsg);
+        verify(receiverMsg).receiveMsg();
+    }
+
+    @Test
+    public void shouldReturnZeroBlindWhenReceiveWrongMsg() throws Exception {
+        int zeroBlind = 0;
+
+        when(receiverMsg.receiveMsg()).thenReturn(defaultActionMsg);
+
+        assertEquals(zeroBlind, sut.getBlind(blind));
+
+        verify(senderMsg).sendMsg(blindMsg);
+        verify(receiverMsg).receiveMsg();
+    }
 }
-q
+
