@@ -1,6 +1,9 @@
 package client;
 
 import java.net.Socket;
+import java.util.Observable;
+
+import messages.SettingsMsg;
 
 /**
  * Tymczasowa klasa dla polaczenia z serwerem.
@@ -9,7 +12,7 @@ import java.net.Socket;
  * @author erinu
  *
  */
-public class ClienttoServerConnection {
+public class ClienttoServerConnection extends Observable{
 	
 	String address;
 	String port;
@@ -30,4 +33,13 @@ public class ClienttoServerConnection {
 		return 12;
 	}
 	
+	
+	/**
+	 * Pobiera liczbe graczy z serwera i powiadamia clienta wysylajac dane
+	 */
+	void setSettingsFromServer(){
+		//get from server
+		SettingsMsg msg = null;
+		notifyObservers(msg);
+	}
 }
