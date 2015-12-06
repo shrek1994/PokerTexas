@@ -13,8 +13,12 @@ import java.net.Socket;
  */
 public class PlayerFactory {
     public IPlayer create(Socket socket) throws IOException {
-        SenderMsg senderMsg = new SenderMsg(socket.getOutputStream());
-        ReceiverMsg receiverMsg = new ReceiverMsg(socket.getInputStream());
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        SenderMsg senderMsg = new SenderMsg(objectOutputStream);
+
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+        ReceiverMsg receiverMsg = new ReceiverMsg(objectInputStream);
+
         return new Player(senderMsg, receiverMsg);
     }
 }

@@ -1,28 +1,69 @@
 package server.game;
 
-import messages.ActionMsg;
-import messages.ActionType;
+import messages.*;
 import cards.Card;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Logger;
 
 public class Player implements IPlayer, Observer {
-    private InputStream inputStream;
-    private OutputStream outputStream;
+    private final static Logger logger = Logger.getLogger(Player.class.getName());
+    final static long milisecondWaitForActionPlayer = 30 * 1000;
 
-    public Player(InputStream inputStream, OutputStream outputStream) {
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+    private static int nextId = 0;
+    private int Id;
+    private SenderMsg senderMsg;
+    private ReceiverMsg receiverMsg;
+
+    //TODO change for something pretty
+    private Integer lock = new Integer(123);
+    private ActionMsg actionMsg;
+
+    private final ActionMsg defaultActionMsg = new ActionMsg(ActionType.Fold, 0);
+
+
+    private Thread receiveAction;
+
+    public Player(SenderMsg senderMsg, ReceiverMsg receiverMsg) {
+        Id = nextId;
+        nextId++;
+        this.senderMsg = senderMsg;
+        this.receiverMsg = receiverMsg;
     }
 
     @Override
     public ActionMsg getAction() {
-        ActionMsg action = new ActionMsg(ActionType.Fold,0);
+        synchronized (lock) {
+            actionMsg = null;
+        }
 
-        return action;
+        // notify player about action
+        try {
+            senderMsg.sendMsg(new NotifyAboutActionMsg());
+        } catch (IOException e) {
+            logger.warning("Probably player disconnected, " + e.getMessage());
+            return defaultActionMsg;
+        }
+
+        receiveAction = new Thread(new ReceiveAction());
+        receiveAction.start();
+        try {
+            receiveAction.join(milisecondWaitForActionPlayer);
+        } catch (InterruptedException e) {
+            logger.warning(e.getMessage());
+        }
+        //TODO check that isn't interrupt dangerous?
+        receiveAction.interrupt();
+
+        synchronized (lock) {
+            if (actionMsg == null)
+                actionMsg = defaultActionMsg;
+        }
+        return actionMsg;
     }
 
     @Override
@@ -37,7 +78,34 @@ public class Player implements IPlayer, Observer {
     }
 
     @Override
+    public int getId() {
+        return Id;
+    }
+
+    @Override
     public void update(Observable observable, Object o) {
 
+    }
+
+    private class ReceiveAction implements Runnable
+    {
+        @Override
+        public void run() {
+            try {
+                Object msg = receiverMsg.receiveMsg();
+                if(msg instanceof ActionMsg)
+                {
+                    synchronized (lock) {
+                        actionMsg = (ActionMsg) msg;
+                    }
+                }
+                else
+                {
+                    logger.warning("Wrong message received, isn't instance of ActionMsg .");
+                }
+            } catch (Exception e) {
+                logger.warning(e.getMessage());
+            }
+        }
     }
 }

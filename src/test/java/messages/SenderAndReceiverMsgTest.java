@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
@@ -31,7 +33,8 @@ public class SenderAndReceiverMsgTest {
         public void run() {
             try {
                 Socket s = serverSocket.accept();
-                senderMsg = new SenderMsg(s.getOutputStream());
+                ObjectOutputStream outputStream = new ObjectOutputStream(s.getOutputStream());
+                senderMsg = new SenderMsg(outputStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -46,7 +49,8 @@ public class SenderAndReceiverMsgTest {
         socket = new Socket("localhost", port);
         server.join();
 
-        receiverMsg = new ReceiverMsg(socket.getInputStream());
+        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+        receiverMsg = new ReceiverMsg(inputStream);
     }
 
     @After

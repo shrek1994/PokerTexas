@@ -10,8 +10,8 @@ import java.io.OutputStream;
 public class SenderMsg {
     private ObjectOutputStream outputStream;
 
-    public SenderMsg(OutputStream outputStream) throws IOException {
-        this.outputStream = new ObjectOutputStream(outputStream);
+    public SenderMsg(ObjectOutputStream outputStream) throws IOException {
+        this.outputStream = outputStream;
     }
 
     public void sendMsg(Object msg) throws IOException {

@@ -10,8 +10,8 @@ import java.io.ObjectInputStream;
 public class ReceiverMsg {
     private ObjectInputStream inputStream;
 
-    public ReceiverMsg(InputStream inputStream) throws IOException {
-        this.inputStream = new ObjectInputStream(inputStream);
+    public ReceiverMsg(ObjectInputStream inputStream) throws IOException {
+        this.inputStream = inputStream;
     }
 
     public Object receiveMsg() throws ClassNotFoundException, IOException {
