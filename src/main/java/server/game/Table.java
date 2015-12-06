@@ -40,9 +40,9 @@ public class Table extends Observable {
         moneys.put(who, moneys.get(who) + howMuch);
     }
 
-    public void notifyAllPlayers(Object message)
+    private void notifyAllPlayers(Object message)
     {
-    	notifyObservers(message);
+        notifyObservers(message);
     }
 
 }

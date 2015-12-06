@@ -114,7 +114,11 @@ public class Player implements IPlayer, Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        //TODO
+        try {
+            senderMsg.sendMsg(o);
+        } catch (IOException e) {
+            logger.warning("Probably player disconnected, " + e.getMessage());
+        }
     }
 
     private class ReceiveAction implements Runnable

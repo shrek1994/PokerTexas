@@ -264,5 +264,23 @@ public class PlayerTest {
             id++;
         }
     }
+
+    /****************************UPDATE********************************/
+
+    @Test
+    public void shouldCorrectNotifyAboutUpdate() throws Exception {
+        sut.update(null, defaultActionMsg);
+
+        verify(senderMsg).sendMsg(defaultActionMsg);
+    }
+
+    @Test
+    public void shouldDoNothingWhenCannotSendMsg() throws Exception {
+        doThrow(new IOException("")).when(senderMsg).sendMsg(defaultActionMsg);
+
+        sut.update(null, defaultActionMsg);
+
+        verify(senderMsg).sendMsg(defaultActionMsg);
+    }
 }
 
