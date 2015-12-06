@@ -1,5 +1,7 @@
 package client;
 
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Glowna klasa logiki aplikacji klienta. Poœredniczy miedzy polaczeniem z serwerem a GUI.
@@ -7,7 +9,7 @@ package client;
  * @author erinu
  *
  */
-public class GameClient {
+public class GameClient implements Observer{
 	
 	private ClienttoServerConnection connection;
 	boolean connectionEstablished = false;
@@ -32,6 +34,15 @@ public class GameClient {
 	
 	GameData getGameData(){
 		return data;
+	}
+
+	/**
+	 * Update GameData wedlug tego co jest na serwerze
+	 */
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
