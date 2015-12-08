@@ -24,7 +24,7 @@ public class CollectionOfCards {
                 cards.add(new Card(figure, color));
             }
         }
-	}
+    }
 
     public void shuffle(int numberOfChange)
     {
@@ -42,7 +42,7 @@ public class CollectionOfCards {
 
     public List<Card> getCards(int number)
     {
-    	List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<Card>();
         for(int i = 0; i < number; i++)
         {
             if(this.cards.size() < 1)
@@ -54,8 +54,8 @@ public class CollectionOfCards {
         return cards;
     }
 
-	public class EmptyCollection extends RuntimeException {
-		EmptyCollection(String msg){
+    public class EmptyCollection extends RuntimeException {
+        EmptyCollection(String msg){
             super(msg);
         }
     }
