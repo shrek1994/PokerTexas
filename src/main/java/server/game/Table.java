@@ -49,7 +49,6 @@ public class Table extends Observable {
             }
             money = playerMoney.getValue();
         }
-
         return true;
     }
 

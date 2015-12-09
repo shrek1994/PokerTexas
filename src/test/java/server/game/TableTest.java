@@ -36,6 +36,7 @@ public class TableTest {
     @Before
     public void Setup()
     {
+        sut = new Table();
         sut.addPlayer(firstPlayer);
         sut.addPlayer(bot);
         sut.addPlayer(secondPlayer);
