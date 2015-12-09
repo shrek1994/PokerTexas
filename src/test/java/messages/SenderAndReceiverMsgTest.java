@@ -3,15 +3,12 @@ package messages;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -71,7 +68,7 @@ public class SenderAndReceiverMsgTest {
 
         ActionMsg receivedMsg = (ActionMsg) msg;
 
-        assertEquals(sentMsg.getAction(), receivedMsg.getAction());
+        assertEquals(sentMsg.getActionType(), receivedMsg.getActionType());
         assertEquals(sentMsg.getMoney(), receivedMsg.getMoney(),0.000001);
         assertEquals(sentMsg, receivedMsg);
     }

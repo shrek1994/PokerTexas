@@ -4,7 +4,6 @@ import java.util.*;
 
 import cards.Card;
 import messages.CardMsg;
-import messages.InfoAboutActionMsg;
 
 //TODO
 public class Table extends Observable {
@@ -35,7 +34,7 @@ public class Table extends Observable {
         return cards;
     }
 
-    public void addToPrize(IPlayer who, double howMuch)
+    public void addMoney(IPlayer who, double howMuch)
     {
         moneys.put(who, moneys.get(who) + howMuch);
     }
@@ -45,4 +44,8 @@ public class Table extends Observable {
         notifyObservers(message);
     }
 
+    public boolean haveAllPlayersTheSameMoney() {
+        //TODO
+        return true;
+    }
 }

@@ -12,7 +12,7 @@ public class ActionMsg implements Serializable {
         this.money = money;
     }
         
-    public ActionType getAction() {
+    public ActionType getActionType() {
         return action;
     }
 
