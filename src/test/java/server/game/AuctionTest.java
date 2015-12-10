@@ -25,6 +25,7 @@ public class AuctionTest {
     private final ActionMsg foldAction = new ActionMsg(ActionType.Fold, 0);
     private final ActionMsg allInAction = new ActionMsg(ActionType.AllIn, 123);
     private final ActionMsg raiseAction = new ActionMsg(ActionType.Raise, 234);
+    private final ActionMsg checkAction = new ActionMsg(ActionType.Check, 0);
 
     private Auction sut;
 
@@ -103,7 +104,7 @@ public class AuctionTest {
     public void shouldStartsFromOtherPlayers() throws Exception {
         when(firstPlayer.getAction()).thenReturn(raiseAction, foldAction);
         when(secondPlayer.getAction()).thenReturn(raiseAction, raiseAction, raiseAction, raiseAction);
-        when(thirdPlayer.getAction()).thenReturn(raiseAction, raiseAction, raiseAction, allInAction);
+        when(thirdPlayer.getAction()).thenReturn(raiseAction, raiseAction, checkAction, allInAction);
         when(fourthPlayer.getAction()).thenReturn(raiseAction, raiseAction, foldAction);
         when(fifthPlayer.getAction()).thenReturn(foldAction);
 
@@ -136,7 +137,7 @@ public class AuctionTest {
         verify(table, times(4)).haveAllPlayersTheSameMoney();
         verify(table).addMoney(firstPlayer, raiseAction.getMoney());
         verify(table, times(4)).addMoney(secondPlayer, raiseAction.getMoney());
-        verify(table, times(3)).addMoney(thirdPlayer, raiseAction.getMoney());
+        verify(table, times(2)).addMoney(thirdPlayer, raiseAction.getMoney());
         verify(table).addMoney(thirdPlayer, allInAction.getMoney());
         verify(table, times(2)).addMoney(fourthPlayer, raiseAction.getMoney());
     }

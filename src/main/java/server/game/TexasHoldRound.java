@@ -9,8 +9,8 @@ import messages.Settings;
 public class TexasHoldRound {
     private final int numberOfCardForPlayer = 2;
     private int indexOfPlayerWihDealerButton = 0;
-    final int smallBlind;
-    final int bigBlind;
+    private final int smallBlind;
+    private final int bigBlind;
     static final int numberOfShuffle = 6969;
 
     private Table table;
@@ -78,6 +78,8 @@ public class TexasHoldRound {
         {
             indexOfPlayerWihDealerButton = 0;
         }
+
+
     }
 
     private void payingBlinds() {
