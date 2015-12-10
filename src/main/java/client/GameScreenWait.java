@@ -28,6 +28,7 @@ public class GameScreenWait implements Screen, Observer {
 	private Rectangle cardBack[];
 	private Rectangle background;
 	private BitmapFont font;
+	private BitmapFont text;
 	private String txtVal;
 	private GameClient client;
 	private boolean updated;
@@ -39,6 +40,7 @@ public class GameScreenWait implements Screen, Observer {
 		client.getGameData().addObserver(this);
 		stage = new Stage();
 		font = new BitmapFont(Gdx.files.internal("Cards.fnt"),Gdx.files.internal("Cards.png"),false);
+		text = new BitmapFont(Gdx.files.internal("text.fnt"),Gdx.files.internal("text.png"),false);
 		Gdx.input.setInputProcessor(stage);
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		batch = new SpriteBatch();
@@ -136,6 +138,20 @@ public class GameScreenWait implements Screen, Observer {
 		batch.end();
 	}
 	
+	
+	void batchAllText(){
+		batch.begin();
+		int n = client.getGameData().getNumberOfPlayers();
+		for (int i=0; i<n;i++){
+			String message = "brak";
+			if(client.getGameData().getActionOfPlayerX(i) != null)
+				message = client.getGameData().getActionOfPlayerX(i).getActionType().toString();
+			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+50);
+			
+		}
+		batch.end();
+	}
+	
 	@Override
 	public void render(float delta) {
 		client.getGameData().setStatus("MOVE");
@@ -154,6 +170,7 @@ public class GameScreenWait implements Screen, Observer {
 		batch.end();
 		batchCardBacks(client.getGameData().getNumberOfPlayers());
 		batchCardsFronts();
+		batchAllText();
 
 	}
 

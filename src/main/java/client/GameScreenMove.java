@@ -39,6 +39,8 @@ public class GameScreenMove implements Screen, Observer {
 	private Game game;
 	private TextField betValue;
 	private TextButton actions[];
+	private BitmapFont text;
+	private int buttonClicked;
 	
 	public GameScreenMove(GameClient c, Game g){
 		this.client = c;
@@ -46,6 +48,7 @@ public class GameScreenMove implements Screen, Observer {
 		client.getGameData().addObserver(this);
 		stage = new Stage();
 		font = new BitmapFont(Gdx.files.internal("Cards.fnt"),Gdx.files.internal("Cards.png"),false);
+		text = new BitmapFont(Gdx.files.internal("text.fnt"),Gdx.files.internal("text.png"),false);
 		Gdx.input.setInputProcessor(stage);
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		betValue = new TextField("",skin);
@@ -65,12 +68,12 @@ public class GameScreenMove implements Screen, Observer {
 			actions[i].setSize(70, 50);
 			if (this.availableActions[i])
 				stage.addActor(actions[i]);
-			actions[i].addListener(new ClickListener() {
+			actions[i].addListener(new MyClickListener(i) {
 				@Override
 				public void touchUp(InputEvent e, float x, float y, int point, int button){
-					//this line
 					try{
-						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[client.getGameData().getPlayerNumber()].getText().toString()),Double.parseDouble(betValue.getText())));
+						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[this.b].getText().toString()),Double.parseDouble(betValue.getText())));
+						System.out.println(client.getGameData().getActionOfPlayerX(client.getGameData().getPlayerNumber()).getActionType().toString()+client.getGameData().getActionOfPlayerX(client.getGameData().getPlayerNumber()).getMoney());
 					}
 					catch(Exception ex){
 						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[client.getGameData().getPlayerNumber()].getText().toString()),0.0));
@@ -131,6 +134,18 @@ public class GameScreenMove implements Screen, Observer {
 	}
 	
 	
+	void batchAllText(){
+		batch.begin();
+		int n = client.getGameData().getNumberOfPlayers();
+		for (int i=0; i<n;i++){
+			String message = "brak";
+			if(client.getGameData().getActionOfPlayerX(i) != null)
+				message = client.getGameData().getActionOfPlayerX(i).getActionType().toString();
+			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+50);
+			
+		}
+		batch.end();
+	}
 	
 	
 	void generateCardsBacks(int n){
@@ -178,6 +193,7 @@ public class GameScreenMove implements Screen, Observer {
 		stage.draw();
 		batchCardBacks(client.getGameData().getNumberOfPlayers());
 		batchCardsFronts();
+		batchAllText();
 	}
 	
 	void batchCardBacks(int n){
