@@ -40,4 +40,9 @@ public enum Figure {
     {
         return _map.get(value);
     }
+
+    public int getValue()
+    {
+        return value;
+    }
 }
