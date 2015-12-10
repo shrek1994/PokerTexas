@@ -114,7 +114,7 @@ public class PlayerTest {
     }
 
     //comment test if you're working at another class - test duration - about 35 second
-    @Test
+    @Test(timeout = 35*1000)
     public void shouldReturnDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());
 
@@ -125,7 +125,7 @@ public class PlayerTest {
     }
 
     //comment test if you're working at another class - test duration - about 70 second
-    @Test
+    @Test(timeout = 70*1000)
     public void shouldReturnTwiceDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_70_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());
 
@@ -281,6 +281,43 @@ public class PlayerTest {
         sut.update(null, defaultActionMsg);
 
         verify(senderMsg).sendMsg(defaultActionMsg);
+    }
+
+
+    /*****************************IS*PLAY*ON**************************************/
+
+    @Test
+    public void shouldPlayOnWhenInMsgIsPlayOn() throws IOException, ClassNotFoundException {
+        boolean isPlayOn = true;
+        InfoAboutContinuingGameMsg msg = new InfoAboutContinuingGameMsg(isPlayOn);
+
+        when(receiverMsg.receiveMsg()).thenReturn(msg);
+
+        assertTrue(sut.isPlayOn());
+
+        verify(receiverMsg).receiveMsg();
+    }
+
+
+    @Test
+    public void shouldNotPlayOnWhenInMsgIsNotPlayOn() throws IOException, ClassNotFoundException {
+        boolean isPlayOn = false;
+        InfoAboutContinuingGameMsg msg = new InfoAboutContinuingGameMsg(isPlayOn);
+
+        when(receiverMsg.receiveMsg()).thenReturn(msg);
+
+        assertFalse(sut.isPlayOn());
+
+        verify(receiverMsg).receiveMsg();
+    }
+
+
+    //comment test if you're working at another class - test duration - about 35 second
+    @Test(timeout = 35*1000)
+    public void shouldNotPlayWhenPlayerNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws IOException, ClassNotFoundException {
+        sut = new Player(senderMsg, new NotReceiveMsg());
+
+        assertFalse(sut.isPlayOn());
     }
 }
 

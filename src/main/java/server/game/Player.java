@@ -6,10 +6,7 @@ import cards.Card;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Player implements IPlayer, Observer {
@@ -27,6 +24,7 @@ public class Player implements IPlayer, Observer {
     private Integer lock = new Integer(123);
     private ActionMsg actionMsg;
     private BlindMsg blindMsg;
+    private InfoAboutContinuingGameMsg infoAboutContinuingGameMsg;
 
     private final ActionMsg defaultActionMsg = new ActionMsg(ActionType.Fold, 0);
 
@@ -122,7 +120,19 @@ public class Player implements IPlayer, Observer {
     @Override
     public boolean isPlayOn()
     {
-        //TODO isPlayOn
+        infoAboutContinuingGameMsg = null;
+        try {
+            Thread receive = new Thread(new ReceiveInfoAboutContinuingGameMsg());
+            receive.start();
+            receive.join(millisecondsWaitForActionPlayer);
+            receive.interrupt();
+        } catch (Exception e) {
+            logger.warning("Probably player disconnected, " + e.getMessage());
+        }
+        if( infoAboutContinuingGameMsg != null)
+        {
+            return infoAboutContinuingGameMsg.isPlayerContinue();
+        }
         return false;
     }
 
@@ -160,6 +170,26 @@ public class Player implements IPlayer, Observer {
                 else
                 {
                     logger.warning("Wrong message received, isn't instance of BlindMsg .");
+                }
+            } catch (Exception e) {
+                logger.warning(e.getMessage());
+            }
+        }
+    }
+
+    private class ReceiveInfoAboutContinuingGameMsg implements Runnable{
+        @Override
+        public void run() {
+            try {
+
+                Object msg = receiverMsg.receiveMsg();
+                if( msg instanceof InfoAboutContinuingGameMsg)
+                {
+                    infoAboutContinuingGameMsg = (InfoAboutContinuingGameMsg)msg;
+                }
+                else
+                {
+                    logger.warning("Wrong message received, isn't instance of InfoAboutContinuingGameMsg .");
                 }
             } catch (Exception e) {
                 logger.warning(e.getMessage());
