@@ -44,7 +44,7 @@ public class Table extends Observable {
         Double money = null;
         for (Map.Entry<IPlayer, Double> playerMoney : moneys.entrySet())
         {
-            if ( money != null && playerMoney.getValue().compareTo(money) == 0 ) {
+            if ( money != null && playerMoney.getValue().compareTo(money) != 0 ) {
                 return false;
             }
             money = playerMoney.getValue();

@@ -28,8 +28,9 @@ public class TableTest {
     private Card secondCard = new Card(Figure.Eight, Color.Diamonds);
     private Card thirdCard = new Card(Figure.Eight, Color.Diamonds);
     private Card fourthCard = new Card(Figure.Eight, Color.Diamonds);
-    private List<Card> firstCardList = new ArrayList<Card>();
-    private List<Card> secondCardList = new ArrayList<Card>();
+    private List<Card> firstCardList;
+    private List<Card> secondCardList;
+    private double money = 1.23;
 
     private Table sut = new Table();
 
@@ -41,9 +42,11 @@ public class TableTest {
         sut.addPlayer(bot);
         sut.addPlayer(secondPlayer);
 
+        firstCardList = new ArrayList<Card>();
         firstCardList.add(firstCard);
         firstCardList.add(secondCard);
 
+        secondCardList = new ArrayList<Card>();
         secondCardList.add(thirdCard);
         secondCardList.add(fourthCard);
     }
@@ -85,7 +88,6 @@ public class TableTest {
     @Test
     public void shouldNotAllPlayersHaveTheSameValueOfMoney()
     {
-        double money = 1.23;
         sut.addMoney(firstPlayer, money);
 
         assertFalse(sut.haveAllPlayersTheSameMoney());
@@ -94,9 +96,9 @@ public class TableTest {
     @Test
     public void shouldAllPlayersHaveTheSameValueOfMoney()
     {
-        double money = 1.23;
         sut.addMoney(firstPlayer, money);
         sut.addMoney(secondPlayer, money);
+        sut.addMoney(bot, money);
 
         assertTrue(sut.haveAllPlayersTheSameMoney());
     }
