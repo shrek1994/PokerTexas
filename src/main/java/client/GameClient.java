@@ -13,7 +13,7 @@ import java.util.Observer;
 public class GameClient implements Observer{
 	
 	private ClienttoServerConnection connection;
-	boolean connectionEstablished = false;
+	private boolean connectionEstablished = false;
 	private GameData data;
 	
 
@@ -45,6 +45,22 @@ public class GameClient implements Observer{
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public boolean[] getAvailableActions() {
+		boolean actions[];
+		actions = new boolean[6];
+		for (int i=0; i<6; i++){
+			//TODO waiting for server rules
+			actions[i] = true;
+		}
+		return actions;
+	}
+
+
+	public void setConnectionEstablished(boolean b) {
+		this.connectionEstablished = b;
 	}
 
 }

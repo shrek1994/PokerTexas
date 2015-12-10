@@ -23,17 +23,18 @@ import messages.ActionType;
 
 public class GameScreenMove implements Screen, Observer {
 	
-	Stage stage;
-	SpriteBatch batch;
-	Texture cardImage;
-	Texture cardBackImage;
-	Texture backgroundImage;
-	Rectangle card;
-	Rectangle cardBack[];
-	Rectangle background;
-	BitmapFont font;
-	String txtVal;
-	GameClient client;
+	private Stage stage;
+	private SpriteBatch batch;
+	private Texture cardImage;
+	private Texture cardBackImage;
+	private Texture backgroundImage;
+	private Rectangle card;
+	private Rectangle cardBack[];
+	private Rectangle background;
+	private BitmapFont font;
+	private String txtVal;
+	private GameClient client;
+	private boolean availableActions[];
 	private boolean updated;
 	private Game game;
 	private TextField betValue;
@@ -56,11 +57,13 @@ public class GameScreenMove implements Screen, Observer {
 		actions[3] = new TextButton("Call", skin);
 		actions[4] = new TextButton("Fold", skin);
 		actions[5] = new TextButton("AllIn", skin);
+		this.availableActions = client.getAvailableActions();
 		betValue.setText("0.0");
 		for (int i=0; i<6; i++){
 			actions[i].setPosition(150+i*80, 230);
 			actions[i].setSize(70, 50);
-			stage.addActor(actions[i]);
+			if (this.availableActions[i])
+				stage.addActor(actions[i]);
 			actions[i].addListener(new ClickListener() {
 				@Override
 				public void touchUp(InputEvent e, float x, float y, int point, int button){

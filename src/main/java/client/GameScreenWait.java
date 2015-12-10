@@ -19,17 +19,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class GameScreenWait implements Screen, Observer {
 	
-	Stage stage;
-	SpriteBatch batch;
-	Texture cardImage;
-	Texture cardBackImage;
-	Texture backgroundImage;
-	Rectangle card;
-	Rectangle cardBack[];
-	Rectangle background;
-	BitmapFont font;
-	String txtVal;
-	GameClient client;
+	private Stage stage;
+	private SpriteBatch batch;
+	private Texture cardImage;
+	private Texture cardBackImage;
+	private Texture backgroundImage;
+	private Rectangle card;
+	private Rectangle cardBack[];
+	private Rectangle background;
+	private BitmapFont font;
+	private String txtVal;
+	private GameClient client;
 	private boolean updated;
 	private Game game;
 	

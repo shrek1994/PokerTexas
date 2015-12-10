@@ -90,7 +90,7 @@ public class ConnectionScreen implements Screen{
 	public void processConnection() throws IOException{
 		boolean connection = client.setUpConnection(txfAddress.getText(), txfPort.getText());
 		if (connection){
-			client.connectionEstablished = true;
+			client.setConnectionEstablished(true);
 			game.setScreen(new GameScreenWait(client, game));
 		}
 		//else
