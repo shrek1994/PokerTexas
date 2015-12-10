@@ -12,4 +12,5 @@ public interface IPlayer {
     public int getId();
     public List<Card> getCardList();
     public void clearCards();
+    public boolean isPlayOn();
 }

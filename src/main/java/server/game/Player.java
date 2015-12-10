@@ -121,6 +121,13 @@ public class Player implements IPlayer, Observer {
         }
     }
 
+    @Override
+    public boolean isPlayOn()
+    {
+        //TODO isPlayOn
+        return false;
+    }
+
     private class ReceiveAction implements Runnable
     {
         @Override
