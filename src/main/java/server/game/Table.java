@@ -60,4 +60,9 @@ public class Table extends Observable {
     {
         notifyObservers(message);
     }
+
+    public double getCash() {
+        // TODO implement getCash
+        return 0;
+    }
 }

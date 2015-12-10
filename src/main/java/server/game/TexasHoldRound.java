@@ -4,6 +4,7 @@ import java.util.List;
 
 import cards.Card;
 import cards.CollectionOfCards;
+import messages.RankingMsg;
 import messages.Settings;
 
 public class TexasHoldRound {
@@ -17,8 +18,14 @@ public class TexasHoldRound {
     private List<IPlayer> players;
     private CollectionOfCards cards;
     private Auction auction;
+    private PlayerRanking playerRanking;
 
-    public TexasHoldRound(List<IPlayer> players, CollectionOfCards cards, Table table, Auction auction, Settings settings)
+    public TexasHoldRound(List<IPlayer> players,
+                          CollectionOfCards cards,
+                          Table table,
+                          Auction auction,
+                          Settings settings,
+                          PlayerRanking playerRanking)
     {
         this.players = players;
         this.cards = cards;
@@ -26,6 +33,7 @@ public class TexasHoldRound {
         this.auction = auction;
         this.smallBlind = settings.smallBlind;
         this.bigBlind = settings.bigBlind;
+        this.playerRanking = playerRanking;
     }
 
     public void runRound()
@@ -72,7 +80,14 @@ public class TexasHoldRound {
         indexOfPlayerWhoStart = getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind();
         auction.start(players.get(indexOfPlayerWhoStart));
 
-        //przesuniecie
+        IPlayer winner = playerRanking.getWinner(players, table.getCards());
+        RankingMsg rankingMsg = new RankingMsg(winner.getId(), table.getCash());
+        for(IPlayer player : players)
+        {
+            player.updateCashIfWin(rankingMsg);
+        }
+
+        //przesuniecie dealer button-a
         indexOfPlayerWihDealerButton++;
         if(indexOfPlayerWihDealerButton >= players.size())
         {

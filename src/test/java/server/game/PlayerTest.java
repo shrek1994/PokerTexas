@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogManager;
@@ -114,7 +113,7 @@ public class PlayerTest {
     }
 
     //comment test if you're working at another class - test duration - about 35 second
-    @Test(timeout = 35*1000)
+    //@Test(timeout = 35*1000)
     public void shouldReturnDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());
 
@@ -125,7 +124,7 @@ public class PlayerTest {
     }
 
     //comment test if you're working at another class - test duration - about 70 second
-    @Test(timeout = 70*1000)
+    //@Test(timeout = 70*1000)
     public void shouldReturnTwiceDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_70_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());
 
@@ -313,7 +312,7 @@ public class PlayerTest {
 
 
     //comment test if you're working at another class - test duration - about 35 second
-    @Test(timeout = 35*1000)
+    //@Test(timeout = 35*1000)
     public void shouldNotPlayWhenPlayerNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws IOException, ClassNotFoundException {
         sut = new Player(senderMsg, new NotReceiveMsg());
 

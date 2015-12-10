@@ -136,6 +136,17 @@ public class Player implements IPlayer, Observer {
         return false;
     }
 
+    @Override
+    public void updateCashIfWin(RankingMsg msg)
+    {
+        // TODO test!
+        try {
+            senderMsg.sendMsg(msg);
+        } catch (IOException e) {
+            logger.warning("Probably player disconnected, " + e.getMessage());
+        }
+    }
+
     private class ReceiveAction implements Runnable
     {
         @Override

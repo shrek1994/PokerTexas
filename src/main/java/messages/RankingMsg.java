@@ -7,7 +7,20 @@ import java.io.Serializable;
  */
 public class RankingMsg implements Serializable {
     private int playerIdWhoWin;
+    private double money;
 
+    public RankingMsg(int playerIdWhoWin, double money) {
+        this.playerIdWhoWin = playerIdWhoWin;
+        this.money = money;
+    }
+
+    public int getPlayerIdWhoWin() {
+        return playerIdWhoWin;
+    }
+
+    public double getMoney() {
+        return money;
+    }
 
     @Override
     public boolean equals(Object o)

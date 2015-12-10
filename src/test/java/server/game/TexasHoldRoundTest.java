@@ -3,6 +3,7 @@ package server.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import messages.RankingMsg;
 import messages.Settings;
 import org.junit.After;
 import org.junit.Before;
@@ -24,6 +25,7 @@ public class TexasHoldRoundTest {
     private CollectionOfCards cards = mock(CollectionOfCards.class);
     private Table table = mock(Table.class);
     private Auction auction = mock(Auction.class);
+    private PlayerRanking playerRanking = mock(PlayerRanking.class);
 
     private Card firstCard = new Card(Figure.Two, Color.Clubs);
     private Card secondCard = new Card(Figure.Three, Color.Diamonds);
@@ -31,7 +33,11 @@ public class TexasHoldRoundTest {
     private List<Card> cardListWithThreeCards;
     private List<Card> cardListWithTwoCards;
     private List<Card> cardListWithCard;
+    private List<Card> cardOnTheTable;
     private Settings settings = new Settings();
+    private final double cash = 12.34;
+    private final int id = 7;
+    private RankingMsg rankingMsg = new RankingMsg(id, cash);
 
     private TexasHoldRound sut;
 
@@ -44,13 +50,28 @@ public class TexasHoldRoundTest {
         playersList.add(forthPlayer);
 
         initCardsLists();
+        cardOnTheTable = cardListWithThreeCards;
 
-        sut = new TexasHoldRound(playersList, cards, table, auction, settings);
+        sut = new TexasHoldRound(playersList, cards, table, auction, settings, playerRanking);
+
+        when(playerRanking.getWinner(playersList, cardOnTheTable)).thenReturn(firstPlayer);
+        when(table.getCash()).thenReturn(cash);
+        when(table.getCards()).thenReturn(cardOnTheTable);
+        when(firstPlayer.getId()).thenReturn(id);
     }
 
     @After
     public void After()
     {
+        verify(table).getCards();
+        verify(table).getCash();
+        verify(firstPlayer).getId();
+        verify(playerRanking).getWinner(anyList(),anyList());
+        for(IPlayer player : playersList)
+        {
+            verify(player).updateCashIfWin(rankingMsg);
+        }
+
         verifyNoMoreInteractions(firstPlayer);
         verifyNoMoreInteractions(secondPlayer);
         verifyNoMoreInteractions(thirdPlayer);
@@ -58,6 +79,7 @@ public class TexasHoldRoundTest {
         verifyNoMoreInteractions(cards);
         verifyNoMoreInteractions(auction);
         verifyNoMoreInteractions(table);
+        verifyNoMoreInteractions(playerRanking);
     }
 
     private void initCardsLists() {

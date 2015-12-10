@@ -24,7 +24,7 @@ public class MsgTests {
     private static InfoAboutActionMsg infoAboutActionMsg = new InfoAboutActionMsg(345,actionMsg);
     private static InfoAboutContinuingGameMsg infoAboutContinuingGameMsg = new InfoAboutContinuingGameMsg(true);
     private static NotifyAboutActionMsg notifyAboutActionMsg = new NotifyAboutActionMsg();
-    private static RankingMsg rankingMsg = new RankingMsg();
+    private static RankingMsg rankingMsg = new RankingMsg(12, 23.4);
     private static SettingsMsg settingsMsg = new SettingsMsg(GameType.FixedLimit, 456,567,678,789);
 
     private Object msg;
