@@ -14,29 +14,24 @@ import messages.RankingMsg;
 public class GameData extends Observable{
 
 	private int numberOfPlayers = 12;
-	private int cardsInHand[];
-	private int cardsOnTable[];
+	private int cardsInHandANDOnTable[];
 	private int smallBlind;
 	private int bigBlind;
 	private RankingMsg ranking;
 	private int playerNumber = 5;
 	private ActionMsg actions[];
 	private String status;
-	private GameType gameType;
+	private GameType gameType = GameType.NoLimit;
+	private int numberOfCardsOnTable = 5;
 	
 	GameData(int players){
 		actions = new ActionMsg[players];
 		this.numberOfPlayers = players;
+		this.cardsInHandANDOnTable = new int[7];
 	}
 	
 	void setNumberOfPlayers(int n){
 		numberOfPlayers = n;
-		setChanged();
-	    notifyObservers();
-	}
-	
-	void setCardsInHand(int[] n){
-		cardsInHand = n;
 		setChanged();
 	    notifyObservers();
 	}
@@ -59,12 +54,8 @@ public class GameData extends Observable{
 	    notifyObservers();
 	}
 	
-	int getNumberOfPlayer(){
+	int getNumberOfPlayers(){
 		return numberOfPlayers;
-	}
-	
-	int[] getCardsInHand(){
-		return cardsInHand;
 	}
 	
 	int getSmallBlind(){
@@ -79,10 +70,7 @@ public class GameData extends Observable{
 		return ranking;
 	}
 	
-	int[] getCardsOnTable(){
-		return cardsOnTable;
-	}
-	
+
 	ActionMsg getActionOfPlayerX(int x){
 		return actions[x];
 	}
@@ -120,6 +108,30 @@ public class GameData extends Observable{
 
 	public void setGameType(GameType gameType) {
 		this.gameType = gameType;
+		setChanged();
+	    notifyObservers();
+	}
+
+	public int getNumberOfCardsOnTable() {
+		return numberOfCardsOnTable;
+	}
+
+	public void setNumberOfCardsOnTable(int numberOfCardsOnTable) {
+		this.numberOfCardsOnTable = numberOfCardsOnTable;
+		setChanged();
+	    notifyObservers();
+	}
+
+	public int[] getCardsInHandANDOnTable() {
+		return cardsInHandANDOnTable;
+	}
+
+	public int getCardsInHandANDOnTable(int n) {
+		return cardsInHandANDOnTable[n];
+	}
+		
+	public void setCardsInHandANDOnTable(int cardsInHandANDOnTable[]) {
+		this.cardsInHandANDOnTable = cardsInHandANDOnTable;
 		setChanged();
 	    notifyObservers();
 	}

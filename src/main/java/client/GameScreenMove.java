@@ -28,7 +28,7 @@ public class GameScreenMove implements Screen, Observer {
 	private Texture cardImage;
 	private Texture cardBackImage;
 	private Texture backgroundImage;
-	private Rectangle card;
+	private Rectangle card[];
 	private Rectangle cardBack[];
 	private Rectangle background;
 	private BitmapFont font;
@@ -45,6 +45,7 @@ public class GameScreenMove implements Screen, Observer {
 		this.game = g;
 		client.getGameData().addObserver(this);
 		stage = new Stage();
+		font = new BitmapFont(Gdx.files.internal("Cards.fnt"),Gdx.files.internal("Cards.png"),false);
 		Gdx.input.setInputProcessor(stage);
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		betValue = new TextField("",skin);
@@ -83,9 +84,54 @@ public class GameScreenMove implements Screen, Observer {
 		backgroundImage = new Texture(Gdx.files.internal("background.jpg"));
 		background.width = 800;
 		background.height = 600;
-		generateCardsBacks(client.getGameData().getNumberOfPlayer());
+		generateCardsBacks(client.getGameData().getNumberOfPlayers());
+		generateCardsFronts();
 	}
 
+	
+	void generateCardsFronts(){
+		int n = client.getGameData().getNumberOfCardsOnTable();
+		card = new Rectangle[n+2];
+		cardImage = new Texture(Gdx.files.internal("card.jpg"));
+		for (int i=0; i<n+2; i++){
+			card[i] = new Rectangle();
+			card[i].width = 50;
+			card[i].height = 75;
+		}
+		int player = client.getGameData().getPlayerNumber();
+		
+		if(player<3){
+				card[0].setPosition(6, 150+(player*125));
+				card[1].setPosition(57, 150+(player*125));
+		}
+		if(player<6 && player>2){
+				card[0].setPosition(150+((player-3)*170), 10);
+				card[1].setPosition(201+((player-3)*170), 10);
+			}
+		if(player<9 && player>5){
+				card[0].setPosition(660, ((player-6)*125)+150);
+				card[1].setPosition(711, ((player-6)*125)+150);
+			}
+		if(player>9){
+				card[0].setPosition(150+((player-9)*170), 510);
+				card[1].setPosition(201+((player-9)*170), 510);
+			}
+		for (int i=0; i<n; i++)
+			card[i+2].setPosition(190+i*80,400);
+		
+	}
+	void batchCardsFronts(){
+		batch.begin();
+		int n = client.getGameData().getNumberOfCardsOnTable();
+		for (int i=0; i<n+2;i++){
+			batch.draw(cardImage, card[i].getX(), card[i].getY());
+			font.draw(batch, CardUtils.CardValue(client.getGameData().getCardsInHandANDOnTable(i)), card[i].getX()+5, card[i].getY()+50);
+		}
+		batch.end();
+	}
+	
+	
+	
 	
 	void generateCardsBacks(int n){
 		if (client.getGameData().getRankingMsg() == null){
@@ -130,7 +176,8 @@ public class GameScreenMove implements Screen, Observer {
 		batch.end();
 		stage.act(delta);
 		stage.draw();
-		batchCardBacks(client.getGameData().getNumberOfPlayer());
+		batchCardBacks(client.getGameData().getNumberOfPlayers());
+		batchCardsFronts();
 	}
 	
 	void batchCardBacks(int n){

@@ -35,9 +35,13 @@ public class ClienttoServerConnection extends Observable{
 		return data;
 	}
 
+	ClienttoServerConnection(){
+		//TODO get from server number of players;
+		data = new GameData(12);
+	}
+	
 	public int getNumberOfPlayers() {
-		// TODO
-		return 12;
+		return data.getNumberOfPlayers();
 	}
 	
 	
@@ -55,6 +59,9 @@ public class ClienttoServerConnection extends Observable{
 	}
 
 	public boolean connectTo(String address2, String port2) throws IOException {
+		return true;
+		//TODO wait for server
+		/*
 		port = port2;
 		address = address2;
 		try{
@@ -68,6 +75,6 @@ public class ClienttoServerConnection extends Observable{
         senderMsg = new SenderMsg(objectOutputStream);
         ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
         receiverMsg = new ReceiverMsg(objectInputStream);
-		return true;
+		return true;*/
 	}
 }
