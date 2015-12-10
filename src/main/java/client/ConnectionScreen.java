@@ -1,5 +1,7 @@
 package client;
 
+import java.io.IOException;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -54,7 +56,11 @@ public class ConnectionScreen implements Screen{
 		btnConnect.addListener(new ClickListener() {
 			@Override
 			public void touchUp(InputEvent e, float x, float y, int point, int button){
-				processConnection();
+				try {
+					processConnection();
+				} catch (IOException e1) {
+					// TODO connection failed
+				}
 			}
 		});
 		
@@ -79,8 +85,9 @@ public class ConnectionScreen implements Screen{
 	
 	/**
 	 * Metoda wywolujaca polaczenie z serwerem
+	 * @throws IOException 
 	 */
-	public void processConnection(){
+	public void processConnection() throws IOException{
 		boolean connection = client.setUpConnection(txfAddress.getText(), txfPort.getText());
 		if (connection){
 			client.connectionEstablished = true;

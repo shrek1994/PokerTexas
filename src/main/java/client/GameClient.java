@@ -1,5 +1,6 @@
 package client;
 
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -27,9 +28,10 @@ public class GameClient implements Observer{
 	 * @param address adres serwera
 	 * @param port port serwera
 	 * @return bolean true dla udanego polaczenia
+	 * @throws IOException 
 	 */
-	boolean setUpConnection(String address, String port){
-		return true;
+	boolean setUpConnection(String address, String port) throws IOException{
+		return connection.connectTo(address, port);
 	}
 	
 	GameData getGameData(){

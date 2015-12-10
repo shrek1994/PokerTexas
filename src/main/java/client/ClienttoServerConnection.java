@@ -1,8 +1,13 @@
 package client;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
 
+import messages.ReceiverMsg;
+import messages.SenderMsg;
 import messages.SettingsMsg;
 
 /**
@@ -14,12 +19,13 @@ import messages.SettingsMsg;
  */
 public class ClienttoServerConnection extends Observable{
 	
-	String address;
-	String port;
-	boolean connection;
-	Socket socket;
+	private String address;
+	private String port;
+	private boolean connection;
+	private Socket socket;
 	private GameData data;
-
+	private SenderMsg senderMsg;
+	private ReceiverMsg receiverMsg;
 	/**
 	 * Getter danych o stanie gry dla GUI itp.
 	 * @return GameData dane o aktualnym stanie gry
@@ -41,5 +47,22 @@ public class ClienttoServerConnection extends Observable{
 		//get from server
 		SettingsMsg msg = null;
 		notifyObservers(msg);
+	}
+
+	public boolean connectTo(String address2, String port2) throws IOException {
+		port = port2;
+		address = address2;
+		try{
+			socket = new Socket(address2, Integer.parseInt(port2));
+		}
+		catch(Exception e){
+			//TODO connection failed
+			return false;
+		}
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        senderMsg = new SenderMsg(objectOutputStream);
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+        receiverMsg = new ReceiverMsg(objectInputStream);
+		return true;
 	}
 }
