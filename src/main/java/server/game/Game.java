@@ -1,7 +1,6 @@
 package server.game;
 
 import messages.Settings;
-import messages.SettingsMsg;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,11 +18,11 @@ public class Game {
         server.runServer(settings.port);
         server.waitForPlayers(settings.numberOfPlayers);
         playerList = server.getPlayersList();
+        TexasHoldRound texasHoldRound = texasHoldRoundFactory.create(playerList);
 
         while ( playerList.size() > settings.numberOfBots ) {
-            TexasHoldRound texasHoldRound = texasHoldRoundFactory.create(playerList);
 
-            texasHoldRound.runGame();
+            texasHoldRound.runRound();
 
             for (int i = 0 ; i < playerList.size(); i++) {
                 IPlayer player = playerList.get(i);

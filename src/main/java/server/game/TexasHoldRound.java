@@ -4,6 +4,7 @@ import java.util.List;
 
 import cards.Card;
 import cards.CollectionOfCards;
+import messages.Settings;
 
 public class TexasHoldRound {
     private final int numberOfCardForPlayer = 2;
@@ -17,27 +18,20 @@ public class TexasHoldRound {
     private CollectionOfCards cards;
     private Auction auction;
 
-    public TexasHoldRound(List<IPlayer> players, CollectionOfCards cards, Table table, Auction auction)
+    public TexasHoldRound(List<IPlayer> players, CollectionOfCards cards, Table table, Auction auction, Settings settings)
     {
         this.players = players;
         this.cards = cards;
         this.table = table;
         this.auction = auction;
-        this.smallBlind = 5;
-        this.bigBlind = 10;
+        this.smallBlind = settings.smallBlind;
+        this.bigBlind = settings.bigBlind;
     }
 
-    public void runGame()
+    public void runRound()
     {
         //placenie ciemnych
-        IPlayer playerShouldPaySmallBlind = players.get(getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind());
-        IPlayer playerShouldPayBigBlind = players.get(getIndexOfPlayerTwoOnTheLeftOfDealerButton_bigBlind());
-
-        int smallBlind = playerShouldPaySmallBlind.getBlind(this.smallBlind);
-        int bigBlind = playerShouldPayBigBlind.getBlind(this.bigBlind);
-        //TODO if blind == 0 ask other player and this remove
-        table.addMoney(playerShouldPaySmallBlind, smallBlind);
-        table.addMoney(playerShouldPayBigBlind, bigBlind);
+        payingBlinds();
 
         //potasowanie kart
         cards.createNewDeckCard();
@@ -84,6 +78,29 @@ public class TexasHoldRound {
         {
             indexOfPlayerWihDealerButton = 0;
         }
+    }
+
+    private void payingBlinds() {
+        IPlayer playerShouldPaySmallBlind = players.get(getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind());
+        int smallBlind = playerShouldPaySmallBlind.getBlind(this.smallBlind);
+        while ( smallBlind == 0 && players.size() > 1)
+        {
+            players.remove(playerShouldPaySmallBlind);
+            playerShouldPaySmallBlind = players.get(getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind());
+            smallBlind = playerShouldPaySmallBlind.getBlind(this.smallBlind);
+        }
+
+        IPlayer playerShouldPayBigBlind = players.get(getIndexOfPlayerTwoOnTheLeftOfDealerButton_bigBlind());
+        int bigBlind = playerShouldPayBigBlind.getBlind(this.bigBlind);
+        while ( bigBlind == 0 && players.size() > 1)
+        {
+            players.remove(playerShouldPayBigBlind);
+            playerShouldPayBigBlind = players.get(getIndexOfPlayerTwoOnTheLeftOfDealerButton_bigBlind());
+            bigBlind = playerShouldPayBigBlind.getBlind(this.bigBlind);
+        }
+
+        table.addMoney(playerShouldPaySmallBlind, smallBlind);
+        table.addMoney(playerShouldPayBigBlind, bigBlind);
     }
 
     private int getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind() {

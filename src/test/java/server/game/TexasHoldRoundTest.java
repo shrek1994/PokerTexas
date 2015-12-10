@@ -3,6 +3,7 @@ package server.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import messages.Settings;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +15,10 @@ import cards.Color;
 import cards.CollectionOfCards;
 
 public class TexasHoldRoundTest {
-    private IPlayer firstPlayer = mock(IPlayer.class);
-    private IPlayer secondPlayer = mock(IPlayer.class);
+    private IPlayer firstPlayer = mock(IPlayer.class, "firstPlayer");
+    private IPlayer secondPlayer = mock(IPlayer.class, "secondPlayer");
+    private IPlayer thirdPlayer = mock(IPlayer.class, "thirdPlayer");
+    private IPlayer forthPlayer = mock(IPlayer.class, "forthPlayer");
     private List<IPlayer> playersList;
 
     private CollectionOfCards cards = mock(CollectionOfCards.class);
@@ -28,6 +31,7 @@ public class TexasHoldRoundTest {
     private List<Card> cardListWithThreeCards;
     private List<Card> cardListWithTwoCards;
     private List<Card> cardListWithCard;
+    private Settings settings = new Settings();
 
     private TexasHoldRound sut;
 
@@ -36,10 +40,12 @@ public class TexasHoldRoundTest {
         playersList = new ArrayList<IPlayer>();
         playersList.add(firstPlayer);
         playersList.add(secondPlayer);
+        playersList.add(thirdPlayer);
+        playersList.add(forthPlayer);
 
         initCardsLists();
 
-        sut = new TexasHoldRound(playersList, cards, table, auction);
+        sut = new TexasHoldRound(playersList, cards, table, auction, settings);
     }
 
     @After
@@ -47,6 +53,8 @@ public class TexasHoldRoundTest {
     {
         verifyNoMoreInteractions(firstPlayer);
         verifyNoMoreInteractions(secondPlayer);
+        verifyNoMoreInteractions(thirdPlayer);
+        verifyNoMoreInteractions(forthPlayer);
         verifyNoMoreInteractions(cards);
         verifyNoMoreInteractions(auction);
         verifyNoMoreInteractions(table);
@@ -71,34 +79,108 @@ public class TexasHoldRoundTest {
     public void shouldCorrectPlayGame()
     {
         when(secondPlayer.getBlind(sut.smallBlind)).thenReturn(sut.smallBlind);
-        when(firstPlayer.getBlind(sut.bigBlind)).thenReturn(sut.bigBlind);
+        when(thirdPlayer.getBlind(sut.bigBlind)).thenReturn(sut.bigBlind);
 
         when(cards.getCards(3)).thenReturn(cardListWithThreeCards);
         when(cards.getCards(2)).thenReturn(cardListWithTwoCards);
         when(cards.getCards(1)).thenReturn(cardListWithCard);
 
-        sut.runGame();
+        sut.runRound();
 
-        verify(firstPlayer).addCard(cardListWithTwoCards.get(0));
-        verify(firstPlayer).addCard(cardListWithTwoCards.get(1));
-        verify(firstPlayer).getBlind(sut.bigBlind);
+        verifyAddTwoCardsToPlayer(firstPlayer);
+        verifyAddTwoCardsToPlayer(secondPlayer);
+        verifyAddTwoCardsToPlayer(thirdPlayer);
+        verifyAddTwoCardsToPlayer(forthPlayer);
 
-        verify(secondPlayer).addCard(cardListWithTwoCards.get(0));
-        verify(secondPlayer).addCard(cardListWithTwoCards.get(1));
-        verify(secondPlayer).getBlind(sut.smallBlind);
+        verifyGetBlindAndAddToTable(secondPlayer, sut.smallBlind);
+        verifyGetBlindAndAddToTable(thirdPlayer, sut.bigBlind);
 
-        verify(cards).createNewDeckCard();
-        verify(cards).shuffle(TexasHoldRound.numberOfShuffle);
-        verify(cards, times(1)).getCards(3);
-        verify(cards, times(playersList.size())).getCards(2);
-        verify(cards, times(2)).getCards(1);
+        verifyCreateShuffleAndGetCards(playersList.size());
 
-        verify(auction, times(4)).start(secondPlayer);
+        verify(auction).start(forthPlayer);
+        verify(auction, times(3)).start(secondPlayer);
 
         verify(table).addCard(cardListWithThreeCards);
         verify(table, times(2)).addCard(cardListWithCard);
-        verify(table).addMoney(secondPlayer, sut.smallBlind);
-        verify(table).addMoney(firstPlayer, sut.bigBlind);
+    }
 
+    @Test
+    public void shouldPlayerWhoDoNotPaySmallBlindEndPlayingAndNextPlayerPaySmallBlind()
+    {
+        int numberOfPlayers = playersList.size();
+        when(secondPlayer.getBlind(sut.smallBlind)).thenReturn(0);
+        when(thirdPlayer.getBlind(sut.smallBlind)).thenReturn(sut.smallBlind);
+        when(forthPlayer.getBlind(sut.bigBlind)).thenReturn(sut.bigBlind);
+
+        when(cards.getCards(3)).thenReturn(cardListWithThreeCards);
+        when(cards.getCards(2)).thenReturn(cardListWithTwoCards);
+        when(cards.getCards(1)).thenReturn(cardListWithCard);
+
+        sut.runRound();
+
+        verifyAddTwoCardsToPlayer(firstPlayer);
+        verifyAddTwoCardsToPlayer(thirdPlayer);
+        verifyAddTwoCardsToPlayer(forthPlayer);
+
+        verify(secondPlayer).getBlind(sut.smallBlind);
+        verifyGetBlindAndAddToTable(thirdPlayer, sut.smallBlind);
+        verifyGetBlindAndAddToTable(forthPlayer, sut.bigBlind);
+
+        verifyCreateShuffleAndGetCards(numberOfPlayers - 1);
+
+        verify(auction).start(firstPlayer);
+        verify(auction, times(3)).start(thirdPlayer);
+
+        verify(table).addCard(cardListWithThreeCards);
+        verify(table, times(2)).addCard(cardListWithCard);
+    }
+
+    @Test
+    public void shouldPlayerWhoDoNotPayBigBlindEndPlayingAndNextPlayerPayBigBlind()
+    {
+        int numberOfPlayers = playersList.size();
+        when(secondPlayer.getBlind(sut.smallBlind)).thenReturn(sut.smallBlind);
+        when(thirdPlayer.getBlind(sut.bigBlind)).thenReturn(0);
+        when(forthPlayer.getBlind(sut.bigBlind)).thenReturn(sut.bigBlind);
+
+        when(cards.getCards(3)).thenReturn(cardListWithThreeCards);
+        when(cards.getCards(2)).thenReturn(cardListWithTwoCards);
+        when(cards.getCards(1)).thenReturn(cardListWithCard);
+
+        sut.runRound();
+
+        verifyAddTwoCardsToPlayer(firstPlayer);
+        verifyAddTwoCardsToPlayer(secondPlayer);
+        verifyAddTwoCardsToPlayer(forthPlayer);
+
+        verifyGetBlindAndAddToTable(secondPlayer, sut.smallBlind);
+        verify(thirdPlayer).getBlind(sut.bigBlind);
+        verifyGetBlindAndAddToTable(forthPlayer, sut.bigBlind);
+
+        verifyCreateShuffleAndGetCards(numberOfPlayers - 1);
+
+        verify(auction).start(firstPlayer);
+        verify(auction, times(3)).start(secondPlayer);
+
+        verify(table).addCard(cardListWithThreeCards);
+        verify(table, times(2)).addCard(cardListWithCard);
+    }
+
+    private void verifyCreateShuffleAndGetCards(int numberOfPlayers) {
+        verify(cards).createNewDeckCard();
+        verify(cards).shuffle(TexasHoldRound.numberOfShuffle);
+        verify(cards, times(1)).getCards(3);
+        verify(cards, times(numberOfPlayers)).getCards(2);
+        verify(cards, times(2)).getCards(1);
+    }
+
+    private void verifyGetBlindAndAddToTable(IPlayer player, int blind) {
+        verify(player).getBlind(blind);
+        verify(table).addMoney(player, blind);
+    }
+
+    private void verifyAddTwoCardsToPlayer(IPlayer player) {
+        verify(player).addCard(cardListWithTwoCards.get(0));
+        verify(player).addCard(cardListWithTwoCards.get(1));
     }
 }
