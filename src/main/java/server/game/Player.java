@@ -69,7 +69,6 @@ public class Player implements IPlayer, Observer {
         } catch (InterruptedException e) {
             logger.warning(e.getMessage());
         }
-        //TODO check that isn't interrupt dangerous?
         receiveAction.interrupt();
 
         synchronized (lock) {
@@ -89,7 +88,6 @@ public class Player implements IPlayer, Observer {
             receiveBlind.start();
 
             receiveBlind.join(millisecondsWaitForActionPlayer);
-            //TODO check that isn't interrupt dangerous?
             receiveBlind.interrupt();
         } catch (Exception e) {
             logger.warning("Probably player disconnected, " + e.getMessage());

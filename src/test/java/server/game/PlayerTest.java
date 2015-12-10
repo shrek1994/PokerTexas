@@ -113,7 +113,7 @@ public class PlayerTest {
         verify(receiverMsg).receiveMsg();
     }
 
-    //TODO comment if working at another class - test duration - about 35 second
+    //comment test if you're working at another class - test duration - about 35 second
     @Test
     public void shouldReturnDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());
@@ -124,7 +124,7 @@ public class PlayerTest {
         verify(senderMsg).sendMsg(notifyAboutActionMsg);
     }
 
-    //TODO comment if working at another class - test duration - about 70 second
+    //comment test if you're working at another class - test duration - about 70 second
     @Test
     public void shouldReturnTwiceDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_70_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());

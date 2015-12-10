@@ -7,7 +7,7 @@ import messages.Settings;
  */
 public class GameFactory {
     public Game create(Settings settings) {
-        //TODO
+        //TODO write factory
         return null;
     }
 }

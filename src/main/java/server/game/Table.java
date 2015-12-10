@@ -5,7 +5,6 @@ import java.util.*;
 import cards.Card;
 import messages.CardMsg;
 
-//TODO
 public class Table extends Observable {
     private Map<IPlayer, Double> moneys = new HashMap<IPlayer, Double>();
     private List<Card> cards = new ArrayList<Card>();
