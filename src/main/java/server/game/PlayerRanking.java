@@ -1,24 +1,38 @@
 package server.game;
 
+import cards.Card;
 import cards.ICardChecker;
+import messages.ConfigurationCard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by maciek on 10.12.15.
  */
 public class PlayerRanking {
-    private List<IPlayer> playerList;
     private ICardChecker cardChecker;
 
-    public IPlayer getWinner()
+    public IPlayer getWinner(List<IPlayer> playerList, List<Card> cardOnTable)
     {
-        // TODO getWinner
-        return null;
+        ConfigurationCard winnerConfiguration = null;
+        IPlayer winner = null;
+        for (IPlayer player : playerList)
+        {
+            List<Card> cardList = new ArrayList<Card>();
+            cardList.addAll(cardOnTable);
+            cardList.addAll(player.getCardList());
+            ConfigurationCard configuration = cardChecker.check(cardList);
+            if (winnerConfiguration == null || configuration.compareTo(winnerConfiguration) > 0)
+            {
+                winnerConfiguration = configuration;
+                winner = player;
+            }
+        }
+        return winner;
     }
 
-    public PlayerRanking(List<IPlayer> playerList, ICardChecker cardChecker) {
-        this.playerList = playerList;
+    public PlayerRanking(ICardChecker cardChecker) {
         this.cardChecker = cardChecker;
     }
 }

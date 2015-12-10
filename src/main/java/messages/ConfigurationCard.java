@@ -3,8 +3,6 @@ package messages;
 import cards.Card;
 import cards.SetOfCard;
 
-import java.util.Comparator;
-
 /**
  * Created by maciek on 10.12.15.
  */

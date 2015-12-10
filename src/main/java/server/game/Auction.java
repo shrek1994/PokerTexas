@@ -18,6 +18,7 @@ public class Auction {
     }
 
     public void start(IPlayer playerWhoStart){
+        //TODO dodac max ilosc zagran raise (fixed-limit)
         //Ustawienie kolejnosci licytacji
         List<IPlayer> players = new ArrayList<IPlayer>();
 
