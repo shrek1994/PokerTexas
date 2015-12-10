@@ -76,10 +76,10 @@ public class TexasHoldRoundTest {
     }
 
     @Test
-    public void shouldCorrectPlayGame()
+    public void shouldCorrectPlayRound()
     {
-        when(secondPlayer.getBlind(sut.smallBlind)).thenReturn(sut.smallBlind);
-        when(thirdPlayer.getBlind(sut.bigBlind)).thenReturn(sut.bigBlind);
+        when(secondPlayer.getBlind(settings.smallBlind)).thenReturn(settings.smallBlind);
+        when(thirdPlayer.getBlind(settings.bigBlind)).thenReturn(settings.bigBlind);
 
         when(cards.getCards(3)).thenReturn(cardListWithThreeCards);
         when(cards.getCards(2)).thenReturn(cardListWithTwoCards);
@@ -92,8 +92,8 @@ public class TexasHoldRoundTest {
         verifyAddTwoCardsToPlayer(thirdPlayer);
         verifyAddTwoCardsToPlayer(forthPlayer);
 
-        verifyGetBlindAndAddToTable(secondPlayer, sut.smallBlind);
-        verifyGetBlindAndAddToTable(thirdPlayer, sut.bigBlind);
+        verifyGetBlindAndAddToTable(secondPlayer, settings.smallBlind);
+        verifyGetBlindAndAddToTable(thirdPlayer, settings.bigBlind);
 
         verifyCreateShuffleAndGetCards(playersList.size());
 
@@ -108,9 +108,9 @@ public class TexasHoldRoundTest {
     public void shouldPlayerWhoDoNotPaySmallBlindEndPlayingAndNextPlayerPaySmallBlind()
     {
         int numberOfPlayers = playersList.size();
-        when(secondPlayer.getBlind(sut.smallBlind)).thenReturn(0);
-        when(thirdPlayer.getBlind(sut.smallBlind)).thenReturn(sut.smallBlind);
-        when(forthPlayer.getBlind(sut.bigBlind)).thenReturn(sut.bigBlind);
+        when(secondPlayer.getBlind(settings.smallBlind)).thenReturn(0);
+        when(thirdPlayer.getBlind(settings.smallBlind)).thenReturn(settings.smallBlind);
+        when(forthPlayer.getBlind(settings.bigBlind)).thenReturn(settings.bigBlind);
 
         when(cards.getCards(3)).thenReturn(cardListWithThreeCards);
         when(cards.getCards(2)).thenReturn(cardListWithTwoCards);
@@ -122,9 +122,9 @@ public class TexasHoldRoundTest {
         verifyAddTwoCardsToPlayer(thirdPlayer);
         verifyAddTwoCardsToPlayer(forthPlayer);
 
-        verify(secondPlayer).getBlind(sut.smallBlind);
-        verifyGetBlindAndAddToTable(thirdPlayer, sut.smallBlind);
-        verifyGetBlindAndAddToTable(forthPlayer, sut.bigBlind);
+        verify(secondPlayer).getBlind(settings.smallBlind);
+        verifyGetBlindAndAddToTable(thirdPlayer, settings.smallBlind);
+        verifyGetBlindAndAddToTable(forthPlayer, settings.bigBlind);
 
         verifyCreateShuffleAndGetCards(numberOfPlayers - 1);
 
@@ -139,9 +139,9 @@ public class TexasHoldRoundTest {
     public void shouldPlayerWhoDoNotPayBigBlindEndPlayingAndNextPlayerPayBigBlind()
     {
         int numberOfPlayers = playersList.size();
-        when(secondPlayer.getBlind(sut.smallBlind)).thenReturn(sut.smallBlind);
-        when(thirdPlayer.getBlind(sut.bigBlind)).thenReturn(0);
-        when(forthPlayer.getBlind(sut.bigBlind)).thenReturn(sut.bigBlind);
+        when(secondPlayer.getBlind(settings.smallBlind)).thenReturn(settings.smallBlind);
+        when(thirdPlayer.getBlind(settings.bigBlind)).thenReturn(0);
+        when(forthPlayer.getBlind(settings.bigBlind)).thenReturn(settings.bigBlind);
 
         when(cards.getCards(3)).thenReturn(cardListWithThreeCards);
         when(cards.getCards(2)).thenReturn(cardListWithTwoCards);
@@ -153,9 +153,9 @@ public class TexasHoldRoundTest {
         verifyAddTwoCardsToPlayer(secondPlayer);
         verifyAddTwoCardsToPlayer(forthPlayer);
 
-        verifyGetBlindAndAddToTable(secondPlayer, sut.smallBlind);
-        verify(thirdPlayer).getBlind(sut.bigBlind);
-        verifyGetBlindAndAddToTable(forthPlayer, sut.bigBlind);
+        verifyGetBlindAndAddToTable(secondPlayer, settings.smallBlind);
+        verify(thirdPlayer).getBlind(settings.bigBlind);
+        verifyGetBlindAndAddToTable(forthPlayer, settings.bigBlind);
 
         verifyCreateShuffleAndGetCards(numberOfPlayers - 1);
 
