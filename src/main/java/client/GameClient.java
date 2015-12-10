@@ -52,7 +52,16 @@ public class GameClient implements Observer{
 		boolean actions[];
 		actions = new boolean[6];
 		for (int i=0; i<6; i++){
-			//TODO waiting for server rules
+			switch (data.getGameType()){
+			case FixedLimit:
+				break;
+			case NoLimit:
+				break;
+			case PotLimit:
+				break;
+			default:
+				break;
+			}
 			actions[i] = true;
 		}
 		return actions;

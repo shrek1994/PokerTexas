@@ -8,6 +8,7 @@ public class SettingsMsg implements Serializable {
     private int valueOfSmallBlind;
     private int valueOfBigBlind;
     private int playerId;
+    private int raiseLimitWithFixedLimit = 5; //temp 
 
     public SettingsMsg(GameType type, int moneyOnStart, int valueOfSmallBlind, int valueOfBigBlind, int playerId) {
         this.type = type;
@@ -37,6 +38,10 @@ public class SettingsMsg implements Serializable {
         return valueOfBigBlind;
     }
 
+	public int getRaiseLimitWithFixedLimit() {
+		return raiseLimitWithFixedLimit;
+	}
+	
     @Override
     public boolean equals(Object o)
     {
@@ -52,4 +57,5 @@ public class SettingsMsg implements Serializable {
         }
         return false;
     }
+
 }

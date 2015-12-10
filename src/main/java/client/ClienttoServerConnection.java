@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
 
+import messages.GameType;
 import messages.ReceiverMsg;
 import messages.SenderMsg;
 import messages.SettingsMsg;
@@ -47,6 +48,10 @@ public class ClienttoServerConnection extends Observable{
 		//get from server
 		SettingsMsg msg = null;
 		notifyObservers(msg);
+	}
+	
+	GameType getGameType(){
+		return data.getGameType();
 	}
 
 	public boolean connectTo(String address2, String port2) throws IOException {

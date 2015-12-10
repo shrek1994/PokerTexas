@@ -94,6 +94,9 @@ public class GameScreenWait implements Screen, Observer {
 		batch.end();
 	}
 	
+	void generateCardaFronts(){
+		
+	}
 	
 	
 	@Override

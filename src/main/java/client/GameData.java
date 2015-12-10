@@ -1,6 +1,7 @@
 package client;
 import java.util.Observable;
 import messages.ActionMsg;
+import messages.GameType;
 import messages.RankingMsg;
 
 /**
@@ -21,6 +22,7 @@ public class GameData extends Observable{
 	private int playerNumber = 5;
 	private ActionMsg actions[];
 	private String status;
+	private GameType gameType;
 	
 	GameData(int players){
 		actions = new ActionMsg[players];
@@ -108,6 +110,16 @@ public class GameData extends Observable{
 
 	public void setActionOfPlayerX(int numberOfPlayer, ActionMsg msg) {
 		this.actions[numberOfPlayer] = msg;
+		setChanged();
+	    notifyObservers();
+	}
+
+	public GameType getGameType() {
+		return gameType;
+	}
+
+	public void setGameType(GameType gameType) {
+		this.gameType = gameType;
 		setChanged();
 	    notifyObservers();
 	}
