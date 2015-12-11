@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import messages.ActionMsg;
+
 /**
  * Glowna klasa logiki aplikacji klienta. Poœredniczy miedzy polaczeniem z serwerem a GUI.
  * 
@@ -20,6 +22,7 @@ public class GameClient implements Observer{
 	public GameClient(){
 		connection = new ClienttoServerConnection();
 		data = new GameData(connection.getNumberOfPlayers());
+		data.addObserver(this);
 	}
 	
 	
@@ -43,7 +46,9 @@ public class GameClient implements Observer{
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
+		if(arg1 instanceof ActionMsg){
+			connection.sendMove(arg1);
+		}
 		
 	}
 

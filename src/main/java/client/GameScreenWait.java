@@ -51,6 +51,7 @@ public class GameScreenWait implements Screen, Observer {
 		generateCardsBacks(client.getGameData().getNumberOfPlayers());
 		generateCardsFronts();
 		client.waitForYourMove();
+		//client.getGameData().setStatus("MOVE");
 	}
 	
 	@Override
@@ -155,7 +156,6 @@ public class GameScreenWait implements Screen, Observer {
 	
 	@Override
 	public void render(float delta) {
-		//client.getGameData().setStatus("MOVE");
 		if (updated){
 			if (client.getGameData().getStatus().equals("MOVE")){
 				this.updated = false;

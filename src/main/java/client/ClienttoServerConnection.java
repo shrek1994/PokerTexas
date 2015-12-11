@@ -101,6 +101,14 @@ public class ClienttoServerConnection extends Observable{
         }
         waitForMove.interrupt();
     }
+
+	public void sendMove(Object arg1) {
+		try {
+            senderMsg.sendMsg(arg1);
+        } catch (IOException e) {
+            //TODO error server disconnect
+        }
+	}
 	
 	
 }
