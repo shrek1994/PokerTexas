@@ -6,10 +6,13 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
 
+import messages.ActionMsg;
 import messages.GameType;
+import messages.NotifyAboutActionMsg;
 import messages.ReceiverMsg;
 import messages.SenderMsg;
 import messages.SettingsMsg;
+
 
 /**
  * Tymczasowa klasa dla polaczenia z serwerem.
@@ -77,4 +80,27 @@ public class ClienttoServerConnection extends Observable{
         receiverMsg = new ReceiverMsg(objectInputStream);
 		return true;*/
 	}
+	
+	public void waitForStatusMove() {
+        Thread waitForMove = new Thread(){
+        	 public void run() {
+                 try {
+                     Object msg = receiverMsg.receiveMsg();
+                     if(msg instanceof NotifyAboutActionMsg)
+                             data.setStatus("MOVE");
+                 } catch (Exception e) {
+                    //TODO error thread
+                 }
+             }
+        };
+        waitForMove.start();
+        try {
+            waitForMove.join(999999999);
+        } catch (InterruptedException e) {
+            //TODO server disconnect
+        }
+        waitForMove.interrupt();
+    }
+	
+	
 }

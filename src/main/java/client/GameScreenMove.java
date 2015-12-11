@@ -78,6 +78,7 @@ public class GameScreenMove implements Screen, Observer {
 					catch(Exception ex){
 						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[client.getGameData().getPlayerNumber()].getText().toString()),0.0));
 					}
+					client.getGameData().setStatus("");
 					game.setScreen(new GameScreenWait(client,game));
 				}
 			});

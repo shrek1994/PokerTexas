@@ -23,14 +23,14 @@ public class ConnectionScreen implements Screen{
 	
 	private Game game;
 	private Stage stage;
-	SpriteBatch batch;
-	Texture cardImage;
-	Texture backgroundImage;
+	private SpriteBatch batch;
+	private Texture cardImage;
+	private Texture backgroundImage;
 	private OrthographicCamera camera;
 	//private Rectangle card;
 	private Rectangle background;
 	private BitmapFont font;
-	String txtVal;
+	private String txtVal;
 	private TextButton btnConnect;
 	private TextField txfAddress;
 	private TextField txfPort;
