@@ -14,11 +14,17 @@ public class Game {
     private Settings settings;
     private List<IPlayer> playerList;
 
+    public Game(TexasHoldRoundFactory texasHoldRoundFactory, Server server, Settings settings) {
+        this.texasHoldRoundFactory = texasHoldRoundFactory;
+        this.server = server;
+        this.settings = settings;
+    }
+
     public void run() throws IOException {
         server.runServer(settings.port);
         server.waitForPlayers(settings.numberOfPlayers);
         playerList = server.getPlayersList();
-        TexasHoldRound texasHoldRound = texasHoldRoundFactory.create(playerList);
+        TexasHoldRound texasHoldRound = texasHoldRoundFactory.create(playerList, settings);
 
         while ( playerList.size() > settings.numberOfBots ) {
 

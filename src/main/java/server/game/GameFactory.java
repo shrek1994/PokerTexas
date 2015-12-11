@@ -7,7 +7,11 @@ import messages.Settings;
  */
 public class GameFactory {
     public Game create(Settings settings) {
-        //TODO write factory
-        return null;
+        PlayerFactory playerFactory = new PlayerFactory();
+        ServerSocketFactory serverSocketFactory = new ServerSocketFactory();
+        Server server = new Server(playerFactory, serverSocketFactory);
+        TexasHoldRoundFactory texasHoldRoundFactory = new TexasHoldRoundFactory();
+        Game game = new Game(texasHoldRoundFactory, server, settings);
+        return game;
     }
 }

@@ -93,8 +93,6 @@ public class TexasHoldRound {
         {
             indexOfPlayerWihDealerButton = 0;
         }
-
-
     }
 
     private void payingBlinds() {
