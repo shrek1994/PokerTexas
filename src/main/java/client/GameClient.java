@@ -77,8 +77,10 @@ public class GameClient implements Observer{
 		this.connectionEstablished = b;
 	}
 	
-	public void waitForYourMove(){
-		this.connection.waitForStatusMove();
+	public void waitForServer(){
+		this.connection.waitForMsg();
 	}
+	
+	
 	
 }

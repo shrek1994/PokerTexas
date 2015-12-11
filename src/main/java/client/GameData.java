@@ -135,5 +135,11 @@ public class GameData extends Observable{
 		setChanged();
 	    notifyObservers();
 	}
+	
+	public void setCardsInHandANDOnTable(int pos, int n) {
+		this.cardsInHandANDOnTable[pos] = n;
+		setChanged();
+	    notifyObservers();
+	}
 
 }

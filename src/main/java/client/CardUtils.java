@@ -1,5 +1,7 @@
 package client;
 
+import messages.CardMsg;
+
 public class CardUtils {
 	static String CardValue(int n){
 		String value = "";
@@ -27,4 +29,9 @@ public class CardUtils {
 		}
 		return value;
 	}
+	
+	static int cardMsgToInt(CardMsg c){
+		return 1;
+	}
+	
 }

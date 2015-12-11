@@ -50,7 +50,7 @@ public class GameScreenWait implements Screen, Observer {
 		background.height = 600;
 		generateCardsBacks(client.getGameData().getNumberOfPlayers());
 		generateCardsFronts();
-		client.waitForYourMove();
+		client.waitForServer();
 		//client.getGameData().setStatus("MOVE");
 	}
 	

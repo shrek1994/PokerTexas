@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Observable;
 
 import messages.ActionMsg;
+import messages.CardMsg;
 import messages.GameType;
 import messages.NotifyAboutActionMsg;
 import messages.ReceiverMsg;
@@ -58,7 +59,25 @@ public class ClienttoServerConnection extends Observable{
 	}
 	
 	GameType getGameType(){
-		return data.getGameType();
+		Thread serverConnect = new Thread(){
+       	public void run() {
+                try {
+                    Object msg = receiverMsg.receiveMsg();
+                    if(msg instanceof SettingsMsg)
+                   	 	data.setGameType(((SettingsMsg) msg).getType());
+                } catch (Exception e) {
+                   //TODO error thread
+                }
+            }
+       };
+       serverConnect.start();
+       try {
+           serverConnect.join(999999999);
+       } catch (InterruptedException e) {
+           //TODO server disconnect
+       }
+       serverConnect.interrupt();
+       return data.getGameType();
 	}
 
 	public boolean connectTo(String address2, String port2) throws IOException {
@@ -81,13 +100,25 @@ public class ClienttoServerConnection extends Observable{
 		return true;*/
 	}
 	
-	public void waitForStatusMove() {
+	public void waitForMsg() {
         Thread waitForMove = new Thread(){
         	 public void run() {
                  try {
                      Object msg = receiverMsg.receiveMsg();
                      if(msg instanceof NotifyAboutActionMsg)
-                             data.setStatus("MOVE");
+                    	 	data.setStatus("MOVE");
+                     if(msg instanceof CardMsg){
+                    	 boolean writed = false;
+                    	 int i;
+                    	 for(i = 0; i < data.getCardsInHandANDOnTable().length && !writed; i++){
+                    		    if(data.getCardsInHandANDOnTable(i) == 0){
+                    		    	data.setCardsInHandANDOnTable(i,CardUtils.cardMsgToInt((CardMsg) msg));
+                    		    	writed = true;
+                    		    }
+                    	 }
+                    	 if(i>2)
+                    		 data.setNumberOfCardsOnTable(data.getNumberOfCardsOnTable()+1);
+                     }
                  } catch (Exception e) {
                     //TODO error thread
                  }
