@@ -112,8 +112,8 @@ public class PlayerTest {
         verify(receiverMsg).receiveMsg();
     }
 
-    //comment test if you're working at another class - test duration - about 35 second
-    //@Test(timeout = 35*1000)
+    //TODO comment test if you're working at another class - test duration - about 35 second
+    @Test(timeout = 35*1000)
     public void shouldReturnDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());
 
@@ -123,7 +123,7 @@ public class PlayerTest {
         verify(senderMsg).sendMsg(notifyAboutActionMsg);
     }
 
-    //comment test if you're working at another class - test duration - about 70 second
+    //TODO comment test if you're working at another class - test duration - about 70 second
     //@Test(timeout = 70*1000)
     public void shouldReturnTwiceDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_70_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());
@@ -311,8 +311,8 @@ public class PlayerTest {
     }
 
 
-    //comment test if you're working at another class - test duration - about 35 second
-    //@Test(timeout = 35*1000)
+    //TODO comment test if you're working at another class - test duration - about 35 second
+    @Test(timeout = 35*1000)
     public void shouldNotPlayWhenPlayerNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws IOException, ClassNotFoundException {
         sut = new Player(senderMsg, new NotReceiveMsg());
 

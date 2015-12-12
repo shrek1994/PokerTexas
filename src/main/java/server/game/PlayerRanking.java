@@ -1,7 +1,7 @@
 package server.game;
 
 import cards.Card;
-import cards.ICardChecker;
+import cards.checkers.ICardChecker;
 import messages.ConfigurationCard;
 
 import java.util.ArrayList;

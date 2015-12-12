@@ -1,11 +1,11 @@
 package server.game;
 
 import cards.*;
+import cards.checkers.ICardChecker;
 import messages.ConfigurationCard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.List;

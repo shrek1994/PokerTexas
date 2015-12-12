@@ -1,5 +1,6 @@
-package cards;
+package cards.checkers;
 
+import cards.Card;
 import messages.ConfigurationCard;
 
 import java.util.List;

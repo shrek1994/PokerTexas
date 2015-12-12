@@ -1,8 +1,7 @@
 package cards;
 
-import java.util.Objects;
 
-public class Card {
+public class Card implements Comparable<Card>{
     private Color color;
     private Figure figure;
 
@@ -29,5 +28,14 @@ public class Card {
             return color == card.color && figure == card.figure;
         }
         return false;
+    }
+
+    @Override
+    public int compareTo(Card card) {
+        if (this.figure.getValue() == card.figure.getValue())
+        {
+            return this.color.getValue() - card.color.getValue();
+        }
+        return this.figure.getValue() - card.figure.getValue();
     }
 }

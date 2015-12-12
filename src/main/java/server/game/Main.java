@@ -11,9 +11,8 @@ public class Main {
 
     public static void main(String args[])
     {
-        // args[0] = small blind
-        // args[1] = big blind
-        if ( args.length != 2)
+        // args[0] - nazwa pliku z ustawieniami
+        if ( args.length < 1)
         {
             printHelp();
         }

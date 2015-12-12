@@ -1,8 +1,8 @@
 package server.game;
 
-import cards.CardCheckerFactory;
+import cards.checkers.CardCheckerFactory;
 import cards.CollectionOfCards;
-import cards.ICardChecker;
+import cards.checkers.ICardChecker;
 import messages.Settings;
 
 import java.util.List;
