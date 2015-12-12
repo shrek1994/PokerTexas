@@ -23,6 +23,7 @@ public class GameClient implements Observer{
 		connection = new ClienttoServerConnection();
 		data = new GameData(connection.getNumberOfPlayers());
 		data.addObserver(this);
+		connection.addObserver(this);
 	}
 	
 	
@@ -41,9 +42,7 @@ public class GameClient implements Observer{
 		return data;
 	}
 
-	/**
-	 * Update GameData wedlug tego co jest na serwerze
-	 */
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		if(arg1 instanceof ActionMsg){
@@ -79,6 +78,12 @@ public class GameClient implements Observer{
 	
 	public void waitForServer(){
 		this.connection.waitForMsg();
+	}
+
+
+	public void setSettingsFromServer() {
+		this.data = connection.getGameSettings();
+		
 	}
 	
 	

@@ -23,6 +23,7 @@ public class GameData extends Observable{
 	private String status;
 	private GameType gameType = GameType.NoLimit;
 	private int numberOfCardsOnTable = 5;
+	private double moneyOfPlayers[];
 	
 	GameData(int players){
 		actions = new ActionMsg[players];
@@ -140,6 +141,14 @@ public class GameData extends Observable{
 		this.cardsInHandANDOnTable[pos] = n;
 		setChanged();
 	    notifyObservers();
+	}
+
+	public double[] getMoneyOfPlayers() {
+		return moneyOfPlayers;
+	}
+
+	public void setMoneyOfPlayers(double moneyOfPlayers[]) {
+		this.moneyOfPlayers = moneyOfPlayers;
 	}
 
 }

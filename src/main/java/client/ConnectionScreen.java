@@ -91,11 +91,11 @@ public class ConnectionScreen implements Screen{
 		boolean connection = client.setUpConnection(txfAddress.getText(), txfPort.getText());
 		if (connection){
 			client.setConnectionEstablished(true);
+			client.setSettingsFromServer();
 			game.setScreen(new GameScreenWait(client, game));
 		}
-		//else
-			//connection failed
-		//System.out.println(txfAddress.getText() + " "+ txfPort.getText());
+		else
+			System.out.println("connection failed");
 	}
 
 	@Override

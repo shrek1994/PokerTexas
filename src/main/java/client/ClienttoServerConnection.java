@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Observable;
 
 import messages.ActionMsg;
+import messages.BlindMsg;
 import messages.CardMsg;
 import messages.GameType;
 import messages.NotifyAboutActionMsg;
@@ -58,13 +59,22 @@ public class ClienttoServerConnection extends Observable{
 		notifyObservers(msg);
 	}
 	
-	GameType getGameType(){
+	GameData getGameSettings(){
 		Thread serverConnect = new Thread(){
        	public void run() {
                 try {
                     Object msg = receiverMsg.receiveMsg();
-                    if(msg instanceof SettingsMsg)
+                    if(msg instanceof SettingsMsg){
                    	 	data.setGameType(((SettingsMsg) msg).getType());
+                   	 	data.setBigBlind(((SettingsMsg) msg).getValueOfBigBlind());
+                   	 	data.setNumberOfPlayers(((SettingsMsg) msg).getNumberOfPlayers());
+                   	 	data.setSmallBlind(((SettingsMsg) msg).getValueOfSmallBlind());
+                   	 	data.setPlayerNumber(((SettingsMsg) msg).getPlayerId());
+                   	 	double[] money = new double[data.getNumberOfPlayers()];
+                   	 	for (int i=0; i<data.getNumberOfPlayers(); i++)
+                   	 		money[i] = ((SettingsMsg) msg).getMoneyOnStart();
+                   	 	data.setMoneyOfPlayers(money);
+                    }
                 } catch (Exception e) {
                    //TODO error thread
                 }
@@ -77,27 +87,23 @@ public class ClienttoServerConnection extends Observable{
            //TODO server disconnect
        }
        serverConnect.interrupt();
-       return data.getGameType();
+       return data;
 	}
 
 	public boolean connectTo(String address2, String port2) throws IOException {
-		return true;
-		//TODO wait for server
-		/*
 		port = port2;
 		address = address2;
 		try{
 			socket = new Socket(address2, Integer.parseInt(port2));
 		}
 		catch(Exception e){
-			//TODO connection failed
 			return false;
 		}
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         senderMsg = new SenderMsg(objectOutputStream);
         ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
         receiverMsg = new ReceiverMsg(objectInputStream);
-		return true;*/
+		return true;
 	}
 	
 	public void waitForMsg() {
@@ -119,6 +125,14 @@ public class ClienttoServerConnection extends Observable{
                     	 if(i>2)
                     		 data.setNumberOfCardsOnTable(data.getNumberOfCardsOnTable()+1);
                      }
+                     if(msg instanceof BlindMsg){
+                    	 double money[] = data.getMoneyOfPlayers();
+                    	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
+                    		 senderMsg.sendMsg(msg);
+                    		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
+                    		 data.setMoneyOfPlayers(money);
+                    	 }
+                     }
                  } catch (Exception e) {
                     //TODO error thread
                  }
@@ -126,7 +140,7 @@ public class ClienttoServerConnection extends Observable{
         };
         waitForMove.start();
         try {
-            waitForMove.join(999999999);
+            waitForMove.join(99);
         } catch (InterruptedException e) {
             //TODO server disconnect
         }

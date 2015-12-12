@@ -50,7 +50,7 @@ public class GameScreenWait implements Screen, Observer {
 		background.height = 600;
 		generateCardsBacks(client.getGameData().getNumberOfPlayers());
 		generateCardsFronts();
-		client.waitForServer();
+		
 		//client.getGameData().setStatus("MOVE");
 	}
 	
@@ -157,6 +157,7 @@ public class GameScreenWait implements Screen, Observer {
 	@Override
 	public void render(float delta) {
 		if (updated){
+			updated = false;
 			if (client.getGameData().getStatus().equals("MOVE")){
 				this.updated = false;
 				System.out.println("zmiana");
@@ -172,7 +173,7 @@ public class GameScreenWait implements Screen, Observer {
 		batchCardBacks(client.getGameData().getNumberOfPlayers());
 		batchCardsFronts();
 		batchAllText();
-
+		client.waitForServer();
 	}
 
 	@Override
