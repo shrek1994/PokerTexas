@@ -41,30 +41,17 @@ public class ClienttoServerConnection extends Observable{
 	}
 
 	ClienttoServerConnection(){
-		//TODO get from server number of players;
 		data = new GameData(12);
 	}
 	
-	public int getNumberOfPlayers() {
-		return data.getNumberOfPlayers();
-	}
-	
-	
-	/**
-	 * Pobiera liczbe graczy z serwera i powiadamia clienta wysylajac dane
-	 */
-	void setSettingsFromServer(){
-		//get from server
-		SettingsMsg msg = null;
-		notifyObservers(msg);
-	}
-	
-	GameData getGameSettings(){
+
+	void getGameSettings(){
 		Thread serverConnect = new Thread(){
        	public void run() {
                 try {
                     Object msg = receiverMsg.receiveMsg();
                     if(msg instanceof SettingsMsg){
+                    	System.out.println("odbieranie ustwaien");
                    	 	data.setGameType(((SettingsMsg) msg).getType());
                    	 	data.setBigBlind(((SettingsMsg) msg).getValueOfBigBlind());
                    	 	data.setNumberOfPlayers(((SettingsMsg) msg).getNumberOfPlayers());
@@ -82,12 +69,11 @@ public class ClienttoServerConnection extends Observable{
        };
        serverConnect.start();
        try {
-           serverConnect.join(999999999);
+           serverConnect.join(99);
        } catch (InterruptedException e) {
            //TODO server disconnect
        }
        serverConnect.interrupt();
-       return data;
 	}
 
 	public boolean connectTo(String address2, String port2) throws IOException {
@@ -126,6 +112,7 @@ public class ClienttoServerConnection extends Observable{
                     		 data.setNumberOfCardsOnTable(data.getNumberOfCardsOnTable()+1);
                      }
                      if(msg instanceof BlindMsg){
+                    	 System.out.println("wysylanie ciemnej");
                     	 double money[] = data.getMoneyOfPlayers();
                     	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
                     		 senderMsg.sendMsg(msg);
@@ -151,7 +138,7 @@ public class ClienttoServerConnection extends Observable{
 		try {
             senderMsg.sendMsg(arg1);
         } catch (IOException e) {
-            //TODO error server disconnect
+            System.out.println("disconnect");
         }
 	}
 	

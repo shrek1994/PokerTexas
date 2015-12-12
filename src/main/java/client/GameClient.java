@@ -16,13 +16,11 @@ public class GameClient implements Observer{
 	
 	private ClienttoServerConnection connection;
 	private boolean connectionEstablished = false;
-	private GameData data;
+
 	
 
 	public GameClient(){
 		connection = new ClienttoServerConnection();
-		data = new GameData(connection.getNumberOfPlayers());
-		data.addObserver(this);
 		connection.addObserver(this);
 	}
 	
@@ -39,7 +37,7 @@ public class GameClient implements Observer{
 	}
 	
 	GameData getGameData(){
-		return data;
+		return connection.getData();
 	}
 
 
@@ -48,15 +46,13 @@ public class GameClient implements Observer{
 		if(arg1 instanceof ActionMsg){
 			connection.sendMove(arg1);
 		}
-		
 	}
-
-
+	
 	public boolean[] getAvailableActions() {
 		boolean actions[];
 		actions = new boolean[6];
 		for (int i=0; i<6; i++){
-			switch (data.getGameType()){
+			switch (connection.getData().getGameType()){
 			case FixedLimit:
 				break;
 			case NoLimit:
@@ -82,7 +78,7 @@ public class GameClient implements Observer{
 
 
 	public void setSettingsFromServer() {
-		this.data = connection.getGameSettings();
+		connection.getGameSettings();
 		
 	}
 	

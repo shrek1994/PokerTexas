@@ -24,10 +24,8 @@ public class ConnectionScreen implements Screen{
 	private Game game;
 	private Stage stage;
 	private SpriteBatch batch;
-	private Texture cardImage;
 	private Texture backgroundImage;
 	private OrthographicCamera camera;
-	//private Rectangle card;
 	private Rectangle background;
 	private BitmapFont font;
 	private String txtVal;
@@ -45,7 +43,6 @@ public class ConnectionScreen implements Screen{
 		btnConnect.setPosition(450, 230);
 		btnConnect.setSize(100, 80);
 		stage.addActor(btnConnect);
-		cardImage = new Texture(Gdx.files.internal("card.jpg"));
 		backgroundImage = new Texture(Gdx.files.internal("background.jpg"));
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 600);
@@ -59,7 +56,7 @@ public class ConnectionScreen implements Screen{
 				try {
 					processConnection();
 				} catch (IOException e1) {
-					// TODO connection failed
+					System.out.println("conneciton failed");
 				}
 			}
 		});
@@ -77,12 +74,7 @@ public class ConnectionScreen implements Screen{
         game = nevada;
 	}
 	
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
 	/**
 	 * Metoda wywolujaca polaczenie z serwerem
 	 * @throws IOException 
@@ -102,7 +94,6 @@ public class ConnectionScreen implements Screen{
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
 		batch.begin();
 		batch.draw(backgroundImage, background.x, background.y);
 		font.draw(batch, "IP:", 70, 290);
@@ -142,5 +133,10 @@ public class ConnectionScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	@Override
+	public void show() {
+		// Android method
+	}
+	
 }

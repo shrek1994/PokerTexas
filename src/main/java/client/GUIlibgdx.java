@@ -22,12 +22,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
  */
 public class GUIlibgdx extends Game {
 	
-	GameClient client;
-
 	@Override
 	public void create() {
-		client = new GameClient();
-		ConnectionScreen conScreen = new ConnectionScreen(this, client);
+		ConnectionScreen conScreen = new ConnectionScreen(this, new GameClient());
 		this.setScreen(conScreen);
 	}
 	
