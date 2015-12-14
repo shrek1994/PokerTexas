@@ -9,6 +9,7 @@ public class CardCheckerFactory {
         ICardChecker highestCardChecker = new HighestCardChecker();
         ICardChecker onePairChecker = new OnePairChecker(highestCardChecker);
         ICardChecker twoPairChecker = new TwoPairChecker(onePairChecker);
+        ICardChecker threeOfKindChecker = new ThreeOfKindChecker(twoPairChecker);
 
         ICardChecker royalFlushChecker = new RoyalFlushChecker(onePairChecker);
         return royalFlushChecker;

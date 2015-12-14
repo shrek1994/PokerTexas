@@ -4,7 +4,6 @@ import cards.Card;
 import cards.SetOfCard;
 import messages.ConfigurationCard;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
