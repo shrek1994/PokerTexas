@@ -12,6 +12,7 @@ public class CardCheckerFactory {
         ICardChecker threeOfKindChecker = new ThreeOfKindChecker(twoPairChecker);
         ICardChecker straightChecker = new StraightChecker(threeOfKindChecker);
         ICardChecker flushChecker = new FlushChecker(straightChecker);
+        ICardChecker fullHouseChecker = new FullHouseChecker(flushChecker);
 
         ICardChecker royalFlushChecker = new RoyalFlushChecker(onePairChecker);
         return royalFlushChecker;

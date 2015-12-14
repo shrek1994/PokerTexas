@@ -28,7 +28,6 @@ public class Server {
         {
             IPlayer player = playerFactory.create(server.accept());
             playersList.add(player);
-            numberOfPlayers--;
             //TODO sprawdzanie czy player sie nie rozlaczyl
         }
     }
