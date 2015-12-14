@@ -24,6 +24,10 @@ public class Game {
         server.runServer(settings.port);
         server.waitForPlayers(settings.numberOfPlayers);
         playerList = server.getPlayersList();
+        for (IPlayer player : playerList)
+        {
+            player.setSettings(settings);
+        }
         TexasHoldRound texasHoldRound = texasHoldRoundFactory.create(playerList, settings);
 
         while ( playerList.size() > settings.numberOfBots ) {

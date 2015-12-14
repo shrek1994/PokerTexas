@@ -3,6 +3,7 @@ package server.game;
 import cards.Card;
 import messages.ActionMsg;
 import messages.RankingMsg;
+import messages.Settings;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface IPlayer {
     public void clearCards();
     public boolean isPlayOn();
     public void updateCashIfWin(RankingMsg rankingMsg);
+    public void setSettings(Settings settings);
 }
