@@ -38,4 +38,9 @@ public class Card implements Comparable<Card>{
         }
         return this.figure.getValue() - card.figure.getValue();
     }
+
+    @Override
+    public String toString() {
+        return this.figure.toString() + " " +this.color.toString();
+    }
 }
