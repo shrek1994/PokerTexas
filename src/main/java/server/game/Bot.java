@@ -5,6 +5,7 @@ import java.util.List;
 import cards.Card;
 import messages.ActionMsg;
 import messages.RankingMsg;
+import messages.Settings;
 
 public class Bot implements IPlayer {
 
@@ -60,6 +61,12 @@ public class Bot implements IPlayer {
 	public void updateCashIfWin(RankingMsg rankingMsg) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void setSettings(Settings settings) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
