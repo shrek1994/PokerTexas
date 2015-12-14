@@ -1,7 +1,5 @@
 package server.game;
 
-import messages.Settings;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class Server {
 
     public void waitForPlayers(int numberOfPlayers) throws IOException
     {
-        while ( numberOfPlayers != 0)
+        while ( playersList.size() < numberOfPlayers )
         {
             IPlayer player = playerFactory.create(server.accept());
             playersList.add(player);

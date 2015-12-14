@@ -7,8 +7,12 @@ public class CardCheckerFactory {
     public ICardChecker create() {
         //TODO create cardCheckers
         ICardChecker highestCardChecker = new HighestCardChecker();
+        ICardChecker onePairChecker = new OnePairChecker(highestCardChecker);
+        ICardChecker twoPairChecker = new TwoPairChecker(onePairChecker);
+        ICardChecker threeOfKindChecker = new ThreeOfKindChecker(twoPairChecker);
+        ICardChecker straightChecker = new StraightChecker(threeOfKindChecker);
 
-        ICardChecker royalFlushChecker = new RoyalFlushChecker(highestCardChecker);
+        ICardChecker royalFlushChecker = new RoyalFlushChecker(onePairChecker);
         return royalFlushChecker;
     }
 }
