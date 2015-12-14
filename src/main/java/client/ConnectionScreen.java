@@ -62,7 +62,7 @@ public class ConnectionScreen implements Screen{
 		});
 		
 		txfAddress = new TextField("localhost",skin);
-		txfPort = new TextField("6068",skin);
+		txfPort = new TextField("8080",skin);
 		txfAddress.setPosition(140, 250);
 		txfAddress.setSize(200,60);
 		txfPort.setSize(200,60);
@@ -83,7 +83,7 @@ public class ConnectionScreen implements Screen{
 		boolean connection = client.setUpConnection(txfAddress.getText(), txfPort.getText());
 		if (connection){
 			client.setConnectionEstablished(true);
-			client.setSettingsFromServer();
+			//client.setSettingsFromServer();
 			game.setScreen(new GameScreenWait(client, game));
 		}
 		else

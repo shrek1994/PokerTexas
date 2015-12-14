@@ -10,6 +10,7 @@ import messages.ActionMsg;
 import messages.BlindMsg;
 import messages.CardMsg;
 import messages.GameType;
+import messages.InfoAboutActionMsg;
 import messages.NotifyAboutActionMsg;
 import messages.ReceiverMsg;
 import messages.SenderMsg;
@@ -46,10 +47,15 @@ public class ClienttoServerConnection extends Observable{
 	
 
 	void getGameSettings(){
+		System.out.println("probuje odbieranie ustwaien");
 		Thread serverConnect = new Thread(){
        	public void run() {
                 try {
-                    Object msg = receiverMsg.receiveMsg();
+                	while(true){
+                	System.out.println("zaczynam odbieranie ustwaien");
+                    Object msg = receiverMsg.receiveMsg(); 
+                    System.out.println(msg.toString());
+                    System.out.println(((SettingsMsg) msg).getValueOfBigBlind());
                     if(msg instanceof SettingsMsg){
                     	System.out.println("odbieranie ustwaien");
                    	 	data.setGameType(((SettingsMsg) msg).getType());
@@ -62,6 +68,7 @@ public class ClienttoServerConnection extends Observable{
                    	 		money[i] = ((SettingsMsg) msg).getMoneyOnStart();
                    	 	data.setMoneyOfPlayers(money);
                     }
+                    }
                 } catch (Exception e) {
                    //TODO error thread
                 }
@@ -69,7 +76,7 @@ public class ClienttoServerConnection extends Observable{
        };
        serverConnect.start();
        try {
-           serverConnect.join(99);
+           serverConnect.join(999);
        } catch (InterruptedException e) {
            //TODO server disconnect
        }
@@ -97,6 +104,7 @@ public class ClienttoServerConnection extends Observable{
         	 public void run() {
                  try {
                      Object msg = receiverMsg.receiveMsg();
+                     System.out.println(msg.toString());
                      if(msg instanceof NotifyAboutActionMsg)
                     	 	data.setStatus("MOVE");
                      if(msg instanceof CardMsg){
@@ -119,6 +127,13 @@ public class ClienttoServerConnection extends Observable{
                     		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
                     		 data.setMoneyOfPlayers(money);
                     	 }
+                     }
+                     if(msg instanceof InfoAboutActionMsg){
+                    	 System.out.println("odebranie akcji");
+                    	 double money[] = data.getMoneyOfPlayers();
+                    	 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((InfoAboutActionMsg) msg).getAction().getMoney();
+                    	 data.setActionOfPlayerX(((InfoAboutActionMsg) msg).getPlayerId(), ((InfoAboutActionMsg) msg).getAction());
+                    	 data.setMoneyOfPlayers(money);
                      }
                  } catch (Exception e) {
                     //TODO error thread

@@ -50,7 +50,7 @@ public class GameScreenWait implements Screen, Observer {
 		background.height = 600;
 		generateCardsBacks(client.getGameData().getNumberOfPlayers());
 		generateCardsFronts();
-		
+		client.waitForServer();
 		//client.getGameData().setStatus("MOVE");
 	}
 	
@@ -173,7 +173,7 @@ public class GameScreenWait implements Screen, Observer {
 		batchCardBacks(client.getGameData().getNumberOfPlayers());
 		batchCardsFronts();
 		batchAllText();
-		client.waitForServer();
+		
 	}
 
 	@Override
