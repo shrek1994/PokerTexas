@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
  * Created by maciek on 14.12.15.
  */
 public class OnePairCheckerTest {
+    //TODO powinno zwracac pare jako najwyzsza karta
     private Card highestCard = new Card(Figure.King, Color.Diamonds);
     private Card firstCard = new Card(Figure.Eight, Color.Clubs);
     private Card secondCard = new Card(Figure.Jack, Color.Spades);

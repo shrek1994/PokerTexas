@@ -19,14 +19,14 @@ import static org.mockito.Mockito.*;
 /**
  * Created by maciek on 14.12.15.
  */
-public class ThreeOfKindCheckerTest {
-    //TODO powinno zwracac trojke jako najwyzsza karta
+public class StraightCheckerTest {
+    //TODO nie dziala jezeli jest jeszcze para
     private Card highestCard = new Card(Figure.King, Color.Diamonds);
-    private Card firstCard = new Card(Figure.Eight, Color.Clubs);
+    private Card firstCard = new Card(Figure.Nine, Color.Clubs);
     private Card secondCard = new Card(Figure.Jack, Color.Spades);
-    private Card thirdCard = new Card(Figure.Ten, Color.Hearts);
+    private Card thirdCard = new Card(Figure.Queen, Color.Hearts);
     private Card fourthCard = new Card(Figure.Ten, Color.Hearts);
-    private Card fifthCard = new Card(Figure.Ten, Color.Clubs);
+    private Card fifthCard = new Card(Figure.Three, Color.Clubs);
     private Card sixthCard = new Card(Figure.Two, Color.Diamonds);
     private List<Card> cardList;
 
@@ -45,7 +45,7 @@ public class ThreeOfKindCheckerTest {
         cardList.add(fifthCard);
         cardList.add(sixthCard);
 
-        sut = new ThreeOfKindChecker(cardChecker);
+        sut = new StraightChecker(cardChecker);
     }
 
     @After
@@ -55,9 +55,9 @@ public class ThreeOfKindCheckerTest {
     }
 
     @Test
-    public void shouldCorrectFindThreeOfKindAndHighestCard()
+    public void shouldCorrectFindStraightAndHighestCard()
     {
-        ConfigurationCard expected = new ConfigurationCard(SetOfCard.ThreeOfKind, highestCard);
+        ConfigurationCard expected = new ConfigurationCard(SetOfCard.Straight, highestCard);
         ConfigurationCard actual = sut.check(cardList);
 
         assertEquals(expected.getSetOfCard(), actual.getSetOfCard());
@@ -65,13 +65,14 @@ public class ThreeOfKindCheckerTest {
     }
 
     @Test
-    public void shouldNotFindThreeOfKindAndCallNextChecker()
+    public void shouldNotFindStraightAndCallNextChecker()
     {
         ConfigurationCard expected = new ConfigurationCard(SetOfCard.HighCard, firstCard);
         when(cardChecker.check(anyList())).thenReturn(expected);
 
-        cardList.remove(fifthCard);
+        cardList.remove(fourthCard);
         ConfigurationCard actual = sut.check(cardList);
+
 
         verify(cardChecker).check(anyList());
 
