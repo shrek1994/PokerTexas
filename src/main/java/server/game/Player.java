@@ -55,7 +55,7 @@ public class Player implements IPlayer, Observer {
         try {
             senderMsg.sendMsg(new NotifyAboutActionMsg());
         } catch (IOException e) {
-            logger.warning("Probably player disconnected, " + e.getMessage());
+            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
             return defaultActionMsg;
         }
 
@@ -88,7 +88,7 @@ public class Player implements IPlayer, Observer {
             receiveBlind.join(millisecondsWaitForActionPlayer);
             receiveBlind.interrupt();
         } catch (Exception e) {
-            logger.warning("Probably player disconnected, " + e.getMessage());
+            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
         }
         return blindMsg.getValue();
     }
@@ -99,7 +99,7 @@ public class Player implements IPlayer, Observer {
             senderMsg.sendMsg(new CardMsg(card));
             cardList.add(card);
         } catch (IOException e) {
-            logger.warning("Probably player disconnected, " + e.getMessage());
+            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
         }
     }
 
@@ -113,7 +113,7 @@ public class Player implements IPlayer, Observer {
         try {
             senderMsg.sendMsg(o);
         } catch (IOException e) {
-            logger.warning("Probably player disconnected, " + e.getMessage());
+            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
         }
     }
 
@@ -127,7 +127,7 @@ public class Player implements IPlayer, Observer {
             receive.join(millisecondsWaitForActionPlayer);
             receive.interrupt();
         } catch (Exception e) {
-            logger.warning("Probably player disconnected, " + e.getMessage());
+            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
         }
         if( infoAboutContinuingGameMsg != null)
         {
@@ -143,7 +143,23 @@ public class Player implements IPlayer, Observer {
         try {
             senderMsg.sendMsg(msg);
         } catch (IOException e) {
-            logger.warning("Probably player disconnected, " + e.getMessage());
+            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void setSettings(Settings settings) {
+        //TODO test!
+        SettingsMsg msg = new SettingsMsg(
+                settings.gameType,
+                settings.moneyOnStart,
+                settings.smallBlind,
+                settings.bigBlind,
+                this.Id);
+        try {
+            senderMsg.sendMsg(msg);
+        } catch (IOException e) {
+            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
         }
     }
 
@@ -161,7 +177,7 @@ public class Player implements IPlayer, Observer {
                 }
                 else
                 {
-                    logger.warning("Wrong message received, isn't instance of ActionMsg .");
+                    logger.warning("Wrong message received, isn't instance of ActionMsg.");
                 }
             } catch (Exception e) {
                 logger.warning(e.getMessage());

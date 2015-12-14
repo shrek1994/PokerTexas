@@ -17,8 +17,6 @@ public class GameClient implements Observer{
 	private ClienttoServerConnection connection;
 	private boolean connectionEstablished = false;
 
-	
-
 	public GameClient(){
 		connection = new ClienttoServerConnection();
 		connection.addObserver(this);

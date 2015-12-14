@@ -1,5 +1,7 @@
 package server.game;
 
+import messages.Settings;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class Server {
             IPlayer player = playerFactory.create(server.accept());
             playersList.add(player);
             numberOfPlayers--;
+            //TODO sprawdzanie czy player sie nie rozlaczyl
         }
     }
     
