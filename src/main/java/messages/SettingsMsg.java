@@ -8,8 +8,8 @@ public class SettingsMsg implements Serializable {
     private int valueOfSmallBlind;
     private int valueOfBigBlind;
     private int playerId;
-    private int raiseLimitWithFixedLimit = 5; //temp
-    private int numberOfPlayers = 1;//temp 
+    private int raiseLimitWithFixedLimit = 5; //TODO
+    private int numberOfPlayers = 3;//TODO
 
     public SettingsMsg(GameType type, int moneyOnStart, int valueOfSmallBlind, int valueOfBigBlind, int playerId) {
         this.type = type;

@@ -48,39 +48,42 @@ public class ClienttoServerConnection extends Observable{
 
 	void getGameSettings(){
 		System.out.println("probuje odbieranie ustwaien");
-		Thread serverConnect = new Thread(){
-       	public void run() {
-                try {
-                	while(true){
-                	System.out.println("zaczynam odbieranie ustwaien");
-                    Object msg = receiverMsg.receiveMsg(); 
-                    System.out.println(msg.toString());
-                    System.out.println(((SettingsMsg) msg).getValueOfBigBlind());
-                    if(msg instanceof SettingsMsg){
-                    	System.out.println("odbieranie ustwaien");
-                   	 	data.setGameType(((SettingsMsg) msg).getType());
-                   	 	data.setBigBlind(((SettingsMsg) msg).getValueOfBigBlind());
-                   	 	data.setNumberOfPlayers(((SettingsMsg) msg).getNumberOfPlayers());
-                   	 	data.setSmallBlind(((SettingsMsg) msg).getValueOfSmallBlind());
-                   	 	data.setPlayerNumber(((SettingsMsg) msg).getPlayerId());
-                   	 	double[] money = new double[data.getNumberOfPlayers()];
-                   	 	for (int i=0; i<data.getNumberOfPlayers(); i++)
-                   	 		money[i] = ((SettingsMsg) msg).getMoneyOnStart();
-                   	 	data.setMoneyOfPlayers(money);
-                    }
-                    }
-                } catch (Exception e) {
-                   //TODO error thread
-                }
-            }
-       };
-       serverConnect.start();
-       try {
-           serverConnect.join(999);
-       } catch (InterruptedException e) {
-           //TODO server disconnect
+		while(data.getStatus().equals("WAITFORSETTINGS")){
+			Thread serverConnect = new Thread(){
+	       	public void run() {
+	                try {
+	                	Object msg = null;
+	                	System.out.println("zaczynam odbieranie ustwaien");
+	                    msg = receiverMsg.receiveMsg(); 
+	                    System.out.println(msg.toString());
+	                    System.out.println(((SettingsMsg) msg).getValueOfBigBlind());
+	                    if(msg instanceof SettingsMsg){
+	                    	data.setStatus("WAIT");
+	                    	System.out.println("odbieranie ustwaien");
+	                   	 	data.setGameType(((SettingsMsg) msg).getType());
+	                   	 	data.setBigBlind(((SettingsMsg) msg).getValueOfBigBlind());
+	                   	 	data.setNumberOfPlayers(((SettingsMsg) msg).getNumberOfPlayers());
+	                   	 	System.out.println(((SettingsMsg) msg).getNumberOfPlayers());
+	                   	 	data.setSmallBlind(((SettingsMsg) msg).getValueOfSmallBlind());
+	                   	 	data.setPlayerNumber(((SettingsMsg) msg).getPlayerId());
+	                   	 	double[] money = new double[data.getNumberOfPlayers()];
+	                   	 	for (int i=0; i<data.getNumberOfPlayers(); i++)
+	                   	 		money[i] = ((SettingsMsg) msg).getMoneyOnStart();
+	                   	 	data.setMoneyOfPlayers(money);
+	                    }
+	                } catch (Exception e) {
+	                   //TODO error thread
+	                }
+	            }
+	       };
+    	   serverConnect.start();
+           try {
+               serverConnect.join(5000);
+           } catch (InterruptedException e) {
+               //TODO server disconnect
+           }
+           serverConnect.interrupt();
        }
-       serverConnect.interrupt();
 	}
 
 	public boolean connectTo(String address2, String port2) throws IOException {
@@ -120,9 +123,9 @@ public class ClienttoServerConnection extends Observable{
                     		 data.setNumberOfCardsOnTable(data.getNumberOfCardsOnTable()+1);
                      }
                      if(msg instanceof BlindMsg){
-                    	 System.out.println("wysylanie ciemnej");
                     	 double money[] = data.getMoneyOfPlayers();
                     	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
+                        	 System.out.println("wysylanie ciemnej");
                     		 senderMsg.sendMsg(msg);
                     		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
                     		 data.setMoneyOfPlayers(money);

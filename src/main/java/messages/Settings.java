@@ -5,7 +5,7 @@ package messages;
  */
 public class Settings {
     public int port = 8080;
-    public int numberOfPlayers = 2;
+    public int numberOfPlayers = 3;
     public int numberOfBots = 0;
     public int smallBlind = 5;
     public int bigBlind = 10;

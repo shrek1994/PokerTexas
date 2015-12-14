@@ -20,9 +20,9 @@ public class GameData extends Observable{
 	private RankingMsg ranking;
 	private int playerNumber = 5;
 	private ActionMsg actions[];
-	private String status;
+	private String status = "WAITFORSETTINGS";
 	private GameType gameType = GameType.NoLimit;
-	private int numberOfCardsOnTable = 5;
+	private int numberOfCardsOnTable = 0;
 	private double moneyOfPlayers[];
 	
 	GameData(int players){
