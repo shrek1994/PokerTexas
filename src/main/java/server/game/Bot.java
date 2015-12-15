@@ -3,8 +3,12 @@ package server.game;
 import java.util.List;
 
 import cards.Card;
+import client.CardUtils;
 import messages.ActionMsg;
+import messages.ActionType;
 import messages.RankingMsg;
+import messages.ReceiverMsg;
+import messages.SenderMsg;
 import messages.Settings;
 
 public class Bot implements IPlayer {
@@ -13,15 +17,26 @@ public class Bot implements IPlayer {
 	private int[] cardsInHand;
 	private int[] cardsOnTable;
 	private double pot = 0;
-	private int numberOfCards = 0;;
+	private int numberOfCards = 0;
+	private int id;
+	
+	private static int nextBotId = 0;
 	
 	
 	@Override
 	public ActionMsg getAction() {
-		// TODO Auto-generated method stub
+		ActionMsg msg;
+		if (pot>money)
+			return msg = new ActionMsg(ActionType.Fold, 0);
 		return null;
 	}
 
+	public Bot() {
+        this.id = nextBotId;
+        nextBotId++;
+    }
+	
+	
 	@Override
 	public int getBlind(int value) {
 		if (money > value){
@@ -35,13 +50,17 @@ public class Bot implements IPlayer {
 
 	@Override
 	public void addCard(Card card) {
-	
+		if (numberOfCards >1)
+			this.cardsInHand[numberOfCards] = CardUtils.cardToInt(card);
+		else{
+			this.cardsOnTable[numberOfCards-2] = CardUtils.cardToInt(card);
+		}
+			
 	}
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.id;
 	}
 
 	@Override

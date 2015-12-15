@@ -2,6 +2,8 @@ package client;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -173,7 +175,7 @@ public class GameScreenWait implements Screen, Observer {
 		batchCardBacks(client.getGameData().getNumberOfPlayers());
 		batchCardsFronts();
 		batchAllText();
-		
+       
 	}
 
 	@Override

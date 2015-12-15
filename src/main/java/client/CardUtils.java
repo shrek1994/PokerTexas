@@ -1,11 +1,12 @@
 package client;
 
+import cards.Card;
 import cards.Color;
 import cards.Figure;
 import messages.CardMsg;
 
 public class CardUtils {
-	static String CardValue(int n){
+	public static String CardValue(int n){
 		String value = "";
 		switch ((n-1)/13){
 			case 0: value = "}";
@@ -34,9 +35,9 @@ public class CardUtils {
 		return value;
 	}
 	
-	static int cardMsgToInt(CardMsg c){
-		Color col = c.getCard().getColor();
-		Figure fig = c.getCard().getFigure();
+	public static int cardToInt(Card c){
+		Color col = c.getColor();
+		Figure fig = c.getFigure();
 		int card = -1;
 		switch (fig.getValue()){
 			case 14: card = 0;
@@ -61,6 +62,10 @@ public class CardUtils {
 			break;
 		}
 		return card;
+	}
+	
+	public static int cardMsgToInt(CardMsg c){
+		return cardToInt(c.getCard());
 	}
 	
 }

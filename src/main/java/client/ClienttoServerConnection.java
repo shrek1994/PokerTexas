@@ -103,57 +103,60 @@ public class ClienttoServerConnection extends Observable{
 	}
 	
 	public void waitForMsg() {
-        Thread waitForMove = new Thread(){
-        	 public void run() {
-                 try {
-                     Object msg = receiverMsg.receiveMsg();
-                     System.out.println(msg.toString());
-                     if(msg instanceof NotifyAboutActionMsg)
-                    	 	data.setStatus("MOVE");
-                     if(msg instanceof CardMsg){
-                    	 boolean writed = false;
-                    	 int i;
-                    	 for(i = 0; i < data.getCardsInHandANDOnTable().length && !writed; i++){
-                    		    if(data.getCardsInHandANDOnTable(i) == 0){
-                    		    	data.setCardsInHandANDOnTable(i,CardUtils.cardMsgToInt((CardMsg) msg));
-                    		    	writed = true;
-                    		    }
-                    	 }
-                    	 if(i>2)
-                    		 data.setNumberOfCardsOnTable(data.getNumberOfCardsOnTable()+1);
-                     }
-                     if(msg instanceof BlindMsg){
-                    	 double money[] = data.getMoneyOfPlayers();
-                    	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
-                        	 System.out.println("wysylanie ciemnej");
-                    		 senderMsg.sendMsg(msg);
-                    		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
-                    		 data.setMoneyOfPlayers(money);
-                    	 }
-                    	 else{
-                    		 BlindMsg ret = new BlindMsg(0);
-                    		 senderMsg.sendMsg(ret);
-                    	 }
-                     }
-                     if(msg instanceof InfoAboutActionMsg){
-                    	 System.out.println("odebranie akcji");
-                    	 double money[] = data.getMoneyOfPlayers();
-                    	 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((InfoAboutActionMsg) msg).getAction().getMoney();
-                    	 data.setActionOfPlayerX(((InfoAboutActionMsg) msg).getPlayerId(), ((InfoAboutActionMsg) msg).getAction());
-                    	 data.setMoneyOfPlayers(money);
-                     }
-                 } catch (Exception e) {
-                    //TODO error thread
-                 }
-             }
-        };
-        waitForMove.start();
-        try {
-            waitForMove.join(99);
-        } catch (InterruptedException e) {
-            //TODO server disconnect
-        }
-        waitForMove.interrupt();
+		
+	        Thread waitForMove = new Thread(){
+	        	 public void run() {
+	                 try {
+	                	 while(true){
+		                     Object msg = receiverMsg.receiveMsg();
+		                     //System.out.println(msg.toString());
+		                     if(msg instanceof NotifyAboutActionMsg)
+		                    	 	data.setStatus("MOVE");
+		                     if(msg instanceof CardMsg){
+		                    	 boolean writed = false;
+		                    	 int i;
+		                    	 for(i = 0; i < data.getCardsInHandANDOnTable().length && !writed; i++){
+		                    		    if(data.getCardsInHandANDOnTable(i) == 0){
+		                    		    	data.setCardsInHandANDOnTable(i,CardUtils.cardMsgToInt((CardMsg) msg));
+		                    		    	writed = true;
+		                    		    }
+		                    	 }
+		                    	 if(i>2)
+		                    		 data.setNumberOfCardsOnTable(data.getNumberOfCardsOnTable()+1);
+		                     }
+		                     if(msg instanceof BlindMsg){
+		                    	 double money[] = data.getMoneyOfPlayers();
+		                    	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
+		                        	 System.out.println("wysylanie ciemnej");
+		                    		 senderMsg.sendMsg(msg);
+		                    		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
+		                    		 data.setMoneyOfPlayers(money);
+		                    	 }
+		                    	 else{
+		                    		 BlindMsg ret = new BlindMsg(0);
+		                    		 senderMsg.sendMsg(ret);
+		                    	 }
+		                     }
+		                     if(msg instanceof InfoAboutActionMsg){
+		                    	 System.out.println("odebranie akcji");
+		                    	 double money[] = data.getMoneyOfPlayers();
+		                    	 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((InfoAboutActionMsg) msg).getAction().getMoney();
+		                    	 data.setActionOfPlayerX(((InfoAboutActionMsg) msg).getPlayerId(), ((InfoAboutActionMsg) msg).getAction());
+		                    	 data.setMoneyOfPlayers(money);
+		                     }
+	                	 }
+	                 } catch (Exception e) {
+	                    //TODO error thread
+	                 }
+	             }
+	        };
+	        waitForMove.start();
+	        /*try {
+	            waitForMove.join(30);
+	        } catch (InterruptedException e) {
+	            //TODO server disconnect
+	        }
+	        waitForMove.interrupt();*/
     }
 
 	public void sendMove(Object arg1) {
