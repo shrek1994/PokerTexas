@@ -4,8 +4,6 @@ import messages.*;
 import cards.Card;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -14,7 +12,7 @@ public class Player implements IPlayer, Observer {
     final static long millisecondsWaitForActionPlayer = 30 * 1000;
 
     private static int nextId = 0;
-    private int Id;
+    private int id;
     private SenderMsg senderMsg;
     private ReceiverMsg receiverMsg;
 
@@ -29,7 +27,7 @@ public class Player implements IPlayer, Observer {
     private final ActionMsg defaultActionMsg = new ActionMsg(ActionType.Fold, 0);
 
     public Player(SenderMsg senderMsg, ReceiverMsg receiverMsg) {
-        Id = nextId;
+        id = nextId;
         nextId++;
         this.senderMsg = senderMsg;
         this.receiverMsg = receiverMsg;
@@ -55,7 +53,7 @@ public class Player implements IPlayer, Observer {
         try {
             senderMsg.sendMsg(new NotifyAboutActionMsg());
         } catch (IOException e) {
-            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
+            logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
             return defaultActionMsg;
         }
 
@@ -88,7 +86,7 @@ public class Player implements IPlayer, Observer {
             receiveBlind.join(millisecondsWaitForActionPlayer);
             receiveBlind.interrupt();
         } catch (Exception e) {
-            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
+            logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
         }
         return blindMsg.getValue();
     }
@@ -99,13 +97,13 @@ public class Player implements IPlayer, Observer {
             senderMsg.sendMsg(new CardMsg(card));
             cardList.add(card);
         } catch (IOException e) {
-            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
+            logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
         }
     }
 
     @Override
     public int getId() {
-        return Id;
+        return id;
     }
 
     @Override
@@ -113,7 +111,7 @@ public class Player implements IPlayer, Observer {
         try {
             senderMsg.sendMsg(msg);
         } catch (IOException e) {
-            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
+            logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
         }
     }
 
@@ -127,7 +125,7 @@ public class Player implements IPlayer, Observer {
             receive.join(millisecondsWaitForActionPlayer);
             receive.interrupt();
         } catch (Exception e) {
-            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
+            logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
         }
         if( infoAboutContinuingGameMsg != null)
         {
@@ -143,7 +141,7 @@ public class Player implements IPlayer, Observer {
         try {
             senderMsg.sendMsg(msg);
         } catch (IOException e) {
-            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
+            logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
         }
     }
 
@@ -155,11 +153,11 @@ public class Player implements IPlayer, Observer {
                 settings.moneyOnStart,
                 settings.smallBlind,
                 settings.bigBlind,
-                this.Id);
+                this.id);
         try {
             senderMsg.sendMsg(msg);
         } catch (IOException e) {
-            logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
+            logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
         }
     }
 
