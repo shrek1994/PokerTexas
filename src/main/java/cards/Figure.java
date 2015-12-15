@@ -23,7 +23,7 @@ public enum Figure {
 
     final private int value;
 
-    private Figure(int value)
+    Figure(int value)
     {
         this.value = value;
     }

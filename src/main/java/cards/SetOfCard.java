@@ -16,7 +16,7 @@ public enum SetOfCard {
     RoyalFlush(9); // poker krolewski
 
     private final int value;
-    private SetOfCard(int value) {
+    SetOfCard(int value) {
         this.value = value;
     }
 

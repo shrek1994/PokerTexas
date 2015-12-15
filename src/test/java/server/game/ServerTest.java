@@ -1,8 +1,5 @@
 package server.game;
 
-import cards.Card;
-import cards.Color;
-import cards.Figure;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +47,7 @@ public class ServerTest {
     }
 
     @Test
-    public void test() throws IOException {
+    public void shouldCorrectRunAndWaitForPlayers() throws IOException {
         when(serverSocketFactory.create(port)).thenReturn(serverSocket);
         when(serverSocket.accept()).thenReturn(firstSocket, secondSocket);
         when(playerFactory.create(firstSocket)).thenReturn(iplayer);
