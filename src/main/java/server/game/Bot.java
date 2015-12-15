@@ -12,7 +12,8 @@ public class Bot implements IPlayer {
 	private double money;
 	private int[] cardsInHand;
 	private int[] cardsOnTable;
-	private double pot;
+	private double pot = 0;
+	private int numberOfCards = 0;;
 	
 	
 	@Override
@@ -23,14 +24,18 @@ public class Bot implements IPlayer {
 
 	@Override
 	public int getBlind(int value) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (money > value){
+			money -= value;
+			return value;
+		}
+		else{
+			return 0;
+		}
 	}
 
 	@Override
 	public void addCard(Card card) {
-		// TODO Auto-generated method stub
-
+	
 	}
 
 	@Override
@@ -65,8 +70,7 @@ public class Bot implements IPlayer {
 
 	@Override
 	public void setSettings(Settings settings) {
-		// TODO Auto-generated method stub
-		
+		this.money = settings.moneyOnStart;
 	}
 
 }

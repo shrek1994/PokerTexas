@@ -130,6 +130,10 @@ public class ClienttoServerConnection extends Observable{
                     		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
                     		 data.setMoneyOfPlayers(money);
                     	 }
+                    	 else{
+                    		 BlindMsg ret = new BlindMsg(0);
+                    		 senderMsg.sendMsg(ret);
+                    	 }
                      }
                      if(msg instanceof InfoAboutActionMsg){
                     	 System.out.println("odebranie akcji");
