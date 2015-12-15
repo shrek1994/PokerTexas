@@ -41,6 +41,7 @@ public class GameClient implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		System.out.println("sending action");
 		if(arg1 instanceof ActionMsg){
 			connection.sendMove(arg1);
 		}

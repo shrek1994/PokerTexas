@@ -73,12 +73,11 @@ public class GameScreenMove implements Screen, Observer {
 				public void touchUp(InputEvent e, float x, float y, int point, int button){
 					try{
 						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[this.b].getText().toString()),Double.parseDouble(betValue.getText())));
-						System.out.println(client.getGameData().getActionOfPlayerX(client.getGameData().getPlayerNumber()).getActionType().toString()+client.getGameData().getActionOfPlayerX(client.getGameData().getPlayerNumber()).getMoney());
 					}
 					catch(Exception ex){
 						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[client.getGameData().getPlayerNumber()].getText().toString()),0.0));
 					}
-					client.getGameData().setStatus("");
+					client.getGameData().setStatus("WAIT");
 					game.setScreen(new GameScreenWait(client,game));
 				}
 			});

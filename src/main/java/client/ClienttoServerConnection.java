@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
+import java.util.Observer;
 
 import messages.ActionMsg;
 import messages.BlindMsg;
@@ -24,7 +25,7 @@ import messages.SettingsMsg;
  * @author erinu
  *
  */
-public class ClienttoServerConnection extends Observable{
+public class ClienttoServerConnection extends Observable implements Observer{
 	
 	private String address;
 	private String port;
@@ -43,6 +44,7 @@ public class ClienttoServerConnection extends Observable{
 
 	ClienttoServerConnection(){
 		data = new GameData(12);
+		data.addObserver(this);
 	}
 	
 
@@ -107,9 +109,8 @@ public class ClienttoServerConnection extends Observable{
 	        Thread waitForMove = new Thread(){
 	        	 public void run() {
 	                 try {
-	                	 while(true){
+	                	 while(data.getStatus().equals("WAIT")){
 		                     Object msg = receiverMsg.receiveMsg();
-		                     //System.out.println(msg.toString());
 		                     if(msg instanceof NotifyAboutActionMsg)
 		                    	 	data.setStatus("MOVE");
 		                     if(msg instanceof CardMsg){
@@ -165,6 +166,12 @@ public class ClienttoServerConnection extends Observable{
         } catch (IOException e) {
             System.out.println("disconnect");
         }
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		setChanged();
+	    notifyObservers(arg1);
 	}
 	
 	

@@ -100,7 +100,7 @@ public class GameData extends Observable{
 	public void setActionOfPlayerX(int numberOfPlayer, ActionMsg msg) {
 		this.actions[numberOfPlayer] = msg;
 		setChanged();
-	    notifyObservers();
+	    notifyObservers(msg);
 	}
 
 	public GameType getGameType() {

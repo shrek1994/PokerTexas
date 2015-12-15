@@ -33,7 +33,7 @@ public class GameScreenWait implements Screen, Observer {
 	private BitmapFont text;
 	private String txtVal;
 	private GameClient client;
-	private boolean updated;
+	private boolean updated = false;
 	private Game game;
 	
 	public GameScreenWait(GameClient c, Game g){
