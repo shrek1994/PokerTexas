@@ -36,7 +36,10 @@ public class Table extends Observable {
 
     public void addMoney(IPlayer who, double howMuch)
     {
-        moneys.put(who, moneys.get(who) + howMuch);
+        if (moneys.get(who) != null)
+            moneys.put(who, moneys.get(who) + howMuch);
+        else
+            moneys.put(who, howMuch);
     }
 
     public boolean haveAllPlayersTheSameMoney() {
