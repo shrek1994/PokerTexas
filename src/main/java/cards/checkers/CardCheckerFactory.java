@@ -14,7 +14,8 @@ public class CardCheckerFactory {
         ICardChecker flushChecker = new FlushChecker(straightChecker);
         ICardChecker fullHouseChecker = new FullHouseChecker(flushChecker);
 
-        ICardChecker royalFlushChecker = new RoyalFlushChecker(onePairChecker);
+
+        ICardChecker royalFlushChecker = new RoyalFlushChecker(fullHouseChecker);
         return royalFlushChecker;
     }
 }

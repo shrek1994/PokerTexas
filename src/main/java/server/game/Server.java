@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Server {
+    private final static Logger logger = Logger.getLogger(Server.class.getName());
     private ServerSocket server;
     private PlayerFactory playerFactory;
     private List<IPlayer> playersList;
@@ -19,6 +21,7 @@ public class Server {
 
     public void runServer(int port) throws IOException
     {
+        logger.info("Running server at port: " + port);
         server = serverSocketFactory.create(port);
     }
 
@@ -27,6 +30,7 @@ public class Server {
         while ( playersList.size() < numberOfPlayers )
         {
             IPlayer player = playerFactory.create(server.accept());
+            logger.info("Player[" + player.getId() + "] connected");
             playersList.add(player);
             //TODO sprawdzanie czy player sie nie rozlaczyl
         }

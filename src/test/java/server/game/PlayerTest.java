@@ -53,9 +53,7 @@ public class PlayerTest {
 
     @Before
     public void setUp() throws Exception {
-        LogManager.getLogManager().reset();
-        Logger globalLogger = Logger.getLogger(java.util.logging.Logger.GLOBAL_LOGGER_NAME);
-        globalLogger.setLevel(java.util.logging.Level.OFF);
+        turnOffLogger();
 
         sut = new Player(senderMsg, receiverMsg);
     }
@@ -64,6 +62,12 @@ public class PlayerTest {
     public void tearDown() throws Exception {
         verifyNoMoreInteractions(senderMsg);
         verifyNoMoreInteractions(receiverMsg);
+    }
+
+    private void turnOffLogger() {
+        LogManager.getLogManager().reset();
+        Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+        globalLogger.setLevel(java.util.logging.Level.OFF);
     }
 
     /***********************************GET*ACTION*TESTS****************************************************/

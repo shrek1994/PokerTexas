@@ -109,9 +109,9 @@ public class Player implements IPlayer, Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
+    public void update(Observable observable, Object msg) {
         try {
-            senderMsg.sendMsg(o);
+            senderMsg.sendMsg(msg);
         } catch (IOException e) {
             logger.warning("Probably player("+Id+") disconnected, " + e.getMessage());
         }

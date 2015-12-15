@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
@@ -40,6 +42,8 @@ public class SenderAndReceiverMsgTest {
 
     @Before
     public void Setup() throws IOException, InterruptedException {
+        turnOffLogger();
+
         serverSocket = new ServerSocket(port);
 
         server.start();
@@ -55,6 +59,12 @@ public class SenderAndReceiverMsgTest {
         socket.close();
         serverSocket.close();
 
+    }
+
+    private void turnOffLogger() {
+        LogManager.getLogManager().reset();
+        Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+        globalLogger.setLevel(java.util.logging.Level.OFF);
     }
 
     @Test

@@ -52,6 +52,9 @@ public class ServerTest {
         when(serverSocket.accept()).thenReturn(firstSocket, secondSocket);
         when(playerFactory.create(firstSocket)).thenReturn(iplayer);
         when(playerFactory.create(secondSocket)).thenReturn(player);
+        when(iplayer.getId()).thenReturn(4);
+        when(player.getId()).thenReturn(1);
+
 
         sut.runServer(port);
         sut.waitForPlayers(numberOfPlayers);
@@ -64,6 +67,8 @@ public class ServerTest {
         assertEquals(iplayer, playerList.get(0));
         assertEquals(player, playerList.get(1));
 
+        verify(iplayer).getId();
+        verify(player).getId();
         verify(serverSocketFactory).create(port);
         verify(playerFactory, times(2)).create(Matchers.<Socket>any());
         verify(serverSocket, times(2)).accept();
