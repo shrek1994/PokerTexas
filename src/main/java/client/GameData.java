@@ -22,19 +22,22 @@ public class GameData extends Observable{
 	private ActionMsg actions[];
 	private String status = "WAITFORSETTINGS";
 	private GameType gameType = GameType.NoLimit;
-	private int numberOfCardsOnTable = 0;
+	private int numberOfCardsOnTable = 0; 
 	private double moneyOfPlayers[];
 	private int pot=0;
 	private int currentBet=0;
 	
 	GameData(int players){
-		actions = new ActionMsg[players];
+		this.actions = new ActionMsg[players];
 		this.numberOfPlayers = players;
 		this.cardsInHandANDOnTable = new int[7];
+		this.moneyOfPlayers = new double[players];
 	}
 	
 	void setNumberOfPlayers(int n){
-		numberOfPlayers = n;
+		this.numberOfPlayers = n;
+		this.moneyOfPlayers = new double[n];
+		this.actions = new ActionMsg[n];
 		setChanged();
 	    notifyObservers();
 	}
@@ -147,6 +150,10 @@ public class GameData extends Observable{
 
 	public double[] getMoneyOfPlayers() {
 		return moneyOfPlayers;
+	}
+	
+	public double getMoneyOfPlayerX(int i){
+		return moneyOfPlayers[i];
 	}
 
 	public void setMoneyOfPlayers(double moneyOfPlayers[]) {

@@ -20,7 +20,7 @@ public class GameClient implements Observer{
 	public GameClient(){
 		connection = new ClienttoServerConnection();
 		connection.addObserver(this);
-	}
+	} 
 	
 	
 	/**
@@ -48,9 +48,11 @@ public class GameClient implements Observer{
 	}
 	
 	public boolean[] getAvailableActions() {
+		int id = connection.getData().getPlayerNumber();
 		boolean actions[];
 		actions = new boolean[6];
 		for (int i=0; i<6; i++){
+			actions[i] = true;
 			switch (connection.getData().getGameType()){
 			case FixedLimit:
 				break;
@@ -61,7 +63,20 @@ public class GameClient implements Observer{
 			default:
 				break;
 			}
-			actions[i] = true;
+		}
+		for (int i=0; i<connection.getData().getNumberOfPlayers();i++){
+			if (connection.getData().getActionOfPlayerX(i)!=null){
+				actions[0]=false;
+			}
+		}
+		if (connection.getData().getCurrentBet()>connection.getData().getMoneyOfPlayerX(id)){
+			actions[1] = false;
+			actions[2] = false;
+			actions[3] = false;
+		}
+		if (connection.getData().getActionOfPlayerX(id) != null){
+			if (connection.getData().getCurrentBet() == connection.getData().getActionOfPlayerX(id).getMoney())
+				actions[2] = false;
 		}
 		return actions;
 	}
