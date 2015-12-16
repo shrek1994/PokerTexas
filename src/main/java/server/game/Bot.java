@@ -13,22 +13,57 @@ import messages.Settings;
 
 public class Bot implements IPlayer {
 
-	private double money;
-	private int[] cardsInHand;
-	private int[] cardsOnTable;
-	private double pot = 0;
+	//TODO gather information from the server about state of the game
+	
+	private int money;
+	private int[] cardsInHand = {-1,-1};
+	private int[] cardsOnTable = {-1,-1,-1,-1,-1};
+	private int pot = 0;
+	private int currentBet = 0;
 	private int numberOfCards = 0;
 	private int id;
+	private int myBet = 0;
 	
 	private static int nextBotId = 0;
 	
 	
 	@Override
 	public ActionMsg getAction() {
+		int eagerMeter = assessSituation();
 		ActionMsg msg;
 		if (pot>money)
 			return msg = new ActionMsg(ActionType.Fold, 0);
-		return null;
+		if (currentBet == myBet)
+			return msg = new ActionMsg(ActionType.Check, 0);
+		if (eagerMeter<2 && myBet<(money/2))
+			return msg = new ActionMsg(ActionType.Fold, 0);
+		if (eagerMeter > 2 && myBet<currentBet  && currentBet<(money/10)*eagerMeter){
+			int bet = (money/10)*eagerMeter;
+			money -= bet;
+			myBet = bet;
+			currentBet = bet;
+			pot += bet;
+			return msg = new ActionMsg(ActionType.Raise,bet);
+		}
+		if (eagerMeter > 8){
+			money = 0;
+			pot += money;
+			return msg = new ActionMsg(ActionType.AllIn, money);
+		}
+		//TODO when to bet?
+		return msg = new ActionMsg(ActionType.Fold, money);
+	}
+
+	private int assessSituation() {
+		int assessment = 0;
+		if (cardsInHand[0]%13 == cardsInHand[1]%13)
+			assessment += 3;
+		if (cardsInHand[0]/13 == cardsInHand[1]/13)
+			assessment++;
+		if (pot/3 < money)
+			assessment++;
+		//TODO assessment from card hands
+		return assessment;
 	}
 
 	public Bot() {

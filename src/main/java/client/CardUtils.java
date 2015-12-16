@@ -36,29 +36,29 @@ public class CardUtils {
 	}
 	
 	public static int cardToInt(Card c){
-		Color col = c.getColor();
-		Figure fig = c.getFigure();
+		int col = c.getColor().ordinal();
+		int fig = c.getFigure().ordinal();
 		int card = -1;
-		switch (fig.getValue()){
-			case 14: card = 0;
+		switch (fig){
+			case 12: card = 0;
 			break;
-			case 11: card = 10;
+			case 9: card = 10;
 			break;
-			case 12: card = 11;
+			case 10: card = 11;
 			break;
-			case 13: card = 12;
+			case 11: card = 12;
 			break;
-			default: card = (fig.getValue()%13);
+			default: card = ((fig+2)%13);
 			break;
 		}
-		switch (col.getValue()){
+		switch (col){
 			case 0: card += 13;
 			break;
 			case 1: card += 39;
 			break;
-			case 3: card += 26;
+			case 2: card += 26;
 			break;
-			case 4: card += 0;
+			case 3: card += 0;
 			break;
 		}
 		return card;

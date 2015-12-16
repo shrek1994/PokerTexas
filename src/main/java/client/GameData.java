@@ -24,6 +24,8 @@ public class GameData extends Observable{
 	private GameType gameType = GameType.NoLimit;
 	private int numberOfCardsOnTable = 0;
 	private double moneyOfPlayers[];
+	private int pot=0;
+	private int currentBet=0;
 	
 	GameData(int players){
 		actions = new ActionMsg[players];
@@ -149,6 +151,22 @@ public class GameData extends Observable{
 
 	public void setMoneyOfPlayers(double moneyOfPlayers[]) {
 		this.moneyOfPlayers = moneyOfPlayers;
+	}
+
+	public int getPot() {
+		return pot;
+	}
+
+	public void setPot(int pot) {
+		this.pot = pot;
+	}
+
+	public int getCurrentBet() {
+		return currentBet;
+	}
+
+	public void setCurrentBet(int currentBet) {
+		this.currentBet = currentBet;
 	}
 
 }

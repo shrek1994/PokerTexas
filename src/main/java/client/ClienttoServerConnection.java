@@ -144,6 +144,8 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    	 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((InfoAboutActionMsg) msg).getAction().getMoney();
 		                    	 data.setActionOfPlayerX(((InfoAboutActionMsg) msg).getPlayerId(), ((InfoAboutActionMsg) msg).getAction());
 		                    	 data.setMoneyOfPlayers(money);
+		                    	 data.setPot((int) (data.getPot()+((InfoAboutActionMsg) msg).getAction().getMoney()));
+		                    	 data.setCurrentBet((int) ((InfoAboutActionMsg) msg).getAction().getMoney());
 		                     }
 	                	 }
 	                 } catch (Exception e) {
@@ -152,12 +154,6 @@ public class ClienttoServerConnection extends Observable implements Observer{
 	             }
 	        };
 	        waitForMove.start();
-	        /*try {
-	            waitForMove.join(30);
-	        } catch (InterruptedException e) {
-	            //TODO server disconnect
-	        }
-	        waitForMove.interrupt();*/
     }
 
 	public void sendMove(Object arg1) {

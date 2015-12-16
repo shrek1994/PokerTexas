@@ -147,12 +147,14 @@ public class GameScreenWait implements Screen, Observer {
 		batch.begin();
 		int n = client.getGameData().getNumberOfPlayers();
 		for (int i=0; i<n;i++){
-			String message = "brak";
+			String message = "";
 			if(client.getGameData().getActionOfPlayerX(i) != null)
 				message = client.getGameData().getActionOfPlayerX(i).getActionType().toString();
-			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+50);
+			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+80);
 			
 		}
+		text.draw(batch, "$"+client.getGameData().getPot(), 250 , 500);
+		text.draw(batch, "Current bet: $"+client.getGameData().getCurrentBet(), 250 , 450);
 		batch.end();
 	}
 	

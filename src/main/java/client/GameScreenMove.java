@@ -62,7 +62,7 @@ public class GameScreenMove implements Screen, Observer {
 		actions[4] = new TextButton("Fold", skin);
 		actions[5] = new TextButton("AllIn", skin);
 		this.availableActions = client.getAvailableActions();
-		betValue.setText("0.0");
+		betValue.setText("0");
 		for (int i=0; i<6; i++){
 			actions[i].setPosition(150+i*80, 230);
 			actions[i].setSize(70, 50);
@@ -77,6 +77,8 @@ public class GameScreenMove implements Screen, Observer {
 					catch(Exception ex){
 						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[client.getGameData().getPlayerNumber()].getText().toString()),0.0));
 					}
+					client.getGameData().setPot(client.getGameData().getPot()+Integer.parseInt(betValue.getText()));
+					client.getGameData().setCurrentBet(Integer.parseInt(betValue.getText()));
 					client.getGameData().setStatus("WAIT");
 					game.setScreen(new GameScreenWait(client,game));
 				}
@@ -138,14 +140,17 @@ public class GameScreenMove implements Screen, Observer {
 		batch.begin();
 		int n = client.getGameData().getNumberOfPlayers();
 		for (int i=0; i<n;i++){
-			String message = "brak";
+			String message = "";
 			if(client.getGameData().getActionOfPlayerX(i) != null)
 				message = client.getGameData().getActionOfPlayerX(i).getActionType().toString();
-			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+50);
+			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+80);
 			
 		}
+		text.draw(batch, "$"+client.getGameData().getPot(), 250 , 500);
+		text.draw(batch, "Current bet: $"+client.getGameData().getCurrentBet(), 250 , 450);
 		batch.end();
 	}
+	
 	
 	
 	void generateCardsBacks(int n){
