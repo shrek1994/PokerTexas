@@ -50,18 +50,16 @@ public class ClienttoServerConnection extends Observable implements Observer{
 
 	void getGameSettings(){
 		System.out.println("probuje odbieranie ustwaien");
-		while(data.getStatus().equals("WAITFORSETTINGS")){
+		while(data.getStatus().equals("WAITFORSETTINGS") ){
 			Thread serverConnect = new Thread(){
 	       	public void run() {
 	                try {
 	                	Object msg = null;
-	                	System.out.println("zaczynam odbieranie ustwaien");
 	                    msg = receiverMsg.receiveMsg(); 
 	                    System.out.println(msg.toString());
 	                    System.out.println(((SettingsMsg) msg).getValueOfBigBlind());
 	                    if(msg instanceof SettingsMsg){
 	                    	data.setStatus("WAIT");
-	                    	System.out.println("odbieranie ustwaien");
 	                   	 	data.setGameType(((SettingsMsg) msg).getType());
 	                   	 	data.setBigBlind(((SettingsMsg) msg).getValueOfBigBlind());
 	                   	 	data.setNumberOfPlayers(((SettingsMsg) msg).getNumberOfPlayers());
@@ -74,7 +72,8 @@ public class ClienttoServerConnection extends Observable implements Observer{
 	                   	 	data.setMoneyOfPlayers(money);
 	                    }
 	                } catch (Exception e) {
-	                   //TODO error thread
+	                	 data.setStatus("DISCONNECTED");
+	                	 throw new RuntimeException(e);
 	                }
 	            }
 	       };
@@ -82,7 +81,7 @@ public class ClienttoServerConnection extends Observable implements Observer{
            try {
                serverConnect.join(5000);
            } catch (InterruptedException e) {
-               //TODO server disconnect
+        	   throw new RuntimeException(e);
            }
            serverConnect.interrupt();
        }
