@@ -1,6 +1,7 @@
 package server.game;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import cards.Card;
 import cards.CollectionOfCards;
@@ -8,6 +9,7 @@ import messages.RankingMsg;
 import messages.Settings;
 
 public class TexasHoldRound {
+    private final static Logger logger = Logger.getLogger(TexasHoldRound.class.getName());
     private final int numberOfCardForPlayer = 2;
     private int indexOfPlayerWihDealerButton = 0;
     private final int smallBlind;
@@ -56,6 +58,7 @@ public class TexasHoldRound {
         }
 
         //pierwsza licytacja
+        logger.info("First auction");
         int indexOfPlayerWhoStart = getIndexOfTheLeft(getIndexOfPlayerTwoOnTheLeftOfDealerButton_bigBlind());
         auction.start(players.get(indexOfPlayerWhoStart));
 
@@ -63,6 +66,7 @@ public class TexasHoldRound {
         table.addCard(cards.getCards(3));
 
         //druga licytacja
+        logger.info("Second auction");
         indexOfPlayerWhoStart = getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind();
         auction.start(players.get(indexOfPlayerWhoStart));
 
@@ -70,6 +74,7 @@ public class TexasHoldRound {
         table.addCard(cards.getCards(1));
 
         //trzecia licytacja
+        logger.info("Third auction");
         indexOfPlayerWhoStart = getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind();
         auction.start(players.get(indexOfPlayerWhoStart));
 
@@ -77,11 +82,13 @@ public class TexasHoldRound {
         table.addCard(cards.getCards(1));
 
         //czwarta licytacja
+        logger.info("Forth auction");
         indexOfPlayerWhoStart = getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind();
         auction.start(players.get(indexOfPlayerWhoStart));
 
         IPlayer winner = playerRanking.getWinner(players, table.getCards());
         RankingMsg rankingMsg = new RankingMsg(winner.getId(), table.getCash());
+        logger.info("End round, winner: Player[" + rankingMsg.getPlayerIdWhoWin() + "]");
         for(IPlayer player : players)
         {
             player.updateCashIfWin(rankingMsg);

@@ -51,6 +51,7 @@ public class Player implements IPlayer, Observer {
 
         // notify player about action
         try {
+            logger.info("Player[" + id + "]: Sending NotifyAboutActionMsg");
             senderMsg.sendMsg(new NotifyAboutActionMsg());
         } catch (IOException e) {
             logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
@@ -78,6 +79,7 @@ public class Player implements IPlayer, Observer {
     public int getBlind(int value) {
         blindMsg = new BlindMsg(0);
         try {
+            logger.info("Player[" + id + "]: Sending BlindMsg: " + value);
             senderMsg.sendMsg(new BlindMsg(value));
 
             Thread receiveBlind = new Thread(new ReceiveBlind());
@@ -94,6 +96,7 @@ public class Player implements IPlayer, Observer {
     @Override
     public void addCard(Card card) {
         try {
+            logger.info("Player[" + id + "]: Sending CardMsg");
             senderMsg.sendMsg(new CardMsg(card));
             cardList.add(card);
         } catch (IOException e) {
@@ -109,6 +112,7 @@ public class Player implements IPlayer, Observer {
     @Override
     public void update(Observable observable, Object msg) {
         try {
+            logger.info("Player[" + id + "]: Sending " + msg.getClass().toString());
             senderMsg.sendMsg(msg);
         } catch (IOException e) {
             logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
@@ -139,6 +143,7 @@ public class Player implements IPlayer, Observer {
     {
         // TODO test!
         try {
+            logger.info("Player[" + id + "]: Sending " + msg.getClass().toString());
             senderMsg.sendMsg(msg);
         } catch (IOException e) {
             logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
@@ -155,6 +160,7 @@ public class Player implements IPlayer, Observer {
                 settings.bigBlind,
                 this.id);
         try {
+            logger.info("Player[" + id + "]: Sending " + msg.getClass().toString());
             senderMsg.sendMsg(msg);
         } catch (IOException e) {
             logger.warning("Probably player("+ id +") disconnected, " + e.getMessage());
@@ -167,6 +173,7 @@ public class Player implements IPlayer, Observer {
         public void run() {
             try {
                 Object msg = receiverMsg.receiveMsg();
+                logger.info("Player[" + id + "]: Received " + msg.getClass().toString());
                 if(msg instanceof ActionMsg)
                 {
                     synchronized (lock) {
@@ -188,6 +195,7 @@ public class Player implements IPlayer, Observer {
         public void run() {
             try {
                 Object msg = receiverMsg.receiveMsg();
+                logger.info("Player[" + id + "]: Received " + msg.getClass().toString());
                 if(msg instanceof BlindMsg)
                 {
                     blindMsg = (BlindMsg) msg;
@@ -208,6 +216,7 @@ public class Player implements IPlayer, Observer {
             try {
 
                 Object msg = receiverMsg.receiveMsg();
+                logger.info("Player[" + id + "]: Received " + msg.getClass().toString());
                 if( msg instanceof InfoAboutContinuingGameMsg)
                 {
                     infoAboutContinuingGameMsg = (InfoAboutContinuingGameMsg)msg;
