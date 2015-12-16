@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<settings id="0">
+    <port>8080</port>
+    <numberOfPlayers>3</numberOfPlayers>
+    <numberOfBots>0</numberOfBots>
+    <smallBlind>5</smallBlind>
+    <bigBlind>10</bigBlind>
+
+    <!-- 0 - NoLimit , 1 - PotLimit , 2 - FixedLimit -->
+    <gameType>0</gameType>
+
+    <moneyOnStart>500</moneyOnStart>
+</settings>

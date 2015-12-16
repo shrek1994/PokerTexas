@@ -9,17 +9,18 @@ import java.io.IOException;
  */
 public class Main {
 
+    // args[0] - nazwa pliku z ustawieniami
     public static void main(String args[])
     {
+        //Format logger
 //        System.setProperty("java.util.logging.SimpleFormatter.format",
 //                "%4$s %5$s%6$s%n");
-        // args[0] - nazwa pliku z ustawieniami
         if ( args.length < 1)
         {
             printHelp();
         }
 
-        Settings settings = new Settings(); //TODO read from file
+        Settings settings = SettingsReader.getInstance().readXml(args[0]);
         GameFactory gameFactory = new GameFactory();
         Game game = gameFactory.create(settings);
         try {
