@@ -5,7 +5,6 @@ package cards.checkers;
  */
 public class CardCheckerFactory {
     public ICardChecker create() {
-        //TODO create cardCheckers
         ICardChecker highestCardChecker = new HighestCardChecker();
         ICardChecker onePairChecker = new OnePairChecker(highestCardChecker);
         ICardChecker twoPairChecker = new TwoPairChecker(onePairChecker);
@@ -14,9 +13,7 @@ public class CardCheckerFactory {
         ICardChecker flushChecker = new FlushChecker(straightChecker);
         ICardChecker fullHouseChecker = new FullHouseChecker(flushChecker);
         ICardChecker fourOfKindChecker = new FourOfKindChecker(fullHouseChecker);
-
-
-        ICardChecker royalFlushChecker = new RoyalFlushChecker(fourOfKindChecker);
-        return royalFlushChecker;
+        ICardChecker straightFlushChecker = new StraightFlushChecker(fourOfKindChecker);
+        return straightFlushChecker;
     }
 }
