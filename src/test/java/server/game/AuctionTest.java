@@ -141,4 +141,39 @@ public class AuctionTest {
         verify(table).addMoney(thirdPlayer, allInAction.getMoney());
         verify(table, times(2)).addMoney(fourthPlayer, raiseAction.getMoney());
     }
+
+    @Test(timeout=3000)
+    public void shouldStopActionWhenAllPlayersCheckOrFold() throws Exception {
+        when(firstPlayer.getAction()).thenReturn(raiseAction, foldAction);
+        when(secondPlayer.getAction()).thenReturn(raiseAction, raiseAction, checkAction);
+        when(thirdPlayer.getAction()).thenReturn(raiseAction, raiseAction, checkAction);
+        when(fourthPlayer.getAction()).thenReturn(raiseAction, raiseAction, foldAction);
+        when(fifthPlayer.getAction()).thenReturn(foldAction);
+
+        when(table.haveAllPlayersTheSameMoney()).thenReturn(false);
+
+        sut.start(thirdPlayer);
+
+        InOrder order = inOrder(firstPlayer, secondPlayer, thirdPlayer, fourthPlayer, fifthPlayer);
+        order.verify(thirdPlayer).getAction();
+        order.verify(fourthPlayer).getAction();
+        order.verify(fifthPlayer).getAction();
+        order.verify(firstPlayer).getAction();
+        order.verify(secondPlayer).getAction();
+
+        order.verify(thirdPlayer).getAction();
+        order.verify(fourthPlayer).getAction();
+        order.verify(firstPlayer).getAction();
+        order.verify(secondPlayer).getAction();
+
+        order.verify(thirdPlayer).getAction();
+        order.verify(fourthPlayer).getAction();
+        order.verify(secondPlayer).getAction();
+
+        verify(table, times(3)).haveAllPlayersTheSameMoney();
+        verify(table).addMoney(firstPlayer, raiseAction.getMoney());
+        verify(table, times(2)).addMoney(secondPlayer, raiseAction.getMoney());
+        verify(table, times(2)).addMoney(thirdPlayer, raiseAction.getMoney());
+        verify(table, times(2)).addMoney(fourthPlayer, raiseAction.getMoney());
+    }
 }

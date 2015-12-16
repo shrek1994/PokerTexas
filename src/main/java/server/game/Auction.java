@@ -68,7 +68,20 @@ public class Auction {
                 }
             }
         } while( ! table.haveAllPlayersTheSameMoney() &&
-                players.size() > onePlayer);
+                players.size() > onePlayer &&
+                ! allPlayersFoldOrCheck() );
+    }
+
+    private boolean allPlayersFoldOrCheck() {
+        for (Map.Entry<IPlayer, ActionMsg> pair : lastActions.entrySet())
+        {
+            if ( pair.getValue().getActionType() != ActionType.Check &&
+                    pair.getValue().getActionType() != ActionType.Fold)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void saveLastAction(IPlayer player, ActionMsg action) {
