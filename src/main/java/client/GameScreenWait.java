@@ -101,10 +101,11 @@ public class GameScreenWait implements Screen, Observer {
 	}
 	
 	void generateCardsFronts(){
+		//check if 7 or n+2
 		int n = client.getGameData().getNumberOfCardsOnTable();
-		card = new Rectangle[n+2];
+		card = new Rectangle[7];
 		cardImage = new Texture(Gdx.files.internal("card.jpg"));
-		for (int i=0; i<n+2; i++){
+		for (int i=0; i<7; i++){
 			card[i] = new Rectangle();
 			card[i].width = 50;
 			card[i].height = 75;
@@ -127,7 +128,7 @@ public class GameScreenWait implements Screen, Observer {
 				card[0].setPosition(150+((player-9)*170), 510);
 				card[1].setPosition(201+((player-9)*170), 510);
 			}
-		for (int i=0; i<n; i++)
+		for (int i=0; i<5; i++)
 			card[i+2].setPosition(190+i*80,400);
 		
 	}

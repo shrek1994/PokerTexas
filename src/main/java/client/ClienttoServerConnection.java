@@ -118,7 +118,7 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    		    	writed = true;
 		                    		    }
 		                    	 }
-		                    	 if(i>2)
+		                    	 if(i>1)
 		                    		 data.setNumberOfCardsOnTable(data.getNumberOfCardsOnTable()+1);
 		                     }
 		                     if(msg instanceof BlindMsg){
