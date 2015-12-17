@@ -3,6 +3,7 @@ package server.game;
 
 import messages.ActionMsg;
 import messages.ActionType;
+import messages.InfoAboutActionMsg;
 
 import java.util.*;
 
@@ -47,6 +48,7 @@ public class Auction {
                 IPlayer player = players.get(i);
                 ActionMsg action = player.getAction();
                 saveLastAction(player, action);
+                notifyAllAboutAction(action, player.getId());
 
                 switch (action.getActionType())
                 {
@@ -70,6 +72,14 @@ public class Auction {
         } while( ! table.haveAllPlayersTheSameMoney() &&
                 players.size() > onePlayer &&
                 ! allPlayersFoldOrCheck() );
+    }
+
+    private void notifyAllAboutAction(ActionMsg action, int playerId) {
+        for (IPlayer player: playerList)
+        {
+            if ( player instanceof Observer)
+                ((Observer)player).update(null, new InfoAboutActionMsg(playerId, action));
+        }
     }
 
     private boolean allPlayersFoldOrCheck() {

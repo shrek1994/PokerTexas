@@ -21,12 +21,11 @@ public class Table extends Observable {
 
     public void addCard(List<Card> cardList)
     {
-        cards.addAll(cardList);
         for(Card card : cardList)
         {
-            setChanged();
             notifyAllPlayers(new CardMsg(card));
         }
+        cards.addAll(cardList);
     }
 
     public List<Card> getCards()
@@ -61,6 +60,7 @@ public class Table extends Observable {
 
     private void notifyAllPlayers(Object message)
     {
+        setChanged();
         notifyObservers(message);
     }
 

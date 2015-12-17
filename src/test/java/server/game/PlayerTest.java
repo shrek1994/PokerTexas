@@ -117,7 +117,7 @@ public class PlayerTest {
     }
 
     //TODO comment test if you're working at another class - test duration - about 35 second
-    @Test(timeout = 35*1000)
+    //@Test(timeout = 35*1000)
     public void shouldReturnDefaultActionWhenNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws Exception {
         sut = new Player(senderMsg, new NotReceiveMsg());
 
@@ -316,7 +316,7 @@ public class PlayerTest {
 
 
     //TODO comment test if you're working at another class - test duration - about 35 second
-    @Test(timeout = 35*1000)
+    //@Test(timeout = 35*1000)
     public void shouldNotPlayWhenPlayerNothingReceive_WARNING_TEST_DURATION_35_SECOND() throws IOException, ClassNotFoundException {
         sut = new Player(senderMsg, new NotReceiveMsg());
 

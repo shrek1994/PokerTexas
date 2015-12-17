@@ -63,6 +63,7 @@ public class TexasHoldRound {
         auction.start(players.get(indexOfPlayerWhoStart));
 
         //wylozenie na stol 3 karty
+        logger.info("Show 3 cards on table");
         table.addCard(cards.getCards(3));
 
         //druga licytacja
@@ -71,6 +72,7 @@ public class TexasHoldRound {
         auction.start(players.get(indexOfPlayerWhoStart));
 
         //wylozenie na stol 1 karty
+        logger.info("Show 1 card on table");
         table.addCard(cards.getCards(1));
 
         //trzecia licytacja
@@ -79,6 +81,7 @@ public class TexasHoldRound {
         auction.start(players.get(indexOfPlayerWhoStart));
 
         //wylozenie na stol 1 karty
+        logger.info("Show 1 card on table");
         table.addCard(cards.getCards(1));
 
         //czwarta licytacja

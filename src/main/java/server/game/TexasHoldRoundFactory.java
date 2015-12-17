@@ -11,9 +11,8 @@ import java.util.List;
  * Created by maciek on 10.12.15.
  */
 public class TexasHoldRoundFactory {
-    public TexasHoldRound create(List<IPlayer> playerList, Settings settings) {
+    public TexasHoldRound create(List<IPlayer> playerList, Settings settings, Table table) {
         CollectionOfCards collectionOfCards = new CollectionOfCards();
-        Table table = new Table();
         Auction auction = new Auction(table, playerList);
         CardCheckerFactory cardCheckerFactory = new CardCheckerFactory();
         ICardChecker cardChecker = cardCheckerFactory.create();

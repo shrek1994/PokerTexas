@@ -30,13 +30,20 @@ public class GameModuleTest {
     SenderMsg firstSender;
     SenderMsg secondSender;
 
+    private final ActionMsg fold = new ActionMsg(ActionType.Fold, 0);
+    private final ActionMsg bet = new ActionMsg(ActionType.Bet, 10);
+    private final ActionMsg check = new ActionMsg(ActionType.Check, 0);
+    private final ActionMsg allIn = new ActionMsg(ActionType.AllIn, 200);
+    private final ActionMsg call = new ActionMsg(ActionType.Call, 5);
+    private final ActionMsg raise = new ActionMsg(ActionType.Raise, 15);
+
     private Game sut;
 
     @Before
     public void setUp() throws Exception {
-        turnOffLogger();
-//        System.setProperty("java.util.logging.SimpleFormatter.format",
-//                "%4$s %5$s%6$s%n");
+//        turnOffLogger();
+        System.setProperty("java.util.logging.SimpleFormatter.format",
+                "%4$s %5$s%6$s%n");
 
         settings.numberOfBots = 0;
         settings.numberOfPlayers = 2;
@@ -61,6 +68,9 @@ public class GameModuleTest {
         Object notifyActionMsg = receiverMsg.receiveMsg();
         assertTrue(notifyActionMsg instanceof NotifyAboutActionMsg);
         senderMsg.sendMsg(actionMsg);
+        //TODO add check if it is info about action msg
+        firstReceiver.receiveMsg();
+        secondReceiver.receiveMsg();
     }
 
     private void receiveCardMsg() throws ClassNotFoundException, IOException {
@@ -133,8 +143,71 @@ public class GameModuleTest {
         receiveCardMsg();
         receiveCardMsg();
 
-        playersAction(secondReceiver, secondSender, new ActionMsg(ActionType.Fold, 0));
-        playersAction(firstReceiver, firstSender, new ActionMsg(ActionType.Fold, 0));
+        playersAction(secondReceiver, secondSender, fold);
+        playersAction(firstReceiver, firstSender, fold);
+
+        receiveCardMsg();
+        receiveCardMsg();
+        receiveCardMsg();
+        receiveCardMsg();
+        receiveCardMsg();
+
+        receiveRankingMsg();
+
+        firstSender.sendMsg(new InfoAboutContinuingGameMsg(false));
+        secondSender.sendMsg(new InfoAboutContinuingGameMsg(false));
+
+        gameRunner.join(1000);
+        gameRunner.interrupt();
+    }
+
+    @Test(timeout = 5000)
+    public void shouldCorrectPlayAllAuction() throws Exception
+    {
+        Thread gameRunner = new Thread(new GameRunner());
+        gameRunner.start();
+
+        connectAndConfigurePlayersStreams();
+
+        receiveAllPlayersSettingMsg();
+
+        receiveAndReplyBlindMsg();
+
+        receiveCardMsg();
+        receiveCardMsg();
+
+        //first Auction
+        playersAction(secondReceiver, secondSender, raise);
+        playersAction(firstReceiver, firstSender, raise);
+
+        playersAction(secondReceiver, secondSender, raise);
+        playersAction(firstReceiver, firstSender, raise);
+
+        playersAction(secondReceiver, secondSender, check);
+        playersAction(firstReceiver, firstSender, check);
+
+        receiveCardMsg();
+        receiveCardMsg();
+        receiveCardMsg();
+
+        //second auction
+        playersAction(secondReceiver, secondSender, raise);
+        playersAction(firstReceiver, firstSender, raise);
+
+        playersAction(secondReceiver, secondSender, check);
+        playersAction(firstReceiver, firstSender, check);
+
+        receiveCardMsg();
+
+        //third Auction
+        playersAction(secondReceiver, secondSender, check);
+        playersAction(firstReceiver, firstSender, check);
+
+        receiveCardMsg();
+
+        //forth Auction
+        playersAction(secondReceiver, secondSender, check);
+        playersAction(firstReceiver, firstSender, check);
 
         receiveRankingMsg();
 

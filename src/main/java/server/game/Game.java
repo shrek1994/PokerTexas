@@ -13,11 +13,13 @@ public class Game {
     private Server server;
     private Settings settings;
     private List<IPlayer> playerList;
+    private Table table;
 
     public Game(TexasHoldRoundFactory texasHoldRoundFactory, Server server, Settings settings) {
         this.texasHoldRoundFactory = texasHoldRoundFactory;
         this.server = server;
         this.settings = settings;
+        table = new Table();
     }
 
     public void run() throws IOException {
@@ -27,8 +29,9 @@ public class Game {
         for (IPlayer player : playerList)
         {
             player.setSettings(settings);
+            table.addPlayer(player);
         }
-        TexasHoldRound texasHoldRound = texasHoldRoundFactory.create(playerList, settings);
+        TexasHoldRound texasHoldRound = texasHoldRoundFactory.create(playerList, settings, table);
 
         while ( playerList.size() > settings.numberOfBots ) {
 
@@ -43,5 +46,6 @@ public class Game {
                 }
             }
         }
+        server.close();
     }
 }
