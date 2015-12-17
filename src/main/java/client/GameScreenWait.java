@@ -53,7 +53,6 @@ public class GameScreenWait implements Screen, Observer {
 		generateCardsBacks(client.getGameData().getNumberOfPlayers());
 		generateCardsFronts();
 		client.waitForServer();
-		//client.getGameData().setStatus("MOVE");
 	}
 	
 	@Override
@@ -90,8 +89,8 @@ public class GameScreenWait implements Screen, Observer {
 					cardBack[i+n].setPosition(201+((i-9)*170), 510);
 				}
 		}
-		cardBack[client.getGameData().getPlayerNumber()].setPosition(999,999);
-		cardBack[client.getGameData().getPlayerNumber()+n].setPosition(999,999);
+		/*cardBack[client.getGameData().getPlayerNumber()].setPosition(999,999);
+		cardBack[client.getGameData().getPlayerNumber()+n].setPosition(999,999);*/
 	}
 	
 	void batchCardBacks(int n){
@@ -148,10 +147,11 @@ public class GameScreenWait implements Screen, Observer {
 		int n = client.getGameData().getNumberOfPlayers();
 		for (int i=0; i<n;i++){
 			String message = "";
-			if(client.getGameData().getActionOfPlayerX(i) != null)
-				message = client.getGameData().getActionOfPlayerX(i).getActionType().toString();
-			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+80);
-			
+			message = client.getGameData().getActionOfPlayerX(i).getActionType().toString() 
+					+ ": $"+client.getGameData().getActionOfPlayerX(i).getMoney()
+					+ " M: $"
+					+ client.getGameData().getMoneyOfPlayerX(i);
+			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+90);
 		}
 		text.draw(batch, "$"+client.getGameData().getPot(), 250 , 500);
 		text.draw(batch, "Current bet: $"+client.getGameData().getCurrentBet(), 250 , 450);
@@ -164,7 +164,6 @@ public class GameScreenWait implements Screen, Observer {
 			updated = false;
 			if (client.getGameData().getStatus().equals("MOVE")){
 				this.updated = false;
-				System.out.println("zmiana");
 				game.setScreen(new GameScreenMove(client,game));
 			}
 			//game.setScreen(new GameScreenWait(client,game));

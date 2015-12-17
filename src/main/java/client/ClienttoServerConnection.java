@@ -50,21 +50,17 @@ public class ClienttoServerConnection extends Observable implements Observer{
 	
 
 	void getGameSettings(){
-		System.out.println("probuje odbieranie ustwaien");
 		while(data.getStatus().equals("WAITFORSETTINGS") ){
 			Thread serverConnect = new Thread(){
 	       	public void run() {
 	                try {
 	                	Object msg = null;
 	                    msg = receiverMsg.receiveMsg(); 
-	                    System.out.println(msg.toString());
-	                    System.out.println(((SettingsMsg) msg).getValueOfBigBlind());
 	                    if(msg instanceof SettingsMsg){
 	                    	data.setStatus("WAIT");
 	                   	 	data.setGameType(((SettingsMsg) msg).getType());
 	                   	 	data.setBigBlind(((SettingsMsg) msg).getValueOfBigBlind());
 	                   	 	data.setNumberOfPlayers(((SettingsMsg) msg).getNumberOfPlayers());
-	                   	 	System.out.println(((SettingsMsg) msg).getNumberOfPlayers());
 	                   	 	data.setSmallBlind(((SettingsMsg) msg).getValueOfSmallBlind());
 	                   	 	data.setPlayerNumber(((SettingsMsg) msg).getPlayerId());
 	                   	 	double[] money = new double[data.getNumberOfPlayers()];
@@ -130,6 +126,7 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
 		                    		 senderMsg.sendMsg(msg);
 		                    		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
+		                    		 data.setCurrentBet(((BlindMsg) msg).getValue());
 		                    		 data.setMoneyOfPlayers(money);
 		                    	 }
 		                    	 else{
@@ -139,7 +136,7 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                     }
 		                     if(msg instanceof InfoAboutActionMsg){
 		                    	 double money[] = data.getMoneyOfPlayers();
-		                    	 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((InfoAboutActionMsg) msg).getAction().getMoney();
+		                    	 money[((InfoAboutActionMsg) msg).getPlayerId()] = money[((InfoAboutActionMsg) msg).getPlayerId()] - ((InfoAboutActionMsg) msg).getAction().getMoney();
 		                    	 data.setActionOfPlayerX(((InfoAboutActionMsg) msg).getPlayerId(), ((InfoAboutActionMsg) msg).getAction());
 		                    	 data.setMoneyOfPlayers(money);
 		                    	 data.setPot((int) (data.getPot()+((InfoAboutActionMsg) msg).getAction().getMoney()));

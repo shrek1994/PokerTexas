@@ -75,13 +75,16 @@ public class GameScreenMove implements Screen, Observer {
 						double bet = Double.parseDouble(betValue.getText());
 						if (bet > client.getGameData().getMoneyOfPlayerX(client.getGameData().getPlayerNumber()))
 							bet = client.getGameData().getMoneyOfPlayerX(client.getGameData().getPlayerNumber());
-						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[this.b].getText().toString()),bet));
+						if (bet < client.getGameData().getCurrentBet())
+							bet = client.getGameData().getCurrentBet()+1;
+						client.setAction(ActionType.valueOf(actions[this.b].getText().toString()),bet);
+						//client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[this.b].getText().toString()),bet));
 					}
 					catch(Exception ex){
 						client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[client.getGameData().getPlayerNumber()].getText().toString()),0.0));
 					}
-					client.getGameData().setPot(client.getGameData().getPot()+Integer.parseInt(betValue.getText()));
-					client.getGameData().setCurrentBet(Integer.parseInt(betValue.getText()));
+					//client.getGameData().setPot(client.getGameData().getPot()+Integer.parseInt(betValue.getText()));
+					//client.getGameData().setCurrentBet(Integer.parseInt(betValue.getText()));
 					client.getGameData().setStatus("WAIT");
 					game.setScreen(new GameScreenWait(client,game));
 				}
@@ -144,10 +147,11 @@ public class GameScreenMove implements Screen, Observer {
 		int n = client.getGameData().getNumberOfPlayers();
 		for (int i=0; i<n;i++){
 			String message = "";
-			if(client.getGameData().getActionOfPlayerX(i) != null)
-				message = client.getGameData().getActionOfPlayerX(i).getActionType().toString();
-			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+80);
-			
+			message = client.getGameData().getActionOfPlayerX(i).getActionType().toString() 
+					+ ": $"+client.getGameData().getActionOfPlayerX(i).getMoney()
+					+ " M: $"
+					+ client.getGameData().getMoneyOfPlayerX(i);
+			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+90);
 		}
 		text.draw(batch, "$"+client.getGameData().getPot(), 250 , 500);
 		text.draw(batch, "Current bet: $"+client.getGameData().getCurrentBet(), 250 , 450);
@@ -185,8 +189,6 @@ public class GameScreenMove implements Screen, Observer {
 					cardBack[i+n].setPosition(201+((i-9)*170), 510);
 				}
 		}
-		cardBack[client.getGameData().getPlayerNumber()].setPosition(999,999);
-		cardBack[client.getGameData().getPlayerNumber()+n].setPosition(999,999);
 	}
 	
 

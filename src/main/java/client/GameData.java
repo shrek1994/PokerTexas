@@ -1,6 +1,7 @@
 package client;
 import java.util.Observable;
 import messages.ActionMsg;
+import messages.ActionType;
 import messages.GameType;
 import messages.RankingMsg;
 
@@ -38,6 +39,8 @@ public class GameData extends Observable{
 		this.numberOfPlayers = n;
 		this.moneyOfPlayers = new double[n];
 		this.actions = new ActionMsg[n];
+		for (int i=0; i<n; i++)
+			actions[i] = new ActionMsg(ActionType.Check,0);
 		setChanged();
 	    notifyObservers();
 	}
@@ -158,6 +161,14 @@ public class GameData extends Observable{
 
 	public void setMoneyOfPlayers(double moneyOfPlayers[]) {
 		this.moneyOfPlayers = moneyOfPlayers;
+		setChanged();
+	    notifyObservers();
+	}
+	
+	public void setMoneyOfPlayerX(int numberOfPlayer, double money) {
+		this.moneyOfPlayers[numberOfPlayer] = money;
+		setChanged();
+	    notifyObservers();
 	}
 
 	public int getPot() {
@@ -166,6 +177,8 @@ public class GameData extends Observable{
 
 	public void setPot(int pot) {
 		this.pot = pot;
+		setChanged();
+	    notifyObservers();
 	}
 
 	public int getCurrentBet() {
@@ -174,6 +187,8 @@ public class GameData extends Observable{
 
 	public void setCurrentBet(int currentBet) {
 		this.currentBet = currentBet;
+		setChanged();
+	    notifyObservers();
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import messages.ActionMsg;
+import messages.ActionType;
 
 /**
  * Glowna klasa logiki aplikacji klienta. Poœredniczy miedzy polaczeniem z serwerem a GUI.
@@ -41,10 +42,9 @@ public class GameClient implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		System.out.println("sending action");
-		if(arg1 instanceof ActionMsg){
+		/*if(arg1 instanceof ActionMsg){
 			connection.sendMove(arg1);
-		}
+		}*/
 	}
 	
 	public boolean[] getAvailableActions() {
@@ -65,7 +65,7 @@ public class GameClient implements Observer{
 			}
 		}
 		for (int i=0; i<connection.getData().getNumberOfPlayers();i++){
-			if (connection.getData().getActionOfPlayerX(i)!=null){
+			if (connection.getData().getActionOfPlayerX(i).getActionType() != ActionType.Check){
 				actions[0]=false;
 			}
 		}
@@ -94,6 +94,19 @@ public class GameClient implements Observer{
 	public void setSettingsFromServer() {
 		connection.getGameSettings();
 		
+	}
+
+
+	public void setAction(ActionType type, double bet) {
+		int id = connection.getData().getPlayerNumber();
+		double money = connection.getData().getMoneyOfPlayerX(id);
+		if (type == ActionType.AllIn)
+			bet = money;
+		if (type == ActionType.Fold)
+			bet = 0;
+		if (type == ActionType.Call)
+			bet = connection.getData().getCurrentBet();
+		connection.sendMove(new ActionMsg(type,bet));
 	}
 	
 	
