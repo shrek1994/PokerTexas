@@ -13,6 +13,7 @@ import messages.CardMsg;
 import messages.GameType;
 import messages.InfoAboutActionMsg;
 import messages.NotifyAboutActionMsg;
+import messages.RankingMsg;
 import messages.ReceiverMsg;
 import messages.SenderMsg;
 import messages.SettingsMsg;
@@ -127,7 +128,6 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                     if(msg instanceof BlindMsg){
 		                    	 double money[] = data.getMoneyOfPlayers();
 		                    	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
-		                        	 System.out.println("wysylanie ciemnej");
 		                    		 senderMsg.sendMsg(msg);
 		                    		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
 		                    		 data.setMoneyOfPlayers(money);
@@ -138,13 +138,25 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    	 }
 		                     }
 		                     if(msg instanceof InfoAboutActionMsg){
-		                    	 System.out.println("odebranie akcji");
 		                    	 double money[] = data.getMoneyOfPlayers();
 		                    	 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((InfoAboutActionMsg) msg).getAction().getMoney();
 		                    	 data.setActionOfPlayerX(((InfoAboutActionMsg) msg).getPlayerId(), ((InfoAboutActionMsg) msg).getAction());
 		                    	 data.setMoneyOfPlayers(money);
 		                    	 data.setPot((int) (data.getPot()+((InfoAboutActionMsg) msg).getAction().getMoney()));
 		                    	 data.setCurrentBet((int) ((InfoAboutActionMsg) msg).getAction().getMoney());
+		                     }
+		                     if (msg instanceof RankingMsg){
+		                    	 double money[] = data.getMoneyOfPlayers();
+		                    	 money[((RankingMsg) msg).getPlayerIdWhoWin()] += ((RankingMsg) msg).getMoney();
+		                    	 GameData oldData = data;
+		                    	 data = new GameData(oldData.getNumberOfPlayers());
+		                    	 data.setStatus("WAIT");
+		                   	 	 data.setGameType(oldData.getGameType());
+		                   	 	 data.setBigBlind(oldData.getBigBlind());
+		                   	 	 data.setNumberOfPlayers(oldData.getNumberOfPlayers());
+		                   	 	 data.setSmallBlind(oldData.getSmallBlind());
+		                   	 	 data.setPlayerNumber(oldData.getPlayerNumber());
+		                   	 	 data.setMoneyOfPlayers(money);
 		                     }
 	                	 }
 	                 } catch (Exception e) {
