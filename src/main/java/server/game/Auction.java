@@ -71,7 +71,7 @@ public class Auction {
             }
         } while( ! table.haveAllPlayersTheSameMoney() &&
                 players.size() > onePlayer &&
-                ! allPlayersFoldOrCheck() );
+                ! allPlayersFoldOrCheckOrCall() );
     }
 
     private void notifyAllAboutAction(ActionMsg action, int playerId) {
@@ -82,10 +82,11 @@ public class Auction {
         }
     }
 
-    private boolean allPlayersFoldOrCheck() {
+    private boolean allPlayersFoldOrCheckOrCall() {
         for (Map.Entry<IPlayer, ActionMsg> pair : lastActions.entrySet())
         {
             if ( pair.getValue().getActionType() != ActionType.Check &&
+                    pair.getValue().getActionType() != ActionType.Call &&
                     pair.getValue().getActionType() != ActionType.Fold)
             {
                 return false;
