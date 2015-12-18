@@ -8,7 +8,7 @@ import messages.ActionMsg;
 import messages.ActionType;
 
 /**
- * Glowna klasa logiki aplikacji klienta. Poœredniczy miedzy polaczeniem z serwerem a GUI.
+ * Glowna klasa logiki aplikacji klienta. Posredniczy miedzy polaczeniem z serwerem a GUI.
  * 
  * @author erinu
  *
@@ -65,9 +65,10 @@ public class GameClient implements Observer{
 			}
 		}
 		for (int i=0; i<connection.getData().getNumberOfPlayers();i++){
-			if (connection.getData().getActionOfPlayerX(i).getActionType() != ActionType.Check){
-				actions[0]=false;
-			}
+			if (i != connection.getData().getPlayerNumber())
+				if (connection.getData().getActionOfPlayerX(i).getActionType() != ActionType.Check){
+					actions[0]=false;
+				}
 		}
 		if (connection.getData().getCurrentBet()>connection.getData().getMoneyOfPlayerX(id)){
 			actions[1] = false;

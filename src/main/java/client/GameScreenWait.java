@@ -41,7 +41,7 @@ public class GameScreenWait implements Screen, Observer {
 		this.game = g;
 		client.getGameData().addObserver(this);
 		stage = new Stage();
-		font = new BitmapFont(Gdx.files.internal("Cards.fnt"),Gdx.files.internal("Cards.png"),false);
+		font = new BitmapFont(Gdx.files.internal("cards.fnt"),Gdx.files.internal("cards.png"),false);
 		text = new BitmapFont(Gdx.files.internal("text.fnt"),Gdx.files.internal("text.png"),false);
 		Gdx.input.setInputProcessor(stage);
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -154,8 +154,8 @@ public class GameScreenWait implements Screen, Observer {
 					+ client.getGameData().getMoneyOfPlayerX(i);
 			text.draw(batch, message, cardBack[i].getX()+5, cardBack[i].getY()+90);
 		}
-		text.draw(batch, "$"+client.getGameData().getPot(), 250 , 500);
-		text.draw(batch, "Current bet: $"+client.getGameData().getCurrentBet(), 250 , 450);
+		text.draw(batch, "$"+client.getGameData().getPot(), 250 , 580);
+		text.draw(batch, "Current bet: $"+client.getGameData().getCurrentBet(), 250 , 540);
 		batch.end();
 	}
 	

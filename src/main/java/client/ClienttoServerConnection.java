@@ -8,10 +8,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import messages.ActionMsg;
+import messages.ActionType;
 import messages.BlindMsg;
 import messages.CardMsg;
 import messages.GameType;
 import messages.InfoAboutActionMsg;
+import messages.InfoAboutContinuingGameMsg;
 import messages.NotifyAboutActionMsg;
 import messages.RankingMsg;
 import messages.ReceiverMsg;
@@ -113,21 +115,24 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    	 boolean writed = false;
 		                    	 int i;
 		                    	 for(i = 0; i < data.getCardsInHandANDOnTable().length && !writed; i++){
-		                    		    if(data.getCardsInHandANDOnTable(i) == 0){
+		                    		  if(data.getCardsInHandANDOnTable(i) == 0){
 		                    		    	data.setCardsInHandANDOnTable(i,CardUtils.cardMsgToInt((CardMsg) msg));
 		                    		    	writed = true;
 		                    		    }
 		                    	 }
-		                    	 if(i>1)
+		                    	 for (int j=0; j<data.getNumberOfPlayers(); j++){
+		                    		 data.setActionOfPlayerX(j, new ActionMsg(ActionType.Check,0));
+		                    	 }
+		                    	 if(i>2)
 		                    		 data.setNumberOfCardsOnTable(data.getNumberOfCardsOnTable()+1);
 		                     }
 		                     if(msg instanceof BlindMsg){
 		                    	 double money[] = data.getMoneyOfPlayers();
 		                    	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
 		                    		 senderMsg.sendMsg(msg);
-		                    		 money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
+		                    		 /*money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
 		                    		 data.setCurrentBet(((BlindMsg) msg).getValue());
-		                    		 data.setMoneyOfPlayers(money);
+		                    		 data.setMoneyOfPlayers(money);*/
 		                    	 }
 		                    	 else{
 		                    		 BlindMsg ret = new BlindMsg(0);
@@ -143,8 +148,9 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    	 data.setCurrentBet((int) ((InfoAboutActionMsg) msg).getAction().getMoney());
 		                     }
 		                     if (msg instanceof RankingMsg){
-		                    	 double money[] = data.getMoneyOfPlayers();
-		                    	 money[((RankingMsg) msg).getPlayerIdWhoWin()] += ((RankingMsg) msg).getMoney();
+		                    	 /*double money[] = data.getMoneyOfPlayers();
+		                    	 money[((RankingMsg) msg).getPlayerIdWhoWin()] += ((RankingMsg) msg).getMoney();*/
+		                    	 data.setMoneyOfPlayerX(((RankingMsg) msg).getPlayerIdWhoWin(), ((RankingMsg) msg).getMoney());
 		                    	 GameData oldData = data;
 		                    	 data = new GameData(oldData.getNumberOfPlayers());
 		                    	 data.setStatus("WAIT");
@@ -153,7 +159,8 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                   	 	 data.setNumberOfPlayers(oldData.getNumberOfPlayers());
 		                   	 	 data.setSmallBlind(oldData.getSmallBlind());
 		                   	 	 data.setPlayerNumber(oldData.getPlayerNumber());
-		                   	 	 data.setMoneyOfPlayers(money);
+		                   	 	 data.setMoneyOfPlayers(oldData.getMoneyOfPlayers());
+		                   	 	 senderMsg.sendMsg(new InfoAboutContinuingGameMsg(true));
 		                     }
 	                	 }
 	                 } catch (Exception e) {
