@@ -58,7 +58,7 @@ public class Table extends Observable {
         cards.clear();
     }
 
-    private void notifyAllPlayers(Object message)
+    public void notifyAllPlayers(Object message)
     {
         setChanged();
         notifyObservers(message);

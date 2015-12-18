@@ -38,6 +38,7 @@ public class GameModuleTest {
     private final ActionMsg raise = new ActionMsg(ActionType.Raise, 15);
 
     private Game sut;
+    private Thread gameRunner;
 
     @Before
     public void setUp() throws Exception {
@@ -49,6 +50,18 @@ public class GameModuleTest {
         settings.numberOfPlayers = 2;
 
         sut = new Game(texasHoldRoundFactory, server, settings);
+        gameRunner = new Thread(new GameRunner());
+    }
+
+    @After
+    public void after()
+    {
+        try {
+            gameRunner.join(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        gameRunner.interrupt();
     }
 
     private void turnOffLogger() {
@@ -90,6 +103,13 @@ public class GameModuleTest {
         assertTrue(bigBlind instanceof BlindMsg);
         assertEquals(settings.bigBlind, ((BlindMsg)bigBlind).getValue());
         firstSender.sendMsg(bigBlind);
+
+        //TODO receive infoAboutAction
+        firstReceiver.receiveMsg();
+        secondReceiver.receiveMsg();
+
+        firstReceiver.receiveMsg();
+        secondReceiver.receiveMsg();
     }
 
     private void receiveAllPlayersSettingMsg() throws ClassNotFoundException, IOException {
@@ -131,7 +151,6 @@ public class GameModuleTest {
     @Test(timeout = 5000)
     public void shouldCorrectPlayWhenAllFoldOnFirstAuction() throws Exception
     {
-        Thread gameRunner = new Thread(new GameRunner());
         gameRunner.start();
 
         connectAndConfigurePlayersStreams();
@@ -156,9 +175,6 @@ public class GameModuleTest {
 
         firstSender.sendMsg(new InfoAboutContinuingGameMsg(false));
         secondSender.sendMsg(new InfoAboutContinuingGameMsg(false));
-
-        gameRunner.join(1000);
-        gameRunner.interrupt();
     }
 
     @Test(timeout = 5000)
@@ -177,10 +193,10 @@ public class GameModuleTest {
         receiveCardMsg();
 
         //first Auction
-        playersAction(secondReceiver, secondSender, raise);
+        playersAction(secondReceiver, secondSender, bet);
         playersAction(firstReceiver, firstSender, raise);
 
-        playersAction(secondReceiver, secondSender, raise);
+        playersAction(secondReceiver, secondSender, call);
         playersAction(firstReceiver, firstSender, raise);
 
         playersAction(secondReceiver, secondSender, check);

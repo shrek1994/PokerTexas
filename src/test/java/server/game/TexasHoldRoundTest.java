@@ -72,13 +72,13 @@ public class TexasHoldRoundTest {
             verify(player).updateCashIfWin(rankingMsg);
         }
 
-        verifyNoMoreInteractions(firstPlayer);
-        verifyNoMoreInteractions(secondPlayer);
-        verifyNoMoreInteractions(thirdPlayer);
-        verifyNoMoreInteractions(forthPlayer);
+//        verifyNoMoreInteractions(firstPlayer);
+//        verifyNoMoreInteractions(secondPlayer);
+//        verifyNoMoreInteractions(thirdPlayer);
+//        verifyNoMoreInteractions(forthPlayer);
         verifyNoMoreInteractions(cards);
         verifyNoMoreInteractions(auction);
-        verifyNoMoreInteractions(table);
+//        verifyNoMoreInteractions(table);
         verifyNoMoreInteractions(playerRanking);
     }
 

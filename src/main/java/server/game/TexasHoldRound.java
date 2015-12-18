@@ -5,8 +5,7 @@ import java.util.logging.Logger;
 
 import cards.Card;
 import cards.CollectionOfCards;
-import messages.RankingMsg;
-import messages.Settings;
+import messages.*;
 
 public class TexasHoldRound {
     private final static Logger logger = Logger.getLogger(TexasHoldRound.class.getName());
@@ -125,7 +124,17 @@ public class TexasHoldRound {
         }
 
         table.addMoney(playerShouldPaySmallBlind, smallBlind);
+        table.notifyAllPlayers(
+                new InfoAboutActionMsg(
+                        playerShouldPaySmallBlind.getId(),
+                        new ActionMsg(ActionType.Bet, smallBlind)));
+
         table.addMoney(playerShouldPayBigBlind, bigBlind);
+        table.notifyAllPlayers(
+                new InfoAboutActionMsg(
+                        playerShouldPayBigBlind.getId(),
+                        new ActionMsg(ActionType.Bet, bigBlind)));
+
     }
 
     private int getIndexOfPlayerOnTheLeftOfDealerButton_smallBlind() {
