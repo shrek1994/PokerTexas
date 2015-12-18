@@ -94,7 +94,7 @@ public class Auction {
             if ( pair.getValue().getActionType() != ActionType.Check &&
                     pair.getValue().getActionType() != ActionType.Call &&
                     pair.getValue().getActionType() != ActionType.Fold &&
-                    numberOfRaiseAndBet > 0)
+                    numberOfRaiseAndBet > 1
             {
                 return false;
             }
