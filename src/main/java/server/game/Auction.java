@@ -83,11 +83,18 @@ public class Auction {
     }
 
     private boolean allPlayersFoldOrCheckOrCall() {
+        int numberOfRaiseAndBet = 0;
         for (Map.Entry<IPlayer, ActionMsg> pair : lastActions.entrySet())
         {
+            //TODO change
+            if (pair.getValue().getActionType() == ActionType.Raise ||
+                    pair.getValue().getActionType() == ActionType.Bet)
+                numberOfRaiseAndBet++;
+
             if ( pair.getValue().getActionType() != ActionType.Check &&
                     pair.getValue().getActionType() != ActionType.Call &&
-                    pair.getValue().getActionType() != ActionType.Fold)
+                    pair.getValue().getActionType() != ActionType.Fold &&
+                    numberOfRaiseAndBet > 0)
             {
                 return false;
             }
