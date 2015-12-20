@@ -49,37 +49,31 @@ public class GameClient implements Observer{
 	
 	public boolean[] getAvailableActions() {
 		int id = connection.getData().getPlayerNumber();
-		boolean actions[];
-		actions = new boolean[6];
+		boolean checkerActions[] = new boolean[6];
+		ActionMsg actions[] = connection.getData().getActions();
+		double money = connection.getData().getMoneyOfPlayerX(id);
+		double pot = connection.getData().getPot();
+		double currentBet = connection.getData().getCurrentBet();
+		boolean betChecker = connection.getData().isBetChecker();
 		for (int i=0; i<6; i++){
-			actions[i] = true;
-			switch (connection.getData().getGameType()){
-			case FixedLimit:
-				break;
-			case NoLimit:
-				break;
-			case PotLimit:
-				break;
-			default:
-				break;
-			}
+			checkerActions[i] = false;
 		}
-		for (int i=0; i<connection.getData().getNumberOfPlayers();i++){
-			if (i != connection.getData().getPlayerNumber())
-				if (connection.getData().getActionOfPlayerX(i).getActionType() != ActionType.Check){
-					actions[0]=false;
-				}
+		if (currentBet == actions[id].getMoney())
+			checkerActions[0] = true; 					//Check
+		if (betChecker == false && money > currentBet)
+			checkerActions[1] = true; 					//Bet
+		if (betChecker && money > currentBet)
+			checkerActions[2] = true; 					//Raise
+		if (money >= currentBet && betChecker)
+			checkerActions[3] = true;					//Call
+		checkerActions[4] = true;						//Fold
+		if (checkerActions[1] == false && checkerActions[2] == false && checkerActions[3] == false)
+			checkerActions[5] = true;					//Allin
+		if (connection.getData().isAllInChecker()){
+			checkerActions[4] = false;
+			checkerActions[5] = true;
 		}
-		if (connection.getData().getCurrentBet()>connection.getData().getMoneyOfPlayerX(id)){
-			actions[1] = false;
-			actions[2] = false;
-			actions[3] = false;
-		}
-		if (connection.getData().getActionOfPlayerX(id) != null){
-			if (connection.getData().getCurrentBet() == connection.getData().getActionOfPlayerX(id).getMoney())
-				actions[2] = false;
-		}
-		return actions;
+		return checkerActions;
 	}
 
 
@@ -94,19 +88,25 @@ public class GameClient implements Observer{
 
 	public void setSettingsFromServer() {
 		connection.getGameSettings();
-		
 	}
 
 
 	public void setAction(ActionType type, double bet) {
 		int id = connection.getData().getPlayerNumber();
 		double money = connection.getData().getMoneyOfPlayerX(id);
-		if (type == ActionType.AllIn)
+		if (type == ActionType.AllIn){
 			bet = money;
-		if (type == ActionType.Fold)
+			connection.getData().setAllInChecker(true);
+		}
+		if (type == ActionType.Fold || type == ActionType.Check)
 			bet = 0;
 		if (type == ActionType.Call)
 			bet = connection.getData().getCurrentBet();
+		if (type == ActionType.Bet || type == ActionType.Raise)
+			if (bet <= connection.getData().getCurrentBet())
+				bet = connection.getData().getCurrentBet() +1;
+		if (type == ActionType.Bet)
+			connection.getData().setBetChecker(true);
 		connection.sendMove(new ActionMsg(type,bet));
 	}
 	

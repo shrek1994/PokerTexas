@@ -113,6 +113,7 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    	 	data.setStatus("MOVE");
 		                     if(msg instanceof CardMsg){
 		                    	 boolean writed = false;
+		                    	 data.setBetChecker(false);
 		                    	 int i;
 		                    	 for(i = 0; i < data.getCardsInHandANDOnTable().length && !writed; i++){
 		                    		  if(data.getCardsInHandANDOnTable(i) == 0){
@@ -130,9 +131,6 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    	 double money[] = data.getMoneyOfPlayers();
 		                    	 if(money[data.getPlayerNumber()] > ((BlindMsg) msg).getValue()){
 		                    		 senderMsg.sendMsg(msg);
-		                    		 /*money[data.getPlayerNumber()] = money[data.getPlayerNumber()] - ((BlindMsg) msg).getValue();
-		                    		 data.setCurrentBet(((BlindMsg) msg).getValue());
-		                    		 data.setMoneyOfPlayers(money);*/
 		                    	 }
 		                    	 else{
 		                    		 BlindMsg ret = new BlindMsg(0);
@@ -140,12 +138,17 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    	 }
 		                     }
 		                     if(msg instanceof InfoAboutActionMsg){
+		                    	 int bet = (int) ((InfoAboutActionMsg) msg).getAction().getMoney();
 		                    	 double money[] = data.getMoneyOfPlayers();
-		                    	 money[((InfoAboutActionMsg) msg).getPlayerId()] = money[((InfoAboutActionMsg) msg).getPlayerId()] - ((InfoAboutActionMsg) msg).getAction().getMoney();
-		                    	 data.setActionOfPlayerX(((InfoAboutActionMsg) msg).getPlayerId(), ((InfoAboutActionMsg) msg).getAction());
+		                    	 int player = ((InfoAboutActionMsg) msg).getPlayerId();
+		                    	 money[player] = money[player] - bet;
+		                    	 data.setActionOfPlayerX(player, ((InfoAboutActionMsg) msg).getAction());
 		                    	 data.setMoneyOfPlayers(money);
-		                    	 data.setPot((int) (data.getPot()+((InfoAboutActionMsg) msg).getAction().getMoney()));
-		                    	 data.setCurrentBet((int) ((InfoAboutActionMsg) msg).getAction().getMoney());
+		                    	 data.setPot(data.getPot()+bet);
+		                    	 if (bet > data.getCurrentBet())
+		                    		 data.setCurrentBet(bet);
+		                    	 if (((InfoAboutActionMsg) msg).getAction().getActionType() == ActionType.Bet)
+		                    		 data.setBetChecker(true);
 		                     }
 		                     if (msg instanceof RankingMsg){
 		                    	 /*double money[] = data.getMoneyOfPlayers();
@@ -160,6 +163,7 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                   	 	 data.setSmallBlind(oldData.getSmallBlind());
 		                   	 	 data.setPlayerNumber(oldData.getPlayerNumber());
 		                   	 	 data.setMoneyOfPlayers(oldData.getMoneyOfPlayers());
+		                   	 	 data.setAllInChecker(false);
 		                   	 	 senderMsg.sendMsg(new InfoAboutContinuingGameMsg(true));
 		                     }
 	                	 }

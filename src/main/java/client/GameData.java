@@ -27,6 +27,8 @@ public class GameData extends Observable{
 	private double moneyOfPlayers[];
 	private int pot=0;
 	private int currentBet=0;
+	private boolean betChecker = false;
+	private boolean allInChecker = false;
 	
 	GameData(int players){
 		this.actions = new ActionMsg[players];
@@ -69,6 +71,10 @@ public class GameData extends Observable{
 	
 	int getSmallBlind(){
 		return smallBlind;
+	}
+	
+	ActionMsg[] getActions(){
+		return this.actions;
 	}
 	
 	int getBigBlind(){
@@ -189,6 +195,22 @@ public class GameData extends Observable{
 		this.currentBet = currentBet;
 		setChanged();
 	    notifyObservers();
+	}
+
+	public boolean isBetChecker() {
+		return betChecker;
+	}
+
+	public void setBetChecker(boolean betChecker) {
+		this.betChecker = betChecker;
+	}
+
+	public boolean isAllInChecker() {
+		return allInChecker;
+	}
+
+	public void setAllInChecker(boolean allInChecker) {
+		this.allInChecker = allInChecker;
 	}
 
 }

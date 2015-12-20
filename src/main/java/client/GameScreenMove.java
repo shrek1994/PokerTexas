@@ -73,10 +73,10 @@ public class GameScreenMove implements Screen, Observer {
 				public void touchUp(InputEvent e, float x, float y, int point, int button){
 					try{
 						double bet = Double.parseDouble(betValue.getText());
-						if (bet > client.getGameData().getMoneyOfPlayerX(client.getGameData().getPlayerNumber()))
+						/*if (bet > client.getGameData().getMoneyOfPlayerX(client.getGameData().getPlayerNumber()))
 							bet = client.getGameData().getMoneyOfPlayerX(client.getGameData().getPlayerNumber());
 						if (bet < client.getGameData().getCurrentBet())
-							bet = client.getGameData().getCurrentBet()+1;
+							bet = client.getGameData().getCurrentBet()+1;*/
 						client.setAction(ActionType.valueOf(actions[this.b].getText().toString()),bet);
 						//client.getGameData().setActionOfPlayerX(client.getGameData().getPlayerNumber(),new ActionMsg(ActionType.valueOf(actions[this.b].getText().toString()),bet));
 					}
