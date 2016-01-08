@@ -61,7 +61,7 @@ public class GameScreenWait implements Screen, Observer {
 	}
 	
 	void generateCardsBacks(int n){
-		if (client.getGameData().getRankingMsg() == null){
+		//if (client.getGameData().getRankingMsg() == null){
 			cardBack = new Rectangle[n*2];
 			cardBackImage = new Texture(Gdx.files.internal("cardback.png"));
 			for (int i=0; i<n*2; i++){
@@ -88,7 +88,7 @@ public class GameScreenWait implements Screen, Observer {
 					cardBack[i].setPosition(150+((i-9)*170), 510);
 					cardBack[i+n].setPosition(201+((i-9)*170), 510);
 				}
-		}
+		//}
 		/*cardBack[client.getGameData().getPlayerNumber()].setPosition(999,999);
 		cardBack[client.getGameData().getPlayerNumber()+n].setPosition(999,999);*/
 	}
@@ -96,7 +96,11 @@ public class GameScreenWait implements Screen, Observer {
 	void batchCardBacks(int n){
 		batch.begin();
 		for (int i=0; i<n*2;i++)
+		{
+			//System.out.println("i="+i);
 			batch.draw(cardBackImage, cardBack[i].x, cardBack[i].y);
+			
+		}
 		batch.end();
 	}
 	
@@ -166,6 +170,10 @@ public class GameScreenWait implements Screen, Observer {
 			if (client.getGameData().getStatus().equals("MOVE")){
 				this.updated = false;
 				game.setScreen(new GameScreenMove(client,game));
+			}
+			if (client.getGameData().getStatus().equals("RANK")){
+				this.updated = false;
+				game.setScreen(new GameScreenEnd(client,game));
 			}
 			//game.setScreen(new GameScreenWait(client,game));
 		}

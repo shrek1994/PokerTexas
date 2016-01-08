@@ -35,6 +35,9 @@ public class GameData extends Observable{
 		this.numberOfPlayers = players;
 		this.cardsInHandANDOnTable = new int[7];
 		this.moneyOfPlayers = new double[players];
+		for (int i=0; i<this.numberOfPlayers; i++)
+			actions[i] = new ActionMsg(ActionType.Check,0);
+		this.numberOfCardsOnTable = 0;
 	}
 	
 	void setNumberOfPlayers(int n){

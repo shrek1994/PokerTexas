@@ -151,8 +151,9 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                    		 data.setBetChecker(true);
 		                     }
 		                     if (msg instanceof RankingMsg){
-		                    	 /*double money[] = data.getMoneyOfPlayers();
-		                    	 money[((RankingMsg) msg).getPlayerIdWhoWin()] += ((RankingMsg) msg).getMoney();*/
+		                    	 data.setRanking((RankingMsg) msg);
+		                    	 data.setStatus("RANK");
+		                    	 /*
 		                    	 data.setMoneyOfPlayerX(((RankingMsg) msg).getPlayerIdWhoWin(), ((RankingMsg) msg).getMoney());
 		                    	 GameData oldData = data;
 		                    	 data = new GameData(oldData.getNumberOfPlayers());
@@ -164,7 +165,7 @@ public class ClienttoServerConnection extends Observable implements Observer{
 		                   	 	 data.setPlayerNumber(oldData.getPlayerNumber());
 		                   	 	 data.setMoneyOfPlayers(oldData.getMoneyOfPlayers());
 		                   	 	 data.setAllInChecker(false);
-		                   	 	 senderMsg.sendMsg(new InfoAboutContinuingGameMsg(true));
+		                   	 	 senderMsg.sendMsg(new InfoAboutContinuingGameMsg(true));*/
 		                     }
 	                	 }
 	                 } catch (Exception e) {
@@ -181,6 +182,10 @@ public class ClienttoServerConnection extends Observable implements Observer{
         } catch (IOException e) {
             System.out.println("disconnect");
         }
+	}
+
+	public void setData(GameData data) {
+		this.data = data;
 	}
 
 	@Override

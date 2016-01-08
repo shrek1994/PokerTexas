@@ -16,6 +16,16 @@ import messages.ActionType;
 public class GameClient implements Observer{
 	
 	private ClienttoServerConnection connection;
+	public ClienttoServerConnection getConnection() {
+		return connection;
+	}
+
+
+	public void setConnection(ClienttoServerConnection connection) {
+		this.connection = connection;
+	}
+
+
 	private boolean connectionEstablished = false;
 
 	public GameClient(){
