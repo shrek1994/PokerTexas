@@ -46,6 +46,11 @@ public class Auction {
             }
         }
 
+        if (players.size() < 2)
+        {
+            return;
+        }
+
         //Licytacja
         do {
             for(int i = 0; i < players.size(); i++)
