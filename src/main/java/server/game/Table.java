@@ -65,7 +65,13 @@ public class Table extends Observable {
     }
 
     public double getCash() {
-        // TODO implement getCash
-        return 0;
+        double money = 0;
+        for (Map.Entry<IPlayer, Double> playerMoney : moneys.entrySet())
+        {
+            Double Money = playerMoney.getValue();
+            money += Money.doubleValue();
+            Money = 0.0;
+        }
+        return money;
     }
 }
