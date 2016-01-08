@@ -68,10 +68,9 @@ public class Table extends Observable {
         double money = 0;
         for (Map.Entry<IPlayer, Double> playerMoney : moneys.entrySet())
         {
-            Double Money = playerMoney.getValue();
-            money += Money.doubleValue();
-            Money = 0.0;
+            money += playerMoney.getValue().doubleValue();
         }
+        moneys = new HashMap<IPlayer, Double>();
         return money;
     }
 }
