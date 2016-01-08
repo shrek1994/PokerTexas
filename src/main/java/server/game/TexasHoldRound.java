@@ -39,6 +39,8 @@ public class TexasHoldRound {
 
     public void runRound()
     {
+        auction.clearMap();
+
         //placenie ciemnych
         payingBlinds();
 

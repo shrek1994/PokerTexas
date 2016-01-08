@@ -18,6 +18,11 @@ public class Auction {
         this.playerList = playerList;
     }
 
+    public void clearMap()
+    {
+        lastActions = new HashMap<IPlayer, ActionMsg>();
+    }
+
     public void start(IPlayer playerWhoStart){
         //TODO dodac max ilosc zagran raise (fixed-limit)
         //Ustawienie kolejnosci licytacji

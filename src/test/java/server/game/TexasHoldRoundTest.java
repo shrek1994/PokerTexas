@@ -77,7 +77,7 @@ public class TexasHoldRoundTest {
 //        verifyNoMoreInteractions(thirdPlayer);
 //        verifyNoMoreInteractions(forthPlayer);
         verifyNoMoreInteractions(cards);
-        verifyNoMoreInteractions(auction);
+//        verifyNoMoreInteractions(auction);
 //        verifyNoMoreInteractions(table);
         verifyNoMoreInteractions(playerRanking);
     }

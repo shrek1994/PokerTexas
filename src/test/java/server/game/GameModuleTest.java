@@ -182,13 +182,60 @@ public class GameModuleTest {
     {
         Thread gameRunner = new Thread(new GameRunner());
         gameRunner.start();
-
         connectAndConfigurePlayersStreams();
-
         receiveAllPlayersSettingMsg();
-
         receiveAndReplyBlindMsg();
 
+        playRoundTwoPlayers();
+
+        firstSender.sendMsg(new InfoAboutContinuingGameMsg(false));
+        secondSender.sendMsg(new InfoAboutContinuingGameMsg(false));
+
+        gameRunner.join(1000);
+        gameRunner.interrupt();
+    }
+
+    @Test(timeout = 5000)
+    public void shouldCorrectPlayTwoRound() throws Exception
+    {
+        Thread gameRunner = new Thread(new GameRunner());
+        gameRunner.start();
+        connectAndConfigurePlayersStreams();
+        receiveAllPlayersSettingMsg();
+        receiveAndReplyBlindMsg();
+
+        playRoundTwoPlayers();
+
+        firstSender.sendMsg(new InfoAboutContinuingGameMsg(true));
+        secondSender.sendMsg(new InfoAboutContinuingGameMsg(true));
+
+        Object smallBlind = firstReceiver.receiveMsg();
+        assertTrue(smallBlind instanceof BlindMsg);
+        assertEquals(settings.smallBlind, ((BlindMsg)smallBlind).getValue());
+        firstSender.sendMsg(smallBlind);
+
+        Object bigBlind = secondReceiver.receiveMsg();
+        assertTrue(bigBlind instanceof BlindMsg);
+        assertEquals(settings.bigBlind, ((BlindMsg)bigBlind).getValue());
+        secondSender.sendMsg(bigBlind);
+
+        //TODO receive infoAboutAction
+        firstReceiver.receiveMsg();
+        secondReceiver.receiveMsg();
+
+        firstReceiver.receiveMsg();
+        secondReceiver.receiveMsg();
+        
+        playRoundTwoPlayers();
+
+        firstSender.sendMsg(new InfoAboutContinuingGameMsg(false));
+        secondSender.sendMsg(new InfoAboutContinuingGameMsg(false));
+
+        gameRunner.join(1000);
+        gameRunner.interrupt();
+    }
+
+    private void playRoundTwoPlayers() throws InterruptedException, ClassNotFoundException, IOException {
         receiveCardMsg();
         receiveCardMsg();
 
@@ -199,8 +246,8 @@ public class GameModuleTest {
         playersAction(secondReceiver, secondSender, call);
         playersAction(firstReceiver, firstSender, raise);
 
-        playersAction(secondReceiver, secondSender, check);
-        playersAction(firstReceiver, firstSender, check);
+//        playersAction(secondReceiver, secondSender, check);
+//        playersAction(firstReceiver, firstSender, check);
 
         receiveCardMsg();
         receiveCardMsg();
@@ -226,12 +273,6 @@ public class GameModuleTest {
         playersAction(firstReceiver, firstSender, check);
 
         receiveRankingMsg();
-
-        firstSender.sendMsg(new InfoAboutContinuingGameMsg(false));
-        secondSender.sendMsg(new InfoAboutContinuingGameMsg(false));
-
-        gameRunner.join(1000);
-        gameRunner.interrupt();
     }
 
 }
