@@ -225,8 +225,43 @@ public class GameModuleTest {
 
         firstReceiver.receiveMsg();
         secondReceiver.receiveMsg();
-        
-        playRoundTwoPlayers();
+        receiveCardMsg();
+        receiveCardMsg();
+
+        //first Auction
+        playersAction(firstReceiver, firstSender, raise);
+        playersAction(secondReceiver, secondSender, bet);
+
+        playersAction(firstReceiver, firstSender, raise);
+        playersAction(secondReceiver, secondSender, call);
+
+//        playersAction(firstReceiver, firstSender, check);
+//        playersAction(secondReceiver, secondSender, check);
+
+        receiveCardMsg();
+        receiveCardMsg();
+        receiveCardMsg();
+
+        //second auction
+        playersAction(firstReceiver, firstSender, raise);
+        playersAction(secondReceiver, secondSender, raise);
+
+        playersAction(firstReceiver, firstSender, check);
+        playersAction(secondReceiver, secondSender, check);
+
+        receiveCardMsg();
+
+        //third Auction
+        playersAction(firstReceiver, firstSender, check);
+        playersAction(secondReceiver, secondSender, check);
+
+        receiveCardMsg();
+
+        //forth Auction
+        playersAction(firstReceiver, firstSender, check);
+        playersAction(secondReceiver, secondSender, check);
+
+        receiveRankingMsg();
 
         firstSender.sendMsg(new InfoAboutContinuingGameMsg(false));
         secondSender.sendMsg(new InfoAboutContinuingGameMsg(false));
